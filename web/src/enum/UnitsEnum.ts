@@ -1,0 +1,17 @@
+export enum UnitsEnum {
+  cacl = 'cacl',
+  mgdm = 'mgdm',
+  gdm = 'gdm',
+  porc = '%',
+  k2o = 'k2o',
+  h2o = 'h2o',
+  gkg = 'gkg',
+  mmol = 'mmol',
+  cmol = 'cmol',
+  tha = 'tha',
+  nha = 'nha',
+  p2o5 = 'p2o5',
+  ha = 'ha',
+  ds = 'ds',
+  kgkg = 'kgkg',
+}
