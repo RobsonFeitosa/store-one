@@ -115,7 +115,18 @@ export default function ProductEmphasis({ product }: ProductProps) {
     product.time_discount?.discount ?? 0,
   )
 
+  if (!product.id) {
+    return (
+      <ProductEmphasisContainer>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: '400px', gridColumn: 'span 2' }}>
+          <Text size="lg" as="strong">Produto não cadastrado</Text>
+        </div>
+      </ProductEmphasisContainer>
+    )
+  }
+
   return (
+
     <ProductEmphasisContainer>
       <ProductFigure>
         {product.images?.length === 0 && (

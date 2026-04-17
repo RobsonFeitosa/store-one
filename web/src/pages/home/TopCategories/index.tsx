@@ -6,7 +6,8 @@ import 'swiper/css/free-mode'
 import 'swiper/css/pagination'
 import { FreeMode, Pagination } from 'swiper/modules'
 import ProductBox from '@/components/ProductBox'
-import { Heading } from '@lemonade-technologies-hub-ui/react'
+import { Heading, Text } from '@lemonade-technologies-hub-ui/react'
+
 import Skeleton from 'react-loading-skeleton'
 import groupBlocksProducts from '@/pages/utils/groupBlocksProducts'
 import { IProductDTO } from '@/pages/dtos/product.dto'
@@ -105,53 +106,62 @@ export default function TopCategories() {
           </TopCategoriesHeader>
 
           <div>
-            {productsLoading ? (
-              <Loading>
-                <div>
-                  <Skeleton count={1} height={253} borderRadius={8} />
-                  <Skeleton count={1} height={253} borderRadius={8} />
-                </div>
-                <div>
-                  <Skeleton count={1} height={253} borderRadius={8} />
-                  <Skeleton count={1} height={253} borderRadius={8} />
-                </div>
-                <div>
-                  <Skeleton count={1} height={253} borderRadius={8} />
-                  <Skeleton count={1} height={253} borderRadius={8} />
-                </div>
-              </Loading>
+            {groups.length === 0 && !productsLoading ? (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: '200px' }}>
+                <Text size="lg" as="strong">Produto não cadastrado</Text>
+              </div>
             ) : (
               <>
-                {groups.length > 0 && (
-                  <Swiper
-                    slidesPerView={'auto'}
-                    spaceBetween={30}
-                    freeMode={true}
-                    pagination={{
-                      clickable: true,
-                    }}
-                    modules={[FreeMode, Pagination]}
-                    className="mySwiper"
-                    style={{ paddingBottom: 60 }}
-                  >
-                    {groups.map((group, index) => (
-                      <SwiperSlide key={index}>
-                        <ProductContentBox>
-                          {group.map((product) => (
-                            <ProductBox
-                              key={product.id}
-                              product={product}
-                              size="sm"
-                            />
-                          ))}
-                        </ProductContentBox>
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
+                {productsLoading ? (
+                  <Loading>
+                    <div>
+                      <Skeleton count={1} height={253} borderRadius={8} />
+                      <Skeleton count={1} height={253} borderRadius={8} />
+                    </div>
+                    <div>
+                      <Skeleton count={1} height={253} borderRadius={8} />
+                      <Skeleton count={1} height={253} borderRadius={8} />
+                    </div>
+                    <div>
+                      <Skeleton count={1} height={253} borderRadius={8} />
+                      <Skeleton count={1} height={253} borderRadius={8} />
+                    </div>
+                  </Loading>
+                ) : (
+                  <>
+                    {groups.length > 0 && (
+                      <Swiper
+                        slidesPerView={'auto'}
+                        spaceBetween={30}
+                        freeMode={true}
+                        pagination={{
+                          clickable: true,
+                        }}
+                        modules={[FreeMode, Pagination]}
+                        className="mySwiper"
+                        style={{ paddingBottom: 60 }}
+                      >
+                        {groups.map((group, index) => (
+                          <SwiperSlide key={index}>
+                            <ProductContentBox>
+                              {group.map((product) => (
+                                <ProductBox
+                                  key={product.id}
+                                  product={product}
+                                  size="sm"
+                                />
+                              ))}
+                            </ProductContentBox>
+                          </SwiperSlide>
+                        ))}
+                      </Swiper>
+                    )}
+                  </>
                 )}
               </>
             )}
           </div>
+
         </Row>
       </Container>
     </TopCategoriesContainer>

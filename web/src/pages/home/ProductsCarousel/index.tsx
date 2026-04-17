@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 import ProductBox from '@/components/ProductBox'
 import { Container, Row } from 'react-bootstrap'
 import { useKeenSlider } from 'keen-slider/react'
+import { Text } from '@lemonade-technologies-hub-ui/react'
 import ArrowSlider from '@/components/ArrowSlider'
+
 
 import {
   ArrowsBox,
@@ -80,7 +82,7 @@ export default function ProductsCarousel() {
         <Row>
           <ProductCarouselContent>
             <div>
-              {loaded && instanceRef.current && (
+              {loaded && instanceRef.current && products && products.length > 0 && (
                 <ArrowsBox>
                   <ArrowSlider
                     left
@@ -103,43 +105,52 @@ export default function ProductsCarousel() {
               )}
             </div>
             <div>
-              {isLoading ? (
-                <Loading>
-                  <div>
-                    <Skeleton count={1} height={403} borderRadius={8} />
-                  </div>
-                  <div>
-                    <Skeleton count={1} height={403} borderRadius={8} />
-                  </div>
-                  <div>
-                    <Skeleton count={1} height={403} borderRadius={8} />
-                  </div>
-                  <div>
-                    <Skeleton count={1} height={403} borderRadius={8} />
-                  </div>
-                </Loading>
+              {(!products || products.length === 0) && !isLoading ? (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: '200px' }}>
+                  <Text size="lg" as="strong">Produto não cadastrado</Text>
+                </div>
               ) : (
                 <>
-                  {products && (
-                    <div ref={ref} className="keen-slider">
-                      {products?.map((product, index) => (
-                        <div
-                          key={product.id}
-                          className={`keen-slider__slide number-slide${index}`}
-                        >
-                          <ProductBox product={product} mode="grid" />
-                        </div>
-                      ))}
-                      <div className={`keen-slider__slide number-slide999`}>
-                        <ViewAll>
-                          <Link href="/products">VER TODOS</Link>
-                        </ViewAll>
+                  {isLoading ? (
+                    <Loading>
+                      <div>
+                        <Skeleton count={1} height={403} borderRadius={8} />
                       </div>
-                    </div>
+                      <div>
+                        <Skeleton count={1} height={403} borderRadius={8} />
+                      </div>
+                      <div>
+                        <Skeleton count={1} height={403} borderRadius={8} />
+                      </div>
+                      <div>
+                        <Skeleton count={1} height={403} borderRadius={8} />
+                      </div>
+                    </Loading>
+                  ) : (
+                    <>
+                      {products && (
+                        <div ref={ref} className="keen-slider">
+                          {products?.map((product, index) => (
+                            <div
+                              key={product.id}
+                              className={`keen-slider__slide number-slide${index}`}
+                            >
+                              <ProductBox product={product} mode="grid" />
+                            </div>
+                          ))}
+                          <div className={`keen-slider__slide number-slide999`}>
+                            <ViewAll>
+                              <Link href="/products">VER TODOS</Link>
+                            </ViewAll>
+                          </div>
+                        </div>
+                      )}
+                    </>
                   )}
                 </>
               )}
             </div>
+
           </ProductCarouselContent>
         </Row>
       </Container>

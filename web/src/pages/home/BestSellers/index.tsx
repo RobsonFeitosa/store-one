@@ -4,7 +4,8 @@ import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import { useGetAllProducts } from '@/hooks/useGetAllProducts'
 import ArrowSlider from '@/components/ArrowSlider'
-import { Heading } from '@lemonade-technologies-hub-ui/react'
+import { Heading, Text } from '@lemonade-technologies-hub-ui/react'
+
 import Skeleton from 'react-loading-skeleton'
 import ProductBox from '@/components/ProductBox'
 
@@ -96,7 +97,7 @@ export default function BestSellers() {
             </div>
 
             <div>
-              {loaded && instanceRef.current && (
+              {loaded && instanceRef.current && products && products.length > 0 && (
                 <ArrowsBox>
                   <ArrowSlider
                     left
@@ -119,38 +120,47 @@ export default function BestSellers() {
               )}
             </div>
             <div>
-              {isLoading ? (
-                <Loading>
-                  <div>
-                    <Skeleton count={1} height={403} borderRadius={8} />
-                  </div>
-                  <div>
-                    <Skeleton count={1} height={403} borderRadius={8} />
-                  </div>
-                  <div>
-                    <Skeleton count={1} height={403} borderRadius={8} />
-                  </div>
-                  <div>
-                    <Skeleton count={1} height={403} borderRadius={8} />
-                  </div>
-                </Loading>
+              {(!products || products.length === 0) && !isLoading ? (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: '200px' }}>
+                  <Text size="lg" as="strong">Produto não cadastrado</Text>
+                </div>
               ) : (
                 <>
-                  {products && (
-                    <div ref={ref} className="keen-slider">
-                      {products?.map((product, index) => (
-                        <div
-                          key={product.id}
-                          className={`keen-slider__slide number-slide${index}`}
-                        >
-                          <ProductBox product={product} mode="grid" />
+                  {isLoading ? (
+                    <Loading>
+                      <div>
+                        <Skeleton count={1} height={403} borderRadius={8} />
+                      </div>
+                      <div>
+                        <Skeleton count={1} height={403} borderRadius={8} />
+                      </div>
+                      <div>
+                        <Skeleton count={1} height={403} borderRadius={8} />
+                      </div>
+                      <div>
+                        <Skeleton count={1} height={403} borderRadius={8} />
+                      </div>
+                    </Loading>
+                  ) : (
+                    <>
+                      {products && (
+                        <div ref={ref} className="keen-slider">
+                          {products?.map((product, index) => (
+                            <div
+                              key={product.id}
+                              className={`keen-slider__slide number-slide${index}`}
+                            >
+                              <ProductBox product={product} mode="grid" />
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                      )}
+                    </>
                   )}
                 </>
               )}
             </div>
+
           </BestSellersContent>
         </Row>
       </Container>

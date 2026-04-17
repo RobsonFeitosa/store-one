@@ -13,6 +13,9 @@ import { UploadAvatarController } from './infra/http/controllers/upload-avatar-u
 import { UploadAvatarUseCase } from './application/upload-avatar-user.use-case';
 import { IndexUserUseCase } from './application/index-user.use-case';
 import { MessageBrokerModule } from 'src/shared/infra/http/providers/message-broker-provider/message-broker.module';
+import { AuthenticateUserUseCase } from './application/authenticate-user.use-case';
+import { AuthenticateUserController } from './infra/http/controllers/authenticate-user.controller';
+import BCryptHashProvider from './infra/providers/HashProvider/implementations/BCryptHashProvider';
 
 @Module({
     imports: [
@@ -20,19 +23,26 @@ import { MessageBrokerModule } from 'src/shared/infra/http/providers/message-bro
         StorageModule.register(),
         MessageBrokerModule.register(),
     ],
-    controllers: [UserController, UploadAvatarController],
+    controllers: [UserController, UploadAvatarController, AuthenticateUserController],
     providers: [
         CreateUserUseCase,
         UploadAvatarUseCase,
         IndexUserUseCase,
+        AuthenticateUserUseCase,
 
         {
+
             provide: 'USER_REPOSITORY_TOKEN',
             useFactory: (ormRepo: Repository<User>) => new TypeOrmUserRepository(ormRepo),
             inject: [getRepositoryToken(User)],
         },
 
+        {
+            provide: 'HASH_PROVIDER_TOKEN',
+            useClass: BCryptHashProvider,
+        },
+
     ],
-    exports: ['USER_REPOSITORY_TOKEN']
+    exports: ['USER_REPOSITORY_TOKEN', 'HASH_PROVIDER_TOKEN']
 })
 export class UserModule { }

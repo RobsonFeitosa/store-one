@@ -53,8 +53,10 @@ const createSessions = async (
         payload,
       )
       .then((response) => {
-        if (response?.status === 200) {
-          if (response.data.token === 'inactive-user--resend-mail') {
+        if (response?.status === 200 || response?.status === 201) {
+          const { token, user } = response.data.result || response.data
+
+          if (token === 'inactive-user--resend-mail') {
             addToast({
               type: 'info',
               title: 'Usuário inativo',
@@ -71,14 +73,13 @@ const createSessions = async (
               'Usuário logado com sucesso, aguarde e será redirecionado para a calculadora.',
           })
 
-          const { token, user } = response.data
+          try {
+            signIn({ user, token })
+          } catch {}
 
-          signIn({
-            user,
-            token,
-          })
-
-          isRedirect && redirectRouterSession(user.level, router)
+          if (isRedirect) {
+            router.push('/')
+          }
         }
 
         return response.data

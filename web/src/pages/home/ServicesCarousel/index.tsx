@@ -68,39 +68,48 @@ export default function ServicesCarousel() {
     <ServicesCarouselContainer>
       <CarouselContent>
         <div>
-          {isLoading ? (
-            <Loading>
-              <div>
-                <Skeleton count={1} height={403} borderRadius={8} />
-              </div>
-              <div>
-                <Skeleton count={1} height={403} borderRadius={8} />
-              </div>
-              <div>
-                <Skeleton count={1} height={403} borderRadius={8} />
-              </div>
-            </Loading>
+          {(!services || services.length === 0) && !isLoading ? (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: '200px' }}>
+              <Text size="lg" as="strong">Produto não cadastrado</Text>
+            </div>
           ) : (
             <>
-              {services && (
-                <div ref={ref} className="keen-slider">
-                  {services?.map((service, index) => (
-                    <div
-                      key={service.id}
-                      className={`keen-slider__slide number-slide${index}`}
-                    >
-                      <ProductBox product={service} mode="grid" />
+              {isLoading ? (
+                <Loading>
+                  <div>
+                    <Skeleton count={1} height={403} borderRadius={8} />
+                  </div>
+                  <div>
+                    <Skeleton count={1} height={403} borderRadius={8} />
+                  </div>
+                  <div>
+                    <Skeleton count={1} height={403} borderRadius={8} />
+                  </div>
+                </Loading>
+              ) : (
+                <>
+                  {services && (
+                    <div ref={ref} className="keen-slider">
+                      {services?.map((service, index) => (
+                        <div
+                          key={service.id}
+                          className={`keen-slider__slide number-slide${index}`}
+                        >
+                          <ProductBox product={service} mode="grid" />
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  )}
+                </>
               )}
             </>
           )}
         </div>
+
       </CarouselContent>
       <ServiceContent>
         <div>
-          {loaded && instanceRef.current && (
+          {loaded && instanceRef.current && services && services.length > 0 && (
             <ArrowsBox>
               <ArrowSlider
                 left

@@ -36,7 +36,8 @@ export function SummaryPayment({ discount = 0 }: SummaryPaymentProps) {
 
       <WrapperTotal>
         <Text as="strong">SubTotal: {formatValue(total)}</Text>
-        <Text as="strong">Frete: {formatValue(15)}</Text>
+        <Text as="strong">Frete: {formatValue(1500)}</Text>
+
         <Text as="strong">Cupom: -{formatValue(discount)}</Text>
       </WrapperTotal>
     </SummaryPaymentContainer>

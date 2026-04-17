@@ -59,8 +59,10 @@ export default function Signup() {
   async function handleRegister(data: SignUpFormInput) {
     const { terms: _, ...payload } = data
 
-    await mutateCreateUserAsync(payload)
-    push('/')
+    try {
+      await mutateCreateUserAsync(payload)
+      push('/signin')
+    } catch { }
   }
 
   useEffect(() => {

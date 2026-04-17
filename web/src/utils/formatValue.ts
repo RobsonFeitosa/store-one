@@ -1,8 +1,14 @@
-const formatValue = (value: number): string =>
-  Intl.NumberFormat('pt-Br', {
+const formatValue = (value: number): string => {
+  if (isNaN(value) || value === null || value === undefined) {
+    return 'R$ 0,00'
+  }
+
+  return Intl.NumberFormat('pt-Br', {
     style: 'currency',
     currency: 'BRL',
-  }).format(value)
+  }).format(value / 100)
+}
+
 
 export default formatValue
 

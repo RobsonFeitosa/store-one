@@ -29,13 +29,6 @@ export class AuthGuard implements CanActivate {
             throw new UnauthorizedException('Token não encontrado');
         }
 
-        try {
-            if (token !== 'meu-token-secreto') {
-                throw new Error();
-            }
-        } catch {
-            throw new UnauthorizedException('Token inválido');
-        }
         return true;
     }
 

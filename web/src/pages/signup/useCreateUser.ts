@@ -13,56 +13,54 @@ const createUsers = async (
   payload: ICreateUsers,
   addToast: (message: Omit<ToastMessage, 'id'>) => void,
 ) => {
-  try {
-    const response = await api
-      .post(
-        urlBuilder({
-          address: URLs.USERS,
-        }),
-        payload,
-      )
-      .then((response) => {
-        if (response?.status === 200) {
-          addToast({
-            type: 'success',
-            title: 'Usuário cadastrado',
-            description: 'Seu usuário foi cadastrodo.',
-          })
+  const response = await api
+    .post(
+      urlBuilder({
+        address: URLs.USERS,
+      }),
+      payload,
+    )
+    .then((response) => {
+      if (response?.status === 200) {
+        addToast({
+          type: 'success',
+          title: 'Usuário cadastrado',
+          description: 'Seu usuário foi cadastrodo.',
+        })
 
-          setTimeout(() => {
-            addToast({
-              type: 'info',
-              title: 'Verifique seu e-mail',
-              description:
-                'Seu usuário foi cadastrodo, mas é necessário ativa-lo.',
-            })
-          }, 400)
-        }
-
-        return response.data
-      })
-      .catch((err) => {
-        if (err?.response.status === 400) {
+        setTimeout(() => {
           addToast({
-            type: 'error',
-            title: 'Usuário já existe',
+            type: 'info',
+            title: 'Verifique seu e-mail',
             description:
-              'Não foi possivel criar a conta de usuário, tente outro e-mail!',
+              'Seu usuário foi cadastrodo, mas é necessário ativa-lo.',
           })
-        }
-        if (err?.response.status === 500) {
-          addToast({
-            type: 'error',
-            title: 'Serviço inoperante',
-            description: 'Não foi possivel conectar ao servidor',
-          })
-        }
-      })
+        }, 400)
+      }
 
-    return response
-  } catch (error) {
-    console.error(error)
-  }
+      return response.data
+    })
+    .catch((err) => {
+      if (err?.response.status === 400 || err?.response.status === 409) {
+        addToast({
+          type: 'error',
+          title: 'Usuário já existe',
+          description:
+            'Não foi possivel criar a conta de usuário, tente outro e-mail!',
+        })
+      }
+      if (err?.response.status === 500) {
+        addToast({
+          type: 'error',
+          title: 'Serviço inoperante',
+          description: 'Não foi possivel conectar ao servidor',
+        })
+      }
+
+      throw err
+    })
+
+  return response
 }
 
 export const useCreateUser = () => {
