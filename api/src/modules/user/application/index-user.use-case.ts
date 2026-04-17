@@ -5,9 +5,10 @@ import { FilterOptions } from "../domain/types/filter-options";
 @Injectable()
 export class IndexUserUseCase {
     constructor(
-        @Inject('UserRepository')
+        @Inject('USER_REPOSITORY_TOKEN')
         private readonly userRepository: UserRepository
     ) { }
+
 
     async execute(options: FilterOptions) {
         const [users, total] = await this.userRepository.findAll(options);

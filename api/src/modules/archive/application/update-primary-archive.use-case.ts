@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Archive } from "../domain/entities/archive.entity";
-import { ArchiveRepository } from "../domain/repositories/archive.repository";
+import type { ArchiveRepository } from "../domain/repositories/archive.repository";
 
 interface IRequest {
     referenceId: string;
@@ -10,9 +10,10 @@ interface IRequest {
 @Injectable()
 export class UpdatePrimaryArchiveUseCase {
     constructor(
-        @Inject('ArchiveRepository')
+        @Inject('ARCHIVE_REPOSITORY_TOKEN')
         private archiveRepository: ArchiveRepository,
     ) { }
+
 
     public async execute({ referenceId, archiveId }: IRequest): Promise<Archive[]> {
         const archives = await this.archiveRepository.findAllByReferenceId(referenceId);

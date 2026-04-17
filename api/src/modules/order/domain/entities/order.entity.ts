@@ -1,35 +1,70 @@
-export class Order {
-    private id: string;
-    private user_id: string;
-    private cod_order: string;
-    private professional_name: string;
-    private coupon_applied: string;
-    private freight: string;
-    private payment_method: string;
-    private amount: number; // Stored in cents (Rule 8)
-    private type_product: string;
-    private tracking_code: string;
-    private created_at: Date;
-    private updated_at: Date;
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
+    JoinColumn,
+    Column,
+    OneToMany,
+    ManyToOne
+} from 'typeorm';
+import { User } from 'src/modules/user/domain/entities/user.entity';
+import { OrderStatus } from './order-status.entity';
+import { OrderProduct } from './order-product.entity';
 
-    constructor(props: {
-        id?: string;
-        user_id: string;
-        cod_order: string;
-        professional_name?: string;
-        coupon_applied?: string;
-        freight?: string;
-        payment_method?: string;
-        amount: number;
-        type_product?: string;
-        tracking_code?: string;
-        created_at?: Date;
-        updated_at?: Date;
-    }) {
+@Entity('or100_orders')
+export class Order {
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
+
+    @Column('uuid', { name: 'user_id' })
+    user_id: string;
+
+    @ManyToOne(() => User)
+    @JoinColumn({ name: 'user_id' })
+    user: User;
+
+    @Column({ name: 'cod_order' })
+    cod_order: string;
+
+    @Column({ name: 'professional_name', nullable: true })
+    professional_name: string;
+
+    @Column({ name: 'coupon_applied', nullable: true })
+    coupon_applied: string;
+
+    @Column({ nullable: true })
+    freight: string;
+
+    @Column({ name: 'payment_method', nullable: true })
+    payment_method: string;
+
+    @Column({ type: 'bigint' })
+    amount: number;
+
+    @Column({ name: 'type_product', nullable: true })
+    type_product: string;
+
+    @Column({ name: 'tracking_code', nullable: true })
+    tracking_code: string;
+
+    @OneToMany('OrderStatus', 'order', { cascade: true })
+    status: any[];
+
+    @OneToMany('OrderProduct', 'order', { cascade: true })
+    orderProducts: any[];
+
+
+    @CreateDateColumn({ name: 'created_at' })
+    created_at: Date;
+
+    @UpdateDateColumn({ name: 'updated_at' })
+    updated_at: Date;
+
+    constructor(props: Partial<Order>) {
         Object.assign(this, props);
-        // Ensure amount is stored as integer (Rule 8)
-        if (props.amount !== undefined) {
-            this.amount = Math.round(props.amount);
+        if (props?.amount !== undefined) {
+            this.amount = Math.round(Number(props.amount));
         }
     }
 
@@ -45,8 +80,11 @@ export class Order {
             amount: this.amount,
             type_product: this.type_product,
             tracking_code: this.tracking_code,
+            status: this.status,
+            orderProducts: this.orderProducts,
             created_at: this.created_at,
             updated_at: this.updated_at,
         };
     }
 }
+

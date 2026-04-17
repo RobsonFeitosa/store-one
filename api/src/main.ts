@@ -9,8 +9,10 @@ import upload from './shared/infra/http/constants/upload';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.enableCors();
 
   const config = new DocumentBuilder()
+
     .setTitle('Cats example')
     .setDescription('The cats API description')
     .setVersion('1.0')

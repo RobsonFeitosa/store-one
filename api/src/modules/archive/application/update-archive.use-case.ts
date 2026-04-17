@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { Archive } from "../domain/entities/archive.entity";
-import { ArchiveRepository } from "../domain/repositories/archive.repository";
-import { IStorageProvider } from "src/shared/infra/http/providers/storage-provider/models/i-storage-provider";
+import type { ArchiveRepository } from "../domain/repositories/archive.repository";
+import type { IStorageProvider } from "src/shared/infra/http/providers/storage-provider/models/i-storage-provider";
 
 interface IRequest {
     file: Express.Multer.File;
@@ -16,12 +16,13 @@ interface IRequest {
 @Injectable()
 export class UpdateArchiveUseCase {
     constructor(
-        @Inject('ArchiveRepository')
+        @Inject('ARCHIVE_REPOSITORY_TOKEN')
         private archiveRepository: ArchiveRepository,
 
         @Inject('STORAGE_PROVIDER')
         private storageProvider: IStorageProvider,
     ) { }
+
 
     public async execute(data: IRequest): Promise<Archive> {
         const { archiveId, file, payload } = data;

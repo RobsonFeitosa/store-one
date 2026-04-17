@@ -2,21 +2,21 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TypeOrmUserRepository } from './typeorm-user.repository';
-import { UserEntity } from '../entities/user.entity';
-import { User as UserDomain } from 'src/modules/user/domain/entities/user.entity';
+import { User } from 'src/modules/user/domain/entities/user.entity';
 
 describe('TypeOrmUserRepository', () => {
     let repository: TypeOrmUserRepository;
-    let ormRepo: jest.Mocked<Repository<UserEntity>>;
+    let ormRepo: jest.Mocked<Repository<User>>;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
                 TypeOrmUserRepository,
                 {
-                    provide: getRepositoryToken(UserEntity),
+                    provide: getRepositoryToken(User),
                     useValue: {
                         save: jest.fn(),
+                        findOne: jest.fn(),
                         findOneBy: jest.fn(),
                         findAndCount: jest.fn(),
                         delete: jest.fn(),
@@ -26,8 +26,9 @@ describe('TypeOrmUserRepository', () => {
         }).compile();
 
         repository = module.get<TypeOrmUserRepository>(TypeOrmUserRepository);
-        ormRepo = module.get(getRepositoryToken(UserEntity));
+        ormRepo = module.get(getRepositoryToken(User));
     });
+
 
     it('should be defined', () => {
         expect(repository).toBeDefined();
@@ -35,7 +36,7 @@ describe('TypeOrmUserRepository', () => {
 
     describe('create', () => {
         it('should create and return a user', async () => {
-            const userDomain = new UserDomain({
+            const userDomain = new User({
                 name: 'John Doe',
                 email: 'john@example.com',
             });
@@ -51,7 +52,7 @@ describe('TypeOrmUserRepository', () => {
             const result = await repository.create(userDomain);
 
             expect(ormRepo.save).toHaveBeenCalled();
-            expect(result).toBeInstanceOf(UserDomain);
+            expect(result).toBeInstanceOf(User);
             expect(result.getEmail()).toBe(userEntity.email);
         });
     });
@@ -113,7 +114,7 @@ describe('TypeOrmUserRepository', () => {
             expect(ormRepo.findAndCount).toHaveBeenCalled();
             expect(users).toHaveLength(2);
             expect(resultTotal).toBe(total);
-            expect(users[0]).toBeInstanceOf(UserDomain);
+            expect(users[0]).toBeInstanceOf(User);
         });
     });
 
@@ -126,7 +127,7 @@ describe('TypeOrmUserRepository', () => {
 
     describe('save', () => {
         it('should save and return updated user', async () => {
-            const userDomain = new UserDomain({
+            const userDomain = new User({
                 id: 'any_id',
                 name: 'Updated Name',
                 email: 'john@example.com',

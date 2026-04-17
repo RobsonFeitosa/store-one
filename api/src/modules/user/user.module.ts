@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { UserController } from './infra/http/controllers/user.controller';
 import { CreateUserUseCase } from './application/create-user.use-case';
-import { UserEntity } from './infra/database/entities/user.entity';
-import { UserSettingsEntity } from './infra/database/entities/user-settings.entity';
+import { User } from './domain/entities/user.entity';
+import { UserSettings } from './domain/entities/user-settings.entity';
 import { TypeOrmUserRepository } from './infra/database/repositories/typeorm-user.repository';
+
+
 import { StorageModule } from 'src/shared/infra/http/providers/storage-provider/storage.module';
 import { UploadAvatarController } from './infra/http/controllers/upload-avatar-user.controller';
 import { UploadAvatarUseCase } from './application/upload-avatar-user.use-case';
@@ -13,7 +16,7 @@ import { MessageBrokerModule } from 'src/shared/infra/http/providers/message-bro
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([UserEntity, UserSettingsEntity]),
+        TypeOrmModule.forFeature([User, UserSettings]),
         StorageModule.register(),
         MessageBrokerModule.register(),
     ],
@@ -24,10 +27,12 @@ import { MessageBrokerModule } from 'src/shared/infra/http/providers/message-bro
         IndexUserUseCase,
 
         {
-            provide: 'UserRepository',
-            useClass: TypeOrmUserRepository,
+            provide: 'USER_REPOSITORY_TOKEN',
+            useFactory: (ormRepo: Repository<User>) => new TypeOrmUserRepository(ormRepo),
+            inject: [getRepositoryToken(User)],
         },
+
     ],
-    exports: ['UserRepository']
+    exports: ['USER_REPOSITORY_TOKEN']
 })
 export class UserModule { }

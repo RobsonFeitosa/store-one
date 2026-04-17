@@ -1,65 +1,61 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Order as OrderDomain } from "src/modules/order/domain/entities/order.entity";
-import { OrderRepository, PaginationOptions } from "src/modules/order/domain/repositories/order.repository";
-import { OrderEntity } from '../entities/order.entity';
-import { BaseMapper } from 'src/shared/infra/database/base.mapper';
+import { Order } from "../../../domain/entities/order.entity";
+import type { OrderRepository, PaginationOptions } from "../../../domain/repositories/order.repository";
+
 
 @Injectable()
 export class TypeOrmOrderRepository implements OrderRepository {
     constructor(
-        @InjectRepository(OrderEntity)
-        private readonly ormRepo: Repository<OrderEntity>
+        private readonly ormRepo: Repository<Order>
     ) { }
 
-    async create(order: OrderDomain): Promise<OrderDomain> {
-        const entity = BaseMapper.toPersistence(order.toJSON(), OrderEntity);
-        const saved = await this.ormRepo.save(entity);
-        return BaseMapper.toDomain(saved, OrderDomain);
+
+    async create(order: Order): Promise<Order> {
+        const saved = await this.ormRepo.save(order);
+        return saved;
     }
 
-    async findById(id: string): Promise<OrderDomain | null> {
+    async findById(id: string): Promise<Order | null> {
         const entity = await this.ormRepo.findOne({
             where: { id },
             relations: ['orderProducts', 'status']
         });
-        if (!entity) return null;
-        return BaseMapper.toDomain(entity, OrderDomain);
+        return entity;
     }
 
-    async findAndCountByUser(userId: string, options: PaginationOptions): Promise<[OrderDomain[], number]> {
+    async findAndCountByUser(user_id: string, options: PaginationOptions): Promise<[Order[], number]> {
         const { page = 1, limit = 10 } = options;
         const skip = (page - 1) * limit;
 
         const [data, total] = await this.ormRepo.findAndCount({
-            where: { userId },
+            where: { user_id },
             take: limit,
             skip,
-            order: { createdAt: 'DESC' },
+            order: { created_at: 'DESC' },
             relations: ['orderProducts', 'status']
         });
 
-        return [data.map(item => BaseMapper.toDomain(item, OrderDomain)), total];
+        return [data, total];
     }
 
-    async findAndCount(options: PaginationOptions): Promise<[OrderDomain[], number]> {
+    async findAndCount(options: PaginationOptions): Promise<[Order[], number]> {
         const { page = 1, limit = 10 } = options;
         const skip = (page - 1) * limit;
 
         const [data, total] = await this.ormRepo.findAndCount({
             take: limit,
             skip,
-            order: { createdAt: 'DESC' },
+            order: { created_at: 'DESC' },
             relations: ['orderProducts', 'status']
         });
 
-        return [data.map(item => BaseMapper.toDomain(item, OrderDomain)), total];
+        return [data, total];
     }
 
-    async save(order: OrderDomain): Promise<OrderDomain> {
-        const entity = BaseMapper.toPersistence(order.toJSON(), OrderEntity);
-        const saved = await this.ormRepo.save(entity);
-        return BaseMapper.toDomain(saved, OrderDomain);
+    async save(order: Order): Promise<Order> {
+        const saved = await this.ormRepo.save(order);
+        return saved;
     }
 }
+

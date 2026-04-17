@@ -1,21 +1,38 @@
-export class Category {
-    private id: string;
-    private name: string;
-    private slug: string;
-    private description: string;
-    private image: string;
-    private created_at: Date;
-    private updated_at: Date;
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-    constructor(props: {
-        id?: string;
-        name: string;
-        slug: string;
-        description?: string;
-        image?: string;
-        created_at?: Date;
-        updated_at?: Date;
-    }) {
+@Entity('pd101_product_categories')
+export class Category {
+    @PrimaryGeneratedColumn('increment')
+    id: number;
+
+    @Column({ name: 'parent_id', nullable: true })
+    parent_id: string;
+
+    @Column()
+    name: string;
+
+    @Column()
+    type: string;
+
+    @Column()
+    level: number;
+
+    @Column()
+    slug: string;
+
+    @Column({ nullable: true })
+    description: string;
+
+    @Column({ nullable: true })
+    image: string;
+
+    @CreateDateColumn({ name: 'created_at' })
+    created_at: Date;
+
+    @UpdateDateColumn({ name: 'updated_at' })
+    updated_at: Date;
+
+    constructor(props: Partial<Category>) {
         Object.assign(this, props);
     }
 
@@ -28,7 +45,10 @@ export class Category {
     public toJSON() {
         return {
             id: this.id,
+            parent_id: this.parent_id,
             name: this.name,
+            type: this.type,
+            level: this.level,
             slug: this.slug,
             description: this.description,
             image: this.image,
@@ -37,3 +57,4 @@ export class Category {
         };
     }
 }
+

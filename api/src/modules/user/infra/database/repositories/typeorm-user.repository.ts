@@ -1,61 +1,55 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
-import { User as UserDomain } from "src/modules/user/domain/entities/user.entity";
-import { UserRepository } from "src/modules/user/domain/repositories/user.repository";
-import { UserEntity } from '../entities/user.entity';
-import { BaseMapper } from 'src/shared/infra/database/base.mapper';
-import { FilterOptions } from 'src/modules/user/domain/types/filter-options';
+import { User } from "../../../domain/entities/user.entity";
+import type { UserRepository } from "../../../domain/repositories/user.repository";
+import type { FilterOptions } from '../../../domain/types/filter-options';
 
 @Injectable()
 export class TypeOrmUserRepository implements UserRepository {
     constructor(
-        @InjectRepository(UserEntity)
-        private readonly ormRepo: Repository<UserEntity>
+        private readonly ormRepo: Repository<User>
     ) { }
 
-    async create(user: UserDomain): Promise<UserDomain> {
-        const entity = BaseMapper.toPersistence(user.toJSON(), UserEntity);
 
-        const saved = await this.ormRepo.save(entity);
-
-        return BaseMapper.toDomain(saved, UserDomain);
+    async create(user: User): Promise<User> {
+        const saved = await this.ormRepo.save(user);
+        return saved;
     }
 
-    async findById(id: string): Promise<UserDomain | null> {
-        const entity = await this.ormRepo.findOneBy({ id });
+    async findById(id: string): Promise<User | null> {
+        const entity = await this.ormRepo.findOne({
+            where: { id },
+            relations: ['settings']
+        });
 
-        if (!entity) return null;
-
-        return BaseMapper.toDomain(entity, UserDomain);
+        return entity;
     }
 
-    async findByEmail(email: string): Promise<UserDomain | null> {
-        const entity = await this.ormRepo.findOneBy({ email });
+    async findByEmail(email: string): Promise<User | null> {
+        const entity = await this.ormRepo.findOne({
+            where: { email },
+            relations: ['settings']
+        });
 
-        if (!entity) return null;
-
-        return BaseMapper.toDomain(entity, UserDomain);
+        return entity;
     }
 
-    async findAll(filterOptions: FilterOptions): Promise<[UserDomain[], number]> {
+    async findAll(filterOptions: FilterOptions): Promise<[User[], number]> {
         const { page = 1, limit = 10, search } = filterOptions;
 
         const skip = (page - 1) * limit;
 
-
-        const [userData, total] = await this.ormRepo.findAndCount({
+        const [users, total] = await this.ormRepo.findAndCount({
             take: limit,
             skip,
-            order: { name: 'DESC' },
+            order: { name: 'ASC' },
+            relations: ['settings'],
             where: search ? [
                 {
                     name: ILike(`%${search}%`),
                 },
             ] : undefined,
         });
-
-        const users = userData.map((user) => BaseMapper.toDomain(user, UserDomain))
 
         return [users, total]
     }
@@ -64,11 +58,8 @@ export class TypeOrmUserRepository implements UserRepository {
         await this.ormRepo.delete(id);
     }
 
-    async save(user: UserDomain): Promise<UserDomain> {
-        const entity = BaseMapper.toPersistence(user.toJSON(), UserEntity);
-
-        const saved = await this.ormRepo.save(entity);
-
-        return BaseMapper.toDomain(saved, UserDomain);
+    async save(user: User): Promise<User> {
+        const saved = await this.ormRepo.save(user);
+        return saved;
     }
 }

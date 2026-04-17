@@ -1,8 +1,8 @@
 import { Inject, Injectable, BadRequestException } from "@nestjs/common";
 import { Product } from "../domain/entities/product.entity";
-import { ProductRepository } from "../domain/repositories/product.repository";
-import { ProductDataRepository } from "../domain/repositories/product-data.repository";
-import { CategoryRepository } from "../domain/repositories/category.repository";
+import type { ProductRepository } from "../domain/repositories/product.repository";
+import type { ProductDataRepository } from "../domain/repositories/product-data.repository";
+import type { CategoryRepository } from "../domain/repositories/category.repository";
 import { ProductData } from "../domain/entities/product-data.entity";
 import { randomUUID } from "crypto";
 
@@ -25,15 +25,16 @@ export interface CreateProductRequest {
 @Injectable()
 export class CreateProductUseCase {
     constructor(
-        @Inject('ProductRepository')
+        @Inject('PRODUCT_REPOSITORY_TOKEN')
         private productRepository: ProductRepository,
 
-        @Inject('ProductDataRepository')
+        @Inject('PRODUCT_DATA_REPOSITORY_TOKEN')
         private productDataRepository: ProductDataRepository,
 
-        @Inject('CategoryRepository')
+        @Inject('CATEGORY_REPOSITORY_TOKEN')
         private categoryRepository: CategoryRepository,
     ) { }
+
 
     public async execute(data: CreateProductRequest): Promise<Product> {
         const { product_data, categories, ...rest } = data;

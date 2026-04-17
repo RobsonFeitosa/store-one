@@ -14,8 +14,9 @@ export class UploadAvatarUseCase {
         @Inject("STORAGE_PROVIDER")
         private storageProvider: any,
 
-        @Inject("UserRepository")
+        @Inject("USER_REPOSITORY_TOKEN")
         private usersRepository: UserRepository,
+
 
         @Inject("MESSAGE_BROKER_PROVIDER")
         private messageBroker: IMessageBrokerProvider,

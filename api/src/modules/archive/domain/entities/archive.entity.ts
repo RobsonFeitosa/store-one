@@ -1,30 +1,45 @@
 import { Expose } from "class-transformer";
 import uploadConfig from "src/shared/infra/http/constants/upload";
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
+} from 'typeorm';
 
+@Entity('ar100_archives')
 export class Archive {
-    private id: string;
-    private origin_target: string;
-    private reference_id: string;
-    private name: string;
-    private is_primary: boolean;
-    private size: string;
-    private type: string;
-    private created_at: Date;
-    private updated_at: Date;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-    constructor(props: {
-        id?: string;
-        origin_target: string;
-        reference_id: string;
-        name: string;
-        is_primary?: boolean;
-        size: string;
-        type: string;
-        created_at?: Date;
-        updated_at?: Date;
-    }) {
+    @Column()
+    origin_target: string;
+
+    @Column()
+    reference_id: string;
+
+    @Column()
+    name: string;
+
+    @Column({ default: false })
+    is_primary: boolean;
+
+    @Column()
+    size: string;
+
+    @Column()
+    type: string;
+
+    @CreateDateColumn({ name: 'created_at' })
+    created_at: Date;
+
+    @UpdateDateColumn({ name: 'updated_at' })
+    updated_at: Date;
+
+    constructor(props: Partial<Archive>) {
         Object.assign(this, props);
-        this.is_primary = props.is_primary ?? false;
+        this.is_primary = props?.is_primary ?? false;
     }
 
     public getId() { return this.id; }
@@ -72,3 +87,4 @@ export class Archive {
         };
     }
 }
+

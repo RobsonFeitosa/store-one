@@ -7,11 +7,12 @@ import { EmailAlreadyExists } from "../domain/errors/email-already-exists";
 @Injectable()
 export class CreateUserUseCase {
     constructor(
-        @Inject('UserRepository')
+        @Inject('USER_REPOSITORY_TOKEN')
         private readonly userRepository: UserRepository
     ) { }
 
     async execute(payload: CreateUserDto) {
+        console.log({ payload })
         const userExists = await this.userRepository.findByEmail(payload.email);
 
         if (userExists) {

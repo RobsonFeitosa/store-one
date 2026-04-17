@@ -14,9 +14,9 @@ import {
 } from '@lemonade-technologies-hub-ui/react'
 import Or from '@/components/Or'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import MessageActivedUser from './MessageActivedUser'
+import { useEffect } from 'react'
 import { useToast } from '@/hooks/providers/toast'
+import { useRouter } from 'next/router'
 
 import { Form, LabelCheckbox, SignUpContent, SignupContainer } from './styles'
 import { GoogleLogin } from '@react-oauth/google'
@@ -38,11 +38,10 @@ export const signUpFormSchema = z.object({
 export type SignUpFormInput = z.infer<typeof signUpFormSchema>
 
 export default function Signup() {
-  const [emailDispatch, setEmailDispatch] = useState<string | null>(null)
-
+  const { push } = useRouter()
   const { addToast } = useToast()
 
-  const { data: userData, mutateAsync: mutateCreateUserAsync } = useCreateUser()
+  const { mutateAsync: mutateCreateUserAsync } = useCreateUser()
   const { mutateAsync: mutateGoogleSessionAsync } = useCreateGoogleSessions()
 
   const {
@@ -58,7 +57,10 @@ export default function Signup() {
   })
 
   async function handleRegister(data: SignUpFormInput) {
-    await mutateCreateUserAsync(data)
+    const { terms: _, ...payload } = data
+
+    await mutateCreateUserAsync(payload)
+    push('/')
   }
 
   useEffect(() => {
@@ -77,100 +79,92 @@ export default function Signup() {
     await mutateGoogleSessionAsync({ clientId, credential })
   }
 
-  useEffect(() => {
-    userData && setEmailDispatch(userData.email)
-  }, [userData])
-
   return (
     <MainLayout>
       <Grid>
-        {emailDispatch ? (
-          <MessageActivedUser email={emailDispatch} />
-        ) : (
-          <SignupContainer>
-            <Row>
-              <Col xs="12" sm="12" lg="5">
-                <SignUpContent>
-                  <Form
-                    as="form"
-                    onSubmit={handleSubmit(handleRegister)}
+        <SignupContainer>
+          <Row>
+            <Col xs="12" sm="12" lg="5">
+              <SignUpContent>
+                <Form
+                  as="form"
+                  onSubmit={handleSubmit(handleRegister)}
+                  autoComplete="off"
+                >
+                  <Heading as="h1">Faça seu cadastro</Heading>
+
+                  <TextInput
+                    startIcon={FiUser}
+                    placeholder="Nome"
+                    error={name?.message}
+                    {...register('name')}
+                  />
+
+                  <TextInput
+                    startIcon={FiMail}
+                    type="email"
                     autoComplete="off"
-                  >
-                    <Heading as="h1">Faça seu cadastro</Heading>
+                    error={email?.message}
+                    placeholder="E-mail"
+                    {...register('email')}
+                  />
 
-                    <TextInput
-                      startIcon={FiUser}
-                      placeholder="Nome"
-                      error={name?.message}
-                      {...register('name')}
+                  <TextInput
+                    startIcon={FiLock}
+                    type="password"
+                    placeholder="Senha"
+                    error={password?.message}
+                    autoComplete="new-password"
+                    {...register('password')}
+                  />
+
+                  <LabelCheckbox>
+                    <Controller
+                      control={control}
+                      name={`terms`}
+                      render={({ field: { onChange, ref } }) => {
+                        return (
+                          <Checkbox
+                            id="terms"
+                            onCheckedChange={(checked) => {
+                              onChange(checked)
+                            }}
+                            ref={ref}
+                          />
+                        )
+                      }}
                     />
 
-                    <TextInput
-                      startIcon={FiMail}
-                      type="email"
-                      autoComplete="off"
-                      error={email?.message}
-                      placeholder="E-mail"
-                      {...register('email')}
-                    />
+                    <Text as="span" size="xs">
+                      Eu concordo com alosix.com
+                    </Text>
+                    <Link href="https://www.alosix.com/policy">
+                      Termos de Uso e Condições
+                    </Link>
+                  </LabelCheckbox>
 
-                    <TextInput
-                      startIcon={FiLock}
-                      type="password"
-                      placeholder="Senha"
-                      error={password?.message}
-                      autoComplete="new-password"
-                      {...register('password')}
-                    />
-
-                    <LabelCheckbox>
-                      <Controller
-                        control={control}
-                        name={`terms`}
-                        render={({ field: { onChange, ref } }) => {
-                          return (
-                            <Checkbox
-                              id="terms"
-                              onCheckedChange={(checked) => {
-                                onChange(checked)
-                              }}
-                              ref={ref}
-                            />
-                          )
-                        }}
-                      />
-
-                      <Text as="span" size="xs">
-                        Eu concordo com alosix.com
-                      </Text>
-                      <Link href="https://www.alosix.com/policy">
-                        Termos de Uso e Condições
-                      </Link>
-                    </LabelCheckbox>
-
-                    <Button type="submit" disabled={isSubmitting}>
-                      Cadastrar
-                    </Button>
-                  </Form>
-                  <Link href="/signin">
-                    <FiArrowLeft />
-                    Voltar para login
-                  </Link>
-                </SignUpContent>
-              </Col>
-              <Col xs="12" sm="12" lg="2">
-                <SignUpContent>
-                  <Or />
-                </SignUpContent>
-              </Col>
-              <Col xs="12" sm="12" lg="3">
-                <SignUpContent>
-                  <GoogleLogin onSuccess={handleLoginGoogle} />
-                </SignUpContent>
-              </Col>
-            </Row>
-          </SignupContainer>
-        )}
+                  <Button type="submit" disabled={isSubmitting}>
+                    Cadastrar
+                  </Button>
+                </Form>
+                <Link href="/signin">
+                  <FiArrowLeft />
+                  Voltar para login
+                </Link>
+              </SignUpContent>
+            </Col>
+            <Col xs="12" sm="12" lg="2">
+              <SignUpContent>
+                <Or />
+              </SignUpContent>
+            </Col>
+            <Col xs="12" sm="12" lg="3">
+              <SignUpContent>
+                <GoogleLogin onSuccess={handleLoginGoogle} />
+              </SignUpContent>
+            </Col>
+          </Row>
+        </SignupContainer>
       </Grid>
     </MainLayout>
   )

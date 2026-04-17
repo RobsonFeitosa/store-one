@@ -1,32 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { OrderStatus as OrderStatusDomain } from "src/modules/order/domain/entities/order-status.entity";
-import { OrderStatusRepository } from "src/modules/order/domain/repositories/order-status.repository";
-import { OrderStatusEntity } from '../entities/order-status.entity';
-import { BaseMapper } from 'src/shared/infra/database/base.mapper';
+import { OrderStatus } from "../../../domain/entities/order-status.entity";
+import { OrderStatusRepository } from "../../../domain/repositories/order-status.repository";
 
 @Injectable()
 export class TypeOrmOrderStatusRepository implements OrderStatusRepository {
     constructor(
-        @InjectRepository(OrderStatusEntity)
-        private readonly ormRepo: Repository<OrderStatusEntity>
+        private readonly ormRepo: Repository<OrderStatus>
     ) { }
 
-    async create(data: OrderStatusDomain): Promise<OrderStatusDomain> {
-        const entity = BaseMapper.toPersistence(data.toJSON(), OrderStatusEntity);
-        const saved = await this.ormRepo.save(entity);
-        return BaseMapper.toDomain(saved, OrderStatusDomain);
+
+    async create(data: OrderStatus): Promise<OrderStatus> {
+        const saved = await this.ormRepo.save(data);
+        return saved;
     }
 
-    async findByOrderId(orderId: string): Promise<OrderStatusDomain[]> {
-        const entities = await this.ormRepo.findBy({ orderId });
-        return entities.map(entity => BaseMapper.toDomain(entity, OrderStatusDomain));
+    async findByOrderId(order_id: string): Promise<OrderStatus[]> {
+        const entities = await this.ormRepo.findBy({ order_id });
+        return entities;
     }
 
-    async save(orderStatus: OrderStatusDomain): Promise<OrderStatusDomain> {
-        const entity = BaseMapper.toPersistence(orderStatus.toJSON(), OrderStatusEntity);
-        const saved = await this.ormRepo.save(entity);
-        return BaseMapper.toDomain(saved, OrderStatusDomain);
+    async save(orderStatus: OrderStatus): Promise<OrderStatus> {
+        const saved = await this.ormRepo.save(orderStatus);
+        return saved;
     }
 }
+

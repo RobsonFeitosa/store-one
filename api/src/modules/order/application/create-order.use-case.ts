@@ -1,10 +1,10 @@
 import { Inject, Injectable, BadRequestException, NotFoundException } from "@nestjs/common";
 import { Order } from "../domain/entities/order.entity";
-import { OrderRepository } from "../domain/repositories/order.repository";
+import type { OrderRepository } from "../domain/repositories/order.repository";
 import { OrderProduct } from "../domain/entities/order-product.entity";
-import { OrderProductRepository } from "../domain/repositories/order-product.repository";
-import { ProductRepository } from "src/modules/product/domain/repositories/product.repository";
-import { UserRepository } from "src/modules/user/domain/repositories/user.repository";
+import type { OrderProductRepository } from "../domain/repositories/order-product.repository";
+import type { ProductRepository } from "src/modules/product/domain/repositories/product.repository";
+import type { UserRepository } from "src/modules/user/domain/repositories/user.repository";
 import { randomBytes } from "crypto";
 
 interface ProductOrder {
@@ -26,18 +26,20 @@ export interface CreateOrderRequest {
 @Injectable()
 export class CreateOrderUseCase {
     constructor(
-        @Inject('OrderRepository')
+        @Inject('ORDER_REPOSITORY_TOKEN')
         private orderRepository: OrderRepository,
 
-        @Inject('OrderProductRepository')
+        @Inject('ORDER_PRODUCT_REPOSITORY_TOKEN')
         private orderProductRepository: OrderProductRepository,
 
-        @Inject('ProductRepository')
+        @Inject('PRODUCT_REPOSITORY_TOKEN')
         private productRepository: ProductRepository,
 
-        @Inject('UserRepository')
+        @Inject('USER_REPOSITORY_TOKEN')
         private userRepository: UserRepository,
+
     ) { }
+
 
     public async execute(data: CreateOrderRequest): Promise<Order> {
         const { user_id, products_order, ...rest } = data;

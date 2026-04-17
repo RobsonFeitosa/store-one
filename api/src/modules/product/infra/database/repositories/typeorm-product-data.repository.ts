@@ -1,33 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ProductData as ProductDataDomain } from "src/modules/product/domain/entities/product-data.entity";
-import { ProductDataRepository } from "src/modules/product/domain/repositories/product-data.repository";
-import { ProductDataEntity } from '../entities/product-data.entity';
-import { BaseMapper } from 'src/shared/infra/database/base.mapper';
+import { ProductData } from "../../../domain/entities/product-data.entity";
+import { ProductDataRepository } from "../../../domain/repositories/product-data.repository";
 
 @Injectable()
 export class TypeOrmProductDataRepository implements ProductDataRepository {
     constructor(
-        @InjectRepository(ProductDataEntity)
-        private readonly ormRepo: Repository<ProductDataEntity>
+        private readonly ormRepo: Repository<ProductData>
     ) { }
 
-    async create(data: ProductDataDomain): Promise<ProductDataDomain> {
-        const entity = BaseMapper.toPersistence(data.toJSON(), ProductDataEntity);
-        const saved = await this.ormRepo.save(entity);
-        return BaseMapper.toDomain(saved, ProductDataDomain);
+
+    async create(data: ProductData): Promise<ProductData> {
+        const saved = await this.ormRepo.save(data);
+        return saved;
     }
 
-    async findByProductId(productId: string): Promise<ProductDataDomain | null> {
-        const entity = await this.ormRepo.findOneBy({ productId });
-        if (!entity) return null;
-        return BaseMapper.toDomain(entity, ProductDataDomain);
+    async findByProductId(product_id: string): Promise<ProductData | null> {
+        const entity = await this.ormRepo.findOneBy({ product_id });
+        return entity;
     }
 
-    async save(data: ProductDataDomain): Promise<ProductDataDomain> {
-        const entity = BaseMapper.toPersistence(data.toJSON(), ProductDataEntity);
-        const saved = await this.ormRepo.save(entity);
-        return BaseMapper.toDomain(saved, ProductDataDomain);
+    async save(data: ProductData): Promise<ProductData> {
+        const saved = await this.ormRepo.save(data);
+        return saved;
     }
 }
+

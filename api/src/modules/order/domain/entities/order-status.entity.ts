@@ -1,17 +1,38 @@
-export class OrderStatus {
-    private id: string;
-    private order_id: string;
-    private name: string;
-    private created_at: Date;
-    private updated_at: Date;
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
+    JoinColumn,
+    Column,
+    ManyToOne
+} from 'typeorm';
+import { Order } from './order.entity';
 
-    constructor(props: {
-        id?: string;
-        order_id: string;
-        name: string;
-        created_at?: Date;
-        updated_at?: Date;
-    }) {
+@Entity('or102_orders_status')
+export class OrderStatus {
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
+
+    @Column({ name: 'order_id' })
+    order_id: string;
+
+    @ManyToOne('Order', 'status')
+    @JoinColumn({ name: 'order_id' })
+    order: any;
+
+
+
+    @Column()
+    name: string;
+
+    @CreateDateColumn({ name: 'created_at' })
+    created_at: Date;
+
+    @UpdateDateColumn({ name: 'updated_at' })
+    updated_at: Date;
+
+    constructor(props: Partial<OrderStatus>) {
         Object.assign(this, props);
     }
 
@@ -25,3 +46,4 @@ export class OrderStatus {
         };
     }
 }
+

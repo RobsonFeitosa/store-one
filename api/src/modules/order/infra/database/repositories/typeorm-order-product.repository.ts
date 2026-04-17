@@ -1,33 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { OrderProduct as OrderProductDomain } from "src/modules/order/domain/entities/order-product.entity";
-import { OrderProductRepository } from "src/modules/order/domain/repositories/order-product.repository";
-import { OrderProductEntity } from '../entities/order-product.entity';
-import { BaseMapper } from 'src/shared/infra/database/base.mapper';
+import { OrderProduct } from "../../../domain/entities/order-product.entity";
+import { OrderProductRepository } from "../../../domain/repositories/order-product.repository";
 
 @Injectable()
 export class TypeOrmOrderProductRepository implements OrderProductRepository {
     constructor(
-        @InjectRepository(OrderProductEntity)
-        private readonly ormRepo: Repository<OrderProductEntity>
+        private readonly ormRepo: Repository<OrderProduct>
     ) { }
 
-    async create(data: OrderProductDomain): Promise<OrderProductDomain> {
-        const entity = BaseMapper.toPersistence(data.toJSON(), OrderProductEntity);
-        const saved = await this.ormRepo.save(entity);
-        return BaseMapper.toDomain(saved, OrderProductDomain);
+
+    async create(data: OrderProduct): Promise<OrderProduct> {
+        const saved = await this.ormRepo.save(data);
+        return saved;
     }
 
-    async findById(id: string): Promise<OrderProductDomain | null> {
+    async findById(id: string): Promise<OrderProduct | null> {
         const entity = await this.ormRepo.findOneBy({ id });
-        if (!entity) return null;
-        return BaseMapper.toDomain(entity, OrderProductDomain);
+        return entity;
     }
 
-    async save(orderProduct: OrderProductDomain): Promise<OrderProductDomain> {
-        const entity = BaseMapper.toPersistence(orderProduct.toJSON(), OrderProductEntity);
-        const saved = await this.ormRepo.save(entity);
-        return BaseMapper.toDomain(saved, OrderProductDomain);
+    async save(orderProduct: OrderProduct): Promise<OrderProduct> {
+        const saved = await this.ormRepo.save(orderProduct);
+        return saved;
     }
 }
+

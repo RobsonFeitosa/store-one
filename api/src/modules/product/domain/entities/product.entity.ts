@@ -1,53 +1,98 @@
-export class Product {
-    private id: string;
-    private name: string;
-    private cod_product: string;
-    private price: number; // Stored in cents (Rule 8)
-    private old_price: number; // Stored in cents (Rule 8)
-    private description: string;
-    private short_description: string;
-    private mode_data: string;
-    private type: 'service' | 'product';
-    private slug: string;
-    private emphasis: boolean;
-    private categories: string;
-    private visibility: string;
-    private published: string;
-    private time_discount_id: string;
-    private time: string;
-    private created_at: Date;
-    private updated_at: Date;
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
+    DeleteDateColumn,
+    ManyToOne,
+    JoinColumn,
+    OneToOne
+} from 'typeorm';
+import { Category } from './category.entity';
+import { ProductData } from './product-data.entity';
 
-    constructor(props: {
-        id?: string;
-        name: string;
-        cod_product: string;
-        price?: number;
-        old_price?: number;
-        description?: string;
-        short_description?: string;
-        mode_data?: string;
-        type?: 'service' | 'product';
-        slug: string;
-        emphasis?: boolean;
-        categories?: string;
-        visibility?: string;
-        published?: string;
-        time_discount_id?: string;
-        time?: string;
-        created_at?: Date;
-        updated_at?: Date;
-    }) {
+@Entity('pd100_products')
+export class Product {
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
+
+    @Column()
+    name: string;
+
+    @Column({ name: 'category_id', nullable: true })
+    category_id: number;
+
+    @ManyToOne('Category')
+    @JoinColumn({ name: 'category_id' })
+    category: any;
+
+    @OneToOne('ProductData', 'product')
+    product_data: any;
+
+
+    @Column()
+    cod_product: string;
+
+
+    @Column({ type: 'bigint', nullable: true })
+    price: number;
+
+    @Column({ type: 'bigint', nullable: true, name: 'old_price' })
+    old_price: number;
+
+    @Column({ nullable: true })
+    description: string;
+
+    @Column({ nullable: true, name: 'short_description' })
+    short_description: string;
+
+    @Column({ nullable: true, name: 'mode_data' })
+    mode_data: string;
+
+    @Column({ default: 'product' })
+    type: 'service' | 'product';
+
+    @Column()
+    slug: string;
+
+    @Column({ nullable: true })
+    emphasis: boolean;
+
+    @Column({ nullable: true })
+    categories: string;
+
+    @Column({ nullable: true })
+    visibility: string;
+
+    @Column({ nullable: true })
+    published: string;
+
+    @Column({ nullable: true, name: 'time_discount_id' })
+    time_discount_id: string;
+
+    @Column({ nullable: true })
+    time: string;
+
+    @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+    deleted_at: Date;
+
+    @CreateDateColumn({ name: 'created_at' })
+    created_at: Date;
+
+    @UpdateDateColumn({ name: 'updated_at' })
+    updated_at: Date;
+
+    constructor(props: Partial<Product>) {
         Object.assign(this, props);
-        this.type = props.type ?? 'product';
-        this.emphasis = props.emphasis ?? false;
+        this.type = props?.type ?? 'product';
+        this.emphasis = props?.emphasis ?? false;
         
-        // Ensure price is stored as integer (Rule 8)
-        if (props.price !== undefined) {
-            this.price = Math.round(props.price);
+        if (props?.price !== undefined) {
+            this.price = Math.round(Number(props.price));
         }
-        if (props.old_price !== undefined) {
-            this.old_price = Math.round(props.old_price);
+        if (props?.old_price !== undefined) {
+            this.old_price = Math.round(Number(props.old_price));
         }
     }
 
@@ -61,6 +106,9 @@ export class Product {
             id: this.id,
             name: this.name,
             cod_product: this.cod_product,
+            category_id: this.category_id,
+            category: this.category,
+            product_data: this.product_data,
             price: this.price,
             old_price: this.old_price,
             description: this.description,
@@ -78,4 +126,6 @@ export class Product {
             updated_at: this.updated_at,
         };
     }
+
 }
+
