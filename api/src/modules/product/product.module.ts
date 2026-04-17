@@ -9,6 +9,21 @@ import { TypeOrmCategoryRepository } from './infra/database/repositories/typeorm
 import { TypeOrmProductDataRepository } from './infra/database/repositories/typeorm-product-data.repository';
 
 import { CreateProductUseCase } from './application/create-product.use-case';
+import { ShowProductUseCase } from './application/show-product.use-case';
+import { UpdateProductUseCase } from './application/update-product.use-case';
+import { DeleteProductUseCase } from './application/delete-product.use-case';
+import { IndexProductsUseCase } from './application/index-products.use-case';
+
+import { CreateCategoryUseCase } from './application/create-category.use-case';
+import { UpdateCategoryUseCase } from './application/update-category.use-case';
+import { DeleteCategoryUseCase } from './application/delete-category.use-case';
+import { IndexCategoryUseCase } from './application/index-category.use-case';
+
+import { CreateProductDataUseCase } from './application/create-product-data.use-case';
+
+import { CategoryController } from './infra/http/controllers/category.controller';
+import { ProductController } from './infra/http/controllers/product.controller';
+import { ProductDataController } from './infra/http/controllers/product-data.controller';
 
 @Module({
     imports: [
@@ -18,8 +33,25 @@ import { CreateProductUseCase } from './application/create-product.use-case';
             ProductData,
         ]),
     ],
+    controllers: [
+        CategoryController,
+        ProductController,
+        ProductDataController,
+    ],
     providers: [
         CreateProductUseCase,
+        ShowProductUseCase,
+        UpdateProductUseCase,
+        DeleteProductUseCase,
+        IndexProductsUseCase,
+
+        CreateCategoryUseCase,
+        UpdateCategoryUseCase,
+        DeleteCategoryUseCase,
+        IndexCategoryUseCase,
+
+        CreateProductDataUseCase,
+
         {
             provide: 'PRODUCT_REPOSITORY_TOKEN',
             useFactory: (ormRepo: Repository<Product>) => new TypeOrmProductRepository(ormRepo),
@@ -35,8 +67,6 @@ import { CreateProductUseCase } from './application/create-product.use-case';
             useFactory: (ormRepo: Repository<ProductData>) => new TypeOrmProductDataRepository(ormRepo),
             inject: [getRepositoryToken(ProductData)],
         },
-
-
     ],
     exports: [
         'PRODUCT_REPOSITORY_TOKEN',
