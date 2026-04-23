@@ -13,7 +13,7 @@ const getServices = async (url: string) => {
       }),
     )
 
-    return response.data as [IServiceDTO[], number]
+    return response.data.result as [IServiceDTO[], number]
   } catch (error) {
     console.error(error)
   }

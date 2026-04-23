@@ -3,11 +3,11 @@ import { IsNotEmpty, IsString, IsNumber, IsArray, IsDateString, IsOptional } fro
 export class CreateTimeDiscountDto {
     @IsNotEmpty()
     @IsDateString()
-    start_date: string;
+    startDate: string;
 
     @IsNotEmpty()
     @IsDateString()
-    end_date: string;
+    endDate: string;
 
     @IsNotEmpty()
     @IsNumber()

@@ -11,7 +11,7 @@ const getVariation = async (url: string) => {
       }),
     )
 
-    return response.data as [IVariationDTO[], number]
+    return response.data.result as [IVariationDTO[], number]
   } catch (error) {
     console.error(error)
   }

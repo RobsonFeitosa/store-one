@@ -15,7 +15,7 @@ const getTeam = async (teamId: string | null) => {
       }),
     )
 
-    return response.data as ITeamsDTO
+    return response.data.result as ITeamsDTO
   } catch (error) {
     console.error(error)
   }

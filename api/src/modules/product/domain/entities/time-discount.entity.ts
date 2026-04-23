@@ -13,10 +13,10 @@ export class TimeDiscount {
     id: string;
 
     @Column({ name: 'start_date' })
-    start_date: Date;
+    startDate: Date;
 
     @Column({ name: 'end_date' })
-    end_date: Date;
+    endDate: Date;
 
     @Column({ type: 'bigint', nullable: true })
     discount: number;
@@ -43,8 +43,8 @@ export class TimeDiscount {
     public toJSON() {
         return {
             id: this.id,
-            start_date: this.start_date,
-            end_date: this.end_date,
+            startDate: this.startDate,
+            endDate: this.endDate,
             discount: this.discount,
             status: this.status,
             created_at: this.created_at,

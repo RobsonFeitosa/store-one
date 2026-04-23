@@ -12,7 +12,7 @@ const getAllTimeDiscounts = async (url: string) => {
       }),
     )
 
-    return response.data as [ITimeDiscountDTO[], number]
+    return response.data.result as [ITimeDiscountDTO[], number]
   } catch (error) {
     console.error(error)
   }

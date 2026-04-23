@@ -13,7 +13,7 @@ const getAllSchedullings = async (url: string) => {
       }),
     )
 
-    return response.data as [IScheduleDTO[], number]
+    return response.data.result as [IScheduleDTO[], number]
   } catch (error) {
     console.error(error)
   }

@@ -12,7 +12,7 @@ const getProductsTimeDiscountOptions = async (url: string) => {
       }),
     )
 
-    return response.data as OptionProductsTimeDiscount[]
+    return response.data.result as OptionProductsTimeDiscount[]
   } catch (error) {
     console.error(error)
   }

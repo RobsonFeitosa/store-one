@@ -11,7 +11,7 @@ const getAddress = async () => {
       }),
     )
 
-    return response.data as [IAddressDTO[], number]
+    return response.data.result as [IAddressDTO[], number]
   } catch (error) {
     console.error(error)
   }

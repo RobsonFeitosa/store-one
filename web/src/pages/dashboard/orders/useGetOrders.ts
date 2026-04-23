@@ -33,7 +33,7 @@ const getOrders = async (options?: Options) => {
       }),
     )
 
-    return response.data as [IOrderDTO[], number]
+    return response.data.result as [IOrderDTO[], number]
   } catch (error) {
     console.error(error)
   }

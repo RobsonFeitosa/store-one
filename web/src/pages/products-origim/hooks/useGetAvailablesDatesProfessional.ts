@@ -20,7 +20,7 @@ const getAvaiablesDatesProfessional = async (url: string) => {
       }),
     )
 
-    return response.data as Response
+    return response.data.result as Response
   } catch (error) {
     console.error(error)
   }

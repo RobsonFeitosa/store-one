@@ -19,8 +19,8 @@ export class CreateTimeDiscountUseCase {
 
         const timeDiscount = await this.timeDiscountRepository.create({
             ...rest,
-            start_date: new Date(data.start_date),
-            end_date: new Date(data.end_date),
+            startDate: new Date(data.startDate),
+            endDate: new Date(data.endDate),
         });
 
         for (const productId of productIds) {

@@ -17,6 +17,9 @@ export class ProductCategory {
     @Column({ nullable: true })
     level: number;
 
+    @Column({ nullable: true })
+    slug: string;
+
     @CreateDateColumn({ name: 'created_at' })
     created_at: Date;
 

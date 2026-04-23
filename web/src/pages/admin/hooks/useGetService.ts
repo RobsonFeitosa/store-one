@@ -15,7 +15,7 @@ const getService = async (id: string | null) => {
       }),
     )
 
-    return response.data as IServiceDTO
+    return response.data.result as IServiceDTO
   } catch (error) {
     console.error(error)
   }

@@ -2,7 +2,7 @@ import AdminLayout from '@/components/components/Layout/Admin'
 import { Col, Row } from 'react-bootstrap'
 import Pagination from '@/components/Pagination'
 import { useEffect, useState } from 'react'
-import { useGetAllProducts } from '../hooks_generic/useGetAllProducts'
+import { getProducts, useGetAllProducts } from '../hooks_generic/useGetAllProducts'
 import ProductsContent from './ProductsContent'
 import { useRouter } from 'next/router'
 import { DiamondsFour } from 'phosphor-react'
@@ -19,6 +19,9 @@ import {
   DisplaySwitch,
   ProductsContainer,
 } from './styles'
+import { useQuery } from '@tanstack/react-query'
+import { useBuilderUrl } from '@/hooks/useBuilderUrl'
+import { URLs } from '@/utils/urlBuilder'
 
 const itemsPerPage = 12
 
@@ -67,14 +70,39 @@ export default function ProductsOrigim() {
     ? Number(router.query.priceMax)
     : undefined
 
-  const { isLoading, data: productsData } = useGetAllProducts({
+  // const { isLoading, data: productsData } = useGetAllProducts({
+  //   options: {
+  //     limit: itemsPerPage,
+  //     page: currentPage,
+  //   },
+  //   ...queries,
+  // })
+
+  const paramsProduct = {
     options: {
       limit: itemsPerPage,
       page: currentPage,
     },
     ...queries,
-  })
+  }
+  const { options, ...rest } = paramsProduct
 
+  const { data: productsData, isFetching: isLoading } = useQuery(
+    ['getProducts', rest.type],
+    () => {
+      const { url } = useBuilderUrl(URLs.PRODUCTS, options, {
+        ...rest,
+      })
+
+      return getProducts(url)
+    },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
+
+
+  console.log({ productsData })
   const [products, total] = productsData ?? []
 
   function handlePageChange(page: number) {

@@ -33,6 +33,9 @@ export class CreateProductDto {
     type?: string;
 
     @IsOptional()
+    categories?: any;
+
+    @IsOptional()
     @IsString()
     mode_data?: string;
 

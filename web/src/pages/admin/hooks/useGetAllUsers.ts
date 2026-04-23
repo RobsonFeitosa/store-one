@@ -11,7 +11,7 @@ const getUsers = async () => {
       }),
     )
 
-    return response.data as [IUserDTO[], number]
+    return response.data.result as [IUserDTO[], number]
   } catch (error) {
     console.error(error)
   }

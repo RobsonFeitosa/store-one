@@ -11,7 +11,7 @@ const getUsersProfessionals = async () => {
       }),
     )
 
-    return response.data as IUserDTO[]
+    return response.data.result as IUserDTO[]
   } catch (error) {
     console.error(error)
   }

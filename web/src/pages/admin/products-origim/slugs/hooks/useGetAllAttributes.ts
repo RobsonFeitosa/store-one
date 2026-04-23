@@ -13,7 +13,7 @@ const getAllAttributes = async (url: string) => {
       }),
     )
 
-    return response.data as [IAttributeDTO[], number]
+    return response.data.result as [IAttributeDTO[], number]
   } catch (error) {
     console.error(error)
   }

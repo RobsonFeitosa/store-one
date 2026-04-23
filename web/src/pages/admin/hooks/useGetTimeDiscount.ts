@@ -11,7 +11,7 @@ const getTimeDiscount = async (timeDiscountId: string) => {
       }),
     )
 
-    return response.data as ITimeDiscountDTO
+    return response.data.result as ITimeDiscountDTO
   } catch (error) {
     console.error(error)
   }

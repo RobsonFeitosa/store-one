@@ -4,8 +4,8 @@ import type { TimeDiscountRepository } from "../domain/repositories/time-discoun
 
 interface IRequest {
     id: string;
-    start_date: string;
-    end_date: string;
+    startDate: string;
+    endDate: string;
     discount: number;
     status: string;
 }
@@ -26,8 +26,8 @@ export class UpdateTimeDiscountUseCase {
 
         Object.assign(timeDiscount, {
             ...data,
-            start_date: new Date(data.start_date),
-            end_date: new Date(data.end_date),
+            startDate: new Date(data.startDate),
+            endDate: new Date(data.endDate),
         });
 
         return this.timeDiscountRepository.save(timeDiscount);

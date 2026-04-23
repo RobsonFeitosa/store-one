@@ -13,7 +13,7 @@ const getProvider = async (providerId: string) => {
       }),
     )
 
-    return response.data as IProviderDTO
+    return response.data.result as IProviderDTO
   } catch (error) {
     console.error(error)
   }

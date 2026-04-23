@@ -13,7 +13,7 @@ const getTeams = async (url: string) => {
       }),
     )
 
-    return response.data as [ITeamsDTO[], number]
+    return response.data.result as [ITeamsDTO[], number]
   } catch (error) {
     console.error(error)
   }

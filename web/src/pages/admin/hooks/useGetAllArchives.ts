@@ -12,7 +12,7 @@ const getAllArchives = async (url: string) => {
       }),
     )
 
-    return response.data as [IArchiveDTO[], number]
+    return response.data.result as [IArchiveDTO[], number]
   } catch (error) {
     console.error(error)
   }

@@ -10,7 +10,7 @@ const getProfessionalsAvailables = async () => {
       }),
     )
 
-    return response.data as IProfessionalDTO[]
+    return response.data.result as IProfessionalDTO[]
   } catch (error) {
     console.error(error)
   }

@@ -15,7 +15,7 @@ const getAllUsersTeamsAvailables = async () => {
       }),
     )
 
-    return response.data as UserProfessionalId[]
+    return response.data.result as UserProfessionalId[]
   } catch (error) {
     console.error(error)
   }

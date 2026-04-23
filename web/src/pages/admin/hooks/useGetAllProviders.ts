@@ -12,7 +12,7 @@ const getAllProviders = async (url: string) => {
       }),
     )
 
-    return response.data as [IProviderDTO[], number]
+    return response.data.result as [IProviderDTO[], number]
   } catch (error) {
     console.error(error)
   }
