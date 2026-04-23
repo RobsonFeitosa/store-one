@@ -3,6 +3,7 @@ import { Heading, Text } from '@lemonade-technologies-hub-ui/react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { useEffect, useState } from 'react'
 import { useWishes } from '@/hooks/providers/wishes'
+import { useAuth } from '@/hooks/providers/auth'
 import { useGetAllProducts } from '@/hooks/useGetAllProducts'
 import { IProductDTO } from '../dtos/product.dto'
 import ProductBox from '@/components/ProductBox'
@@ -15,8 +16,11 @@ import {
 } from './style'
 
 export default function Wishes() {
+  const { user } = useAuth()
   const { wishes: wishesHook } = useWishes()
   const [wishes, setWishes] = useState<IProductDTO[]>()
+
+  console.log({ wishesHook })
 
   const { data: productsData, refetch: getAllProducts } = useGetAllProducts(
     {
@@ -27,11 +31,14 @@ export default function Wishes() {
       productIds: JSON.stringify(wishesHook),
     },
     'wishes',
+    wishesHook?.length > 0
   )
 
   useEffect(() => {
-    getAllProducts()
-  }, [wishesHook, getAllProducts])
+    if (user && wishesHook && wishesHook.length > 0) {
+      getAllProducts()
+    }
+  }, [wishesHook, getAllProducts, user])
 
   const [products] = productsData ?? []
 

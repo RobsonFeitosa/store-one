@@ -3,6 +3,7 @@ import { URLs, urlBuilder } from '@/utils/urlBuilder'
 import { useQuery } from '@tanstack/react-query'
 import { IOptionsDTO, useBuilderUrl } from './useBuilderUrl'
 import { IProductDTO, TypeProduct } from '@/pages/dtos/product.dto'
+import { useAuth } from '@/hooks/providers/auth'
 
 interface UserGetProductsProps {
   options: IOptionsDTO
@@ -28,17 +29,17 @@ const getProducts = async (url: string) => {
   }
 }
 
-export const useGetAllProducts = (data: UserGetProductsProps, key?: string) => {
+export const useGetAllProducts = (data: UserGetProductsProps, key?: string, enabled?: boolean) => {
+  const { user } = useAuth()
   const { options, ...rest } = data
 
   const { url } = useBuilderUrl(URLs.PRODUCTS, options, {
     ...rest,
   })
-  console.log({ url })
 
   return useQuery({
-    queryKey: ['getProducts', key],
+    queryKey: ['getProducts', key, url],
     queryFn: () => getProducts(url),
-    enabled: false,
+    enabled: !!user && (enabled ?? false),
   })
 }

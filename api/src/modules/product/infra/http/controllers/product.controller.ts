@@ -49,12 +49,58 @@ export class ProductController {
     @Query('page') page: string = '1',
     @Query('limit') limit: string = '99999',
     @Query('search') search?: string,
+    @Query('user_id') user_id?: string,
+    @Query('onlyDiscount') onlyDiscount?: string,
+    @Query('type') type?: 'service' | 'product',
+    @Query('timeDiscountPriory') timeDiscountPriory?: string,
+    @Query('name') name?: string,
+    @Query('quantity') quantity?: string,
+    @Query('weight') weight?: string,
+    @Query('priceMin') priceMin?: string,
+    @Query('priceMax') priceMax?: string,
+    @Query('lowPrice') lowPrice?: string,
+    @Query('color') color?: string,
+    @Query('size') size?: string,
+    @Query('highPrice') highPrice?: string,
+    @Query('old') old?: string,
+    @Query('alphabeticalASC') alphabeticalASC?: string,
+    @Query('alphabeticalDESC') alphabeticalDESC?: string,
+    @Query('categoryId') categoryId?: string,
+    @Query('productIds') productIds?: string,
   ) {
     return this.indexProductsUseCase.execute({
       page: Number(page),
       limit: Number(limit),
       search,
+      user_id: this.parseSingleValue(user_id),
+      onlyDiscount: onlyDiscount === 'true',
+      type,
+      timeDiscountPriory: timeDiscountPriory === 'true',
+      name,
+      quantity: quantity ? Number(quantity) : undefined,
+      weight: weight ? Number(weight) : undefined,
+      priceMin: priceMin ? Number(priceMin) : undefined,
+      priceMax: priceMax ? Number(priceMax) : undefined,
+      lowPrice: lowPrice === 'true',
+      color,
+      size,
+      highPrice: highPrice === 'true',
+      old: old === 'true',
+      alphabeticalASC: alphabeticalASC === 'true',
+      alphabeticalDESC: alphabeticalDESC === 'true',
+      categoryId: this.parseSingleValue(categoryId),
+      productIds,
     });
+  }
+
+  private parseSingleValue(value?: string): string | undefined {
+    if (!value) return undefined;
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? String(parsed[0]) : String(parsed);
+    } catch (e) {
+      return value;
+    }
   }
 
   @Get(':slug/:id')

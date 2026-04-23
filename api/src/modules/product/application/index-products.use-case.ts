@@ -12,6 +12,23 @@ interface IPaginationOptionsDTO {
     limit: number;
     search?: string;
     user_id?: string;
+    onlyDiscount?: boolean;
+    type?: 'service' | 'product';
+    timeDiscountPriory?: boolean;
+    name?: string;
+    quantity?: number;
+    weight?: number;
+    priceMin?: number;
+    priceMax?: number;
+    lowPrice?: boolean;
+    color?: string;
+    size?: string;
+    highPrice?: boolean;
+    old?: boolean;
+    alphabeticalASC?: boolean;
+    alphabeticalDESC?: boolean;
+    categoryId?: string;
+    productIds?: string;
 }
 
 @Injectable()
