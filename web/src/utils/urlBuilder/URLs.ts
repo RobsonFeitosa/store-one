@@ -17,11 +17,12 @@ const TIME_DISCOUNT = '/time-discount'
 
 const CATEGORIES = '/categories'
 
-const ARCHIVE = '/archive'
+const ARCHIVE = '/archives'
 const ARCHIVE_REFERENCE = '/reference'
 const ARCHIVE_PRODUCT = '/product'
 
 const SCHEDULES = '/schedules'
+const SCHEDULES_SERVICES = '/services'
 
 const ORDERS = '/orders'
 const ORDERS_STATUS = '/status'
@@ -76,6 +77,7 @@ export const URLs = {
   ARCHIVE_PRODUCT,
   CATEGORIES,
   SCHEDULES,
+  SCHEDULES_SERVICES,
   ORDERS,
   ORDERS_STATUS,
   ORDERS_TRACKING_CODE,

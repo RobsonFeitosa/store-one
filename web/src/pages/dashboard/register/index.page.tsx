@@ -166,7 +166,7 @@ export default function Register() {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { '@LemonadeTechnologies:user': userOnCookies } = parseCookies({ req })
+  const { '@StoreOne:user': userOnCookies } = parseCookies({ req })
 
   const user = userOnCookies ? JSON.parse(userOnCookies) : null
 

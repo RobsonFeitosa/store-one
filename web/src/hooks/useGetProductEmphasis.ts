@@ -11,7 +11,7 @@ const getProductEmphasis = async () => {
       }),
     )
 
-    return response.data as IProductDTO
+    return response.data.result as IProductDTO
   } catch (error) {
     console.error(error)
   }

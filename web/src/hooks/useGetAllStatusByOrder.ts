@@ -11,7 +11,7 @@ const getAllOrderStatus = async (uri: string, orderId: string) => {
       }),
     )
 
-    return response.data as [StatusOrder[], number]
+    return response.data.result as [StatusOrder[], number]
   } catch (error) {
     console.error(error)
   }

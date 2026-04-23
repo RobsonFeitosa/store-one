@@ -1,4 +1,5 @@
 import { Expose } from "class-transformer";
+import { Product } from "src/modules/product/domain/entities/product.entity";
 import uploadConfig from "src/shared/infra/http/constants/upload";
 import {
     Entity,
@@ -6,6 +7,8 @@ import {
     PrimaryGeneratedColumn,
     CreateDateColumn,
     UpdateDateColumn,
+    ManyToOne,
+    JoinColumn,
 } from 'typeorm';
 
 @Entity('ar100_archives')
@@ -18,6 +21,10 @@ export class Archive {
 
     @Column()
     reference_id: string;
+
+    @ManyToOne(() => Product)
+    @JoinColumn({ name: 'reference_id' })
+    referenceImage: Product;
 
     @Column()
     name: string;

@@ -474,32 +474,32 @@ export default function Slugs({
                                     attribute.variations,
                                     attribute.name,
                                   ) && (
-                                    <VariationPriceWrapper>
-                                      <Price
-                                        as="span"
-                                        size="lg"
-                                        isPromotion={isPromotion}
-                                      >
-                                        {isPromotion && <Lightning size={18} />}
+                                      <VariationPriceWrapper>
+                                        <Price
+                                          as="span"
+                                          size="lg"
+                                          isPromotion={isPromotion}
+                                        >
+                                          {isPromotion && <Lightning size={18} />}
 
-                                        {formatValue(
-                                          getPriceVariation(
-                                            attribute.variations,
-                                            attribute.name,
-                                          ),
-                                        )}
-                                      </Price>
-
-                                      {isPromotion && (
-                                        <OldPrice as="small" size="sm">
-                                          {getOldPriceVariation(
-                                            attribute.variations,
-                                            attribute.name,
+                                          {formatValue(
+                                            getPriceVariation(
+                                              attribute.variations,
+                                              attribute.name,
+                                            ),
                                           )}
-                                        </OldPrice>
-                                      )}
-                                    </VariationPriceWrapper>
-                                  )}
+                                        </Price>
+
+                                        {isPromotion && (
+                                          <OldPrice as="small" size="sm">
+                                            {getOldPriceVariation(
+                                              attribute.variations,
+                                              attribute.name,
+                                            )}
+                                          </OldPrice>
+                                        )}
+                                      </VariationPriceWrapper>
+                                    )}
                                 </AttributeWrapper>
                               ))}
                             </VariantionWrapper>

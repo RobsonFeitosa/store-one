@@ -32,6 +32,7 @@ export default function ServicesCarousel() {
   const [services] = servicesData ?? []
 
   const [ref, instanceRef] = useKeenSlider<HTMLDivElement>({
+    renderMode: 'performance',
     slideChanged(s) {
       setCurrentSlide(s.track.details.rel)
     },

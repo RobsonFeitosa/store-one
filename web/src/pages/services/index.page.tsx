@@ -6,17 +6,23 @@ import { parseCookies } from 'nookies'
 export { default } from '../products-origim'
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { '@LemonadeTechnologies:user': userOnCookies } = parseCookies({ req })
+  try {
+    const { '@StoreOne:user': userOnCookies } = parseCookies({ req })
 
-  const user = userOnCookies ? JSON.parse(userOnCookies) : null
+    const user = userOnCookies ? JSON.parse(userOnCookies) : null
 
-  const response = await api.get(URLs.PRODUCTS)
+    const response = await api.get(URLs.PRODUCTS)
 
-  return {
-    props: {
-      user,
-      isProduct: false,
-      productsInital: response.data,
-    },
+    return {
+      props: {
+        user,
+        isProduct: false,
+        productsInital: response.data,
+      },
+    }
+  } catch (error) {
+    return {
+      notFound: true,
+    }
   }
 }

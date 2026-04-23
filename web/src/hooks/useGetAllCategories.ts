@@ -12,7 +12,7 @@ const getAllCategories = async (url: string) => {
       }),
     )
 
-    return response.data as [ICategoryDTO[], number]
+    return response.data.result as [ICategoryDTO[], number]
   } catch (error) {
     console.error(error)
   }

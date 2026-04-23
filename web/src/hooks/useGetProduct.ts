@@ -11,7 +11,7 @@ const getProduct = async (slug: string, productId: string) => {
       }),
     )
 
-    return response.data as IProductDTO
+    return response.data.result as IProductDTO
   } catch (error) {
     console.error(error)
   }

@@ -44,7 +44,7 @@ class CreateProductService {
 
     @inject('ProductVariationsRespository')
     private productVariationsRespository: IProductVariationsRespository,
-  ) {}
+  ) { }
 
   public async execute(data: RequestProps): Promise<Product> {
     const { product_data, attributes, type = 'product', ...rest } = data

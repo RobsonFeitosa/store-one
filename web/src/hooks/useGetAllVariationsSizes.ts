@@ -16,7 +16,7 @@ const getAllVariationsSizes = async (url: string) => {
       }),
     )
 
-    return response.data as getAllSizes[]
+    return response.data.result as getAllSizes[]
   } catch (error) {
     console.error(error)
   }

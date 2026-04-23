@@ -12,7 +12,7 @@ const createSchedule = async (payload: ICreateScheduleDTO) => {
       payload,
     )
 
-    return response.data as [IScheduleDTO[], number]
+    return response.data.result as [IScheduleDTO[], number]
   } catch (error) {
     console.error(error)
   }

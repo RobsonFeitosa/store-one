@@ -18,7 +18,7 @@ const WishesContext = createContext<WishesContextData>({} as WishesContextData)
 const WishesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [wishes, setWishes] = useState<string[]>(() => {
     const cookies = parseCookies()
-    const { '@LemonadeTechnologies:wishes': wishesCookie } = cookies
+    const { '@StoreOne:wishes': wishesCookie } = cookies
 
     if (wishesCookie) {
       return JSON.parse(wishesCookie)
@@ -40,7 +40,7 @@ const WishesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     if (wishes) {
-      setCookie(null, '@LemonadeTechnologies:wishes', JSON.stringify(wishes), {
+      setCookie(null, '@StoreOne:wishes', JSON.stringify(wishes), {
         maxAge: 60 * 60 * 24 * 7, // 7 days
         path: '/',
       })

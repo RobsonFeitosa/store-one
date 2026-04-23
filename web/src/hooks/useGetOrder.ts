@@ -11,7 +11,7 @@ const getOrder = async (orderId: string) => {
       }),
     )
 
-    return response.data as IOrderDTO
+    return response.data.result as IOrderDTO
   } catch (error) {
     console.error(error)
   }

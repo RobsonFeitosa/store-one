@@ -21,6 +21,8 @@ import { UpdateArchiveUseCase } from '../../../application/update-archive.use-ca
 import { UpdatePrimaryArchiveUseCase } from '../../../application/update-primary-archive.use-case';
 import { instanceToInstance } from 'class-transformer';
 
+import uploadConfig from '../../../../../shared/infra/http/constants/upload';
+
 @Controller('archives')
 export class ArchiveController {
     constructor(
@@ -32,12 +34,15 @@ export class ArchiveController {
     ) { }
 
     @Post(':originName/:referenceId')
-    @UseInterceptors(FilesInterceptor('files'))
+    @UseInterceptors(FilesInterceptor('images', 8, {
+        storage: uploadConfig.multer.storage,
+    }))
     async create(
         @Param('originName') originName: string,
         @Param('referenceId') referenceId: string,
         @UploadedFiles() files: Express.Multer.File[],
     ) {
+        console.log({ originName, referenceId })
         const archives = await this.createArchiveUseCase.execute({
             files,
             originName,
@@ -81,7 +86,9 @@ export class ArchiveController {
     }
 
     @Put(':archiveId')
-    @UseInterceptors(FileInterceptor('file'))
+    @UseInterceptors(FileInterceptor('file', {
+        storage: uploadConfig.multer.storage,
+    }))
     async update(
         @Param('archiveId') archiveId: string,
         @Body('data') data: string,

@@ -119,7 +119,7 @@ export default function ProductBox({
         {images && (
           <ProductFigureContent>
             <Image
-              src={images[0].picture_url}
+              src={images[0]?.picture_url}
               layout="fill"
               objectFit={isProduct ? 'contain' : 'cover'}
               alt={product.name}

@@ -9,6 +9,7 @@ export const dataSource = new DataSource({
     database: 'nexus',
     entities: [
         __dirname + '/../../../**/*.entity{.ts,.js}',
+        __dirname + '/../../../**/typeorm/entities/*.{ts,js}',
     ],
     migrations: [
         __dirname + '/migrations/*.{ts,js}'

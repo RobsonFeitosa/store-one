@@ -56,6 +56,8 @@ const createSessions = async (
         if (response?.status === 200 || response?.status === 201) {
           const { token, user } = response.data.result || response.data
 
+          console.log({ token, user })
+
           if (token === 'inactive-user--resend-mail') {
             addToast({
               type: 'info',
@@ -75,7 +77,7 @@ const createSessions = async (
 
           try {
             signIn({ user, token })
-          } catch {}
+          } catch { }
 
           if (isRedirect) {
             router.push('/')

@@ -44,6 +44,7 @@ export default function ProductsCarousel() {
   const [products] = productsData ?? []
 
   const [ref, instanceRef] = useKeenSlider<HTMLDivElement>({
+    renderMode: 'performance',
     slideChanged(s) {
       setCurrentSlide(s.track.details.rel)
     },

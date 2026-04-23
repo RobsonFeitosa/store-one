@@ -1,28 +1,54 @@
-import { Inject, Injectable, NotFoundException } from "@nestjs/common";
-import type { ProductRepository } from "../domain/repositories/product.repository";
-import { Product } from "../domain/entities/product.entity";
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import type { ProductRepository } from '../domain/repositories/product.repository';
+import { Product } from '../domain/entities/product.entity';
+import { ProductCategory } from '../domain/entities/product-category.entity';
+import type { CategoryRepository } from '../domain/repositories/category.repository';
 
 @Injectable()
 export class ShowProductUseCase {
-    constructor(
-        @Inject('PRODUCT_REPOSITORY_TOKEN')
-        private readonly productRepository: ProductRepository
-    ) { }
+  constructor(
+    @Inject('PRODUCT_REPOSITORY_TOKEN')
+    private readonly productRepository: ProductRepository,
 
-    async execute(slug?: string, productId?: string): Promise<Product> {
-        let product: Product | null = null;
+    @Inject('CATEGORY_REPOSITORY_TOKEN')
+    private readonly categoriesRepository: CategoryRepository,
+  ) { }
 
-        if (productId) {
-            product = await this.productRepository.findById(productId);
-        } else if (slug) {
-            // using findByName as a placeholder for slug/search if needed
-            product = await this.productRepository.findByName(slug);
-        }
+  async execute(slug?: string, productId?: string): Promise<Product> {
+    let product: Product | null = null;
+    const categories: ProductCategory[] = []
 
-        if (!product) {
-            throw new NotFoundException('Product not found');
-        }
-
-        return product;
+    if (productId) {
+      product = await this.productRepository.findById(productId);
+    } else if (slug) {
+      product = await this.productRepository.findByName(slug);
     }
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
+    if (product) {
+      product.categories_items = [];
+
+      if (product.categories) {
+        let categoryIds = [];
+        try {
+          categoryIds = JSON.parse(product.categories);
+        } catch (e) {
+          categoryIds = [];
+        }
+
+        for (const categoryId of categoryIds) {
+          const category = await this.categoriesRepository.findById(categoryId);
+
+          if (category) {
+            product.categories_items.push(category);
+          }
+        }
+      }
+    }
+
+    return product;
+  }
 }

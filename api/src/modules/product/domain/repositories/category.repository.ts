@@ -1,3 +1,4 @@
+import PaginationOptionsDTO from "src/shared/domain/helpers/dtos/pagination-opions.dto";
 import { Category } from "../entities/category.entity";
 
 export interface CategoryRepository {
@@ -6,5 +7,9 @@ export interface CategoryRepository {
     create(category: Category): Promise<Category>;
     update(category: Category): Promise<Category>;
     delete(id: string): Promise<void>;
-    findAndCount(options: { page: number, limit: number }, type?: string): Promise<[Category[], number]>;
+    findByName(name: string): Promise<Category | null>
+    findAndCount(options: PaginationOptionsDTO, type?: string): Promise<[Category[], number]>;
+    save(category: Category): Promise<Category>
 }
+
+

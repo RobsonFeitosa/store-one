@@ -72,16 +72,16 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         updated_at: user.updated_at,
       } as IUser
 
-      setCookie(null, '@LemonadeTechnologies:token', token, {
+      setCookie(null, '@StoreOne:token', token, {
         maxAge: 60 * 60 * 24 * 7, // 7 days
         path: '/',
       })
-      setCookie(null, '@LemonadeTechnologies:user', JSON.stringify(user), {
+      setCookie(null, '@StoreOne:user', JSON.stringify(user), {
         maxAge: 60 * 60 * 24 * 7, // 7 days
         path: '/',
       })
 
-      api.defaults.headers.authorization = `Bearer ${token}`
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
       setData({ token, user: newUser })
       return { token, user }
@@ -91,26 +91,26 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const cookies = parseCookies()
   const {
-    '@LemonadeTechnologies:token': tokenStorage,
-    '@LemonadeTechnologies:user': userStorage,
+    '@StoreOne:token': tokenStorage,
+    '@StoreOne:user': userStorage,
   } = cookies
 
   useEffect(() => {
     if (tokenStorage && userStorage) {
-      api.defaults.headers.authorization = `Bearer ${tokenStorage}`
+      api.defaults.headers.common['Authorization'] = `Bearer ${tokenStorage}`
 
       setData({ token: tokenStorage, user: JSON.parse(userStorage) })
     }
   }, [tokenStorage, userStorage])
 
   const signOut = useCallback(() => {
-    destroyCookie(null, '@LemonadeTechnologies:order', {
+    destroyCookie(null, '@StoreOne:order', {
       path: '/',
     })
-    destroyCookie(null, '@LemonadeTechnologies:token', {
+    destroyCookie(null, '@StoreOne:token', {
       path: '/',
     })
-    destroyCookie(null, '@LemonadeTechnologies:user', {
+    destroyCookie(null, '@StoreOne:user', {
       path: '/',
     })
 
@@ -135,7 +135,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const updateUser = useCallback(
     (user: IUser) => {
-      setCookie(null, '@LemonadeTechnologies:user', JSON.stringify(user), {
+      setCookie(null, '@StoreOne:user', JSON.stringify(user), {
         maxAge: 60 * 60 * 24 * 7, // 7 days
         path: '/',
       })
@@ -151,7 +151,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const refreshBalance = useCallback(
     (value: string) => {
       const cookies = parseCookies()
-      const { '@LemonadeTechnologies:user': userStore } = cookies
+      const { '@StoreOne:user': userStore } = cookies
 
       if (userStore) {
         const user = JSON.parse(userStore)
@@ -167,7 +167,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const setIsFirstCalculation = useCallback(() => {
     const cookies = parseCookies()
-    const { '@LemonadeTechnologies:user': userStore } = cookies
+    const { '@StoreOne:user': userStore } = cookies
 
     if (userStore) {
       const user = JSON.parse(userStore)
@@ -179,7 +179,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
       setCookie(
         null,
-        '@LemonadeTechnologies:user',
+        '@StoreOne:user',
         JSON.stringify({ ...user, is_first_calculation: true }),
         {
           maxAge: 60 * 60 * 24 * 7, // 7 days

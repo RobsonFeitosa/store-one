@@ -46,7 +46,7 @@ export default function AdminLayout({ children }: AdminProps) {
       setTopContent(true)
     }
 
-    ;(content as any)?.addEventListener('scroll', () => {
+    ; (content as any)?.addEventListener('scroll', () => {
       const x = (content as any)?.scrollTop
       setTopContent(x === 0)
     })
@@ -90,7 +90,7 @@ export default function AdminLayout({ children }: AdminProps) {
         <HeaderRight>
           <a href={`${process.env.NEXT_PUBLIC_URL_STORE}`}>Acessar site</a>
 
-          <NewProductLink href={`/${hasType}s/new/1`}>
+          <NewProductLink href={`/admin/${hasType}s/new/1`}>
             <Plus size={16} />
             <Text size="sm">Novo {label}</Text>
           </NewProductLink>

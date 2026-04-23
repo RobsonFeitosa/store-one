@@ -40,7 +40,7 @@ function RouteGuard({ children }: RouteGuardProps) {
 
     const path = url.split('?')[0]
     const cookies = parseCookies()
-    const { '@LemonadeTechnologies:user': userStorage } = cookies
+    const { '@StoreOne:user': userStorage } = cookies
 
     if (!userStorage && !publicPaths.includes(path)) {
       setAuthorized(false)

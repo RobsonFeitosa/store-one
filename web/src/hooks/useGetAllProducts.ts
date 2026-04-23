@@ -22,7 +22,7 @@ const getProducts = async (url: string) => {
       }),
     )
 
-    return response.data as [IProductDTO[], number]
+    return response.data.result as [IProductDTO[], number]
   } catch (error) {
     console.error(error)
   }
@@ -34,6 +34,7 @@ export const useGetAllProducts = (data: UserGetProductsProps, key?: string) => {
   const { url } = useBuilderUrl(URLs.PRODUCTS, options, {
     ...rest,
   })
+  console.log({ url })
 
   return useQuery({
     queryKey: ['getProducts', key],

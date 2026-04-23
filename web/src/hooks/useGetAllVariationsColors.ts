@@ -16,7 +16,7 @@ const getAllVariationsColors = async (url: string) => {
       }),
     )
 
-    return response.data as getAllColors[]
+    return response.data.result as getAllColors[]
   } catch (error) {
     console.error(error)
   }

@@ -22,24 +22,30 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const slugs = params?.slug as string[]
-  const [slug, id] = slugs
+  try {
+    const slugs = params?.slug as string[]
+    const [slug, id] = slugs
 
-  const url = [URLs.PRODUCTS, '/', slug, '/code/', id].join('')
-  const response = await api.get(url)
+    const url = [URLs.PRODUCTS, '/', slug, '/code/', id].join('')
+    const response = await api.get(url)
 
-  const { '@LemonadeTechnologies:user': userOnCookies } = parseCookies()
+    const { '@StoreOne:user': userOnCookies } = parseCookies()
 
-  const user = userOnCookies ? JSON.parse(userOnCookies) : null
+    const user = userOnCookies ? JSON.parse(userOnCookies) : null
 
-  return {
-    props: {
-      slug,
-      id,
-      user,
-      isProduct: false,
-      initialProduct: response.data,
-    },
-    revalidate: 60 * 60 * 24, // 1 day
+    return {
+      props: {
+        slug,
+        id,
+        user,
+        isProduct: false,
+        initialProduct: response.data,
+      },
+      revalidate: 60 * 60 * 24, // 1 day
+    }
+  } catch (error) {
+    return {
+      notFound: true,
+    }
   }
 }

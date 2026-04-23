@@ -56,11 +56,13 @@ interface ProductsGalleryProps {
 
 export default function ProductsGallery({ images }: ProductsGalleryProps) {
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
+    renderMode: 'performance',
     initial: 0,
   })
   const [thumbnailRef, instanceThumbRef] = useKeenSlider<HTMLDivElement>(
     {
       initial: 0,
+      renderMode: 'performance',
       slides: {
         perView: 4,
         spacing: 10,

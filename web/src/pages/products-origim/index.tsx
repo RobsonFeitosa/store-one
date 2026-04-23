@@ -60,7 +60,7 @@ interface ProductsOrigimProps {
 }
 
 export default function ProductsOrigim({
-  isProduct,
+  isProduct = true,
   productsInital,
 }: ProductsOrigimProps) {
   const [currentPage, setCurrentPage] = useState(1)
@@ -95,6 +95,7 @@ export default function ProductsOrigim({
     getProducts()
   }, [currentPage, router.query, getProducts])
 
+  console.log({ dataProducts })
   useEffect(() => {
     if (dataProducts) {
       setProductsData(dataProducts)
@@ -120,7 +121,7 @@ export default function ProductsOrigim({
     })
   }
 
-  const [products, total] = productsData
+  const [products, total] = [[], 0]
 
   const [mode, setMode] = useState<GridMode>('grid')
 

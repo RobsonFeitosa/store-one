@@ -24,7 +24,7 @@ import {
 } from './styles'
 
 export function Header() {
-  // const { '@LemonadeTechnologies:user': userOnCookies } = parseCookies()
+  // const { '@StoreOne:user': userOnCookies } = parseCookies()
   // const [user, setUser] = useState<IUser | null>(null)
 
   // const userCookies = userOnCookies ? JSON.parse(userOnCookies) : null
@@ -53,7 +53,7 @@ export function Header() {
             <Row>
               <Col xs lg="12" sm="12">
                 <HeadGray>
-                  <Link href={`${process.env.NEXT_PUBLIC_URL_ADMIN}/admin`}>
+                  <Link href={`/admin`}>
                     <Gear size={18} />
                     Administrativo
                   </Link>

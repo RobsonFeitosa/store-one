@@ -7,7 +7,7 @@ import {
     OneToOne,
     JoinColumn
 } from 'typeorm';
-import { Product } from './product.entity';
+import { Exclude, Expose } from 'class-transformer';
 
 @Entity('pd104_products_data')
 export class ProductData {
@@ -33,7 +33,13 @@ export class ProductData {
     weight: number;
 
     @Column({ nullable: true })
+    @Exclude()
     dimensions: string;
+
+    @Expose({ name: 'dimensions' })
+    get dimensionsParse() {
+        return this.dimensions && JSON.parse(this.dimensions);
+    }
 
     @Column({ name: 'code_bar', nullable: true })
     code_bar: string;

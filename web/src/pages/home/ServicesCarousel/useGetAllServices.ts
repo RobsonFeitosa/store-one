@@ -17,7 +17,7 @@ const getServices = async (url: string) => {
       }),
     )
 
-    return response.data as [IProductDTO[], number]
+    return response.data.result as [IProductDTO[], number]
   } catch (error) {
     console.error(error)
   }

@@ -37,6 +37,7 @@ export default function BestSellers() {
   }, [getProductsBestSeller])
 
   const [ref, instanceRef] = useKeenSlider<HTMLDivElement>({
+    renderMode: 'performance',
     slideChanged(s) {
       setCurrentSlide(s.track.details.rel)
     },

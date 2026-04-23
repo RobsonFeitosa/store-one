@@ -58,7 +58,7 @@ const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const [order, setOrder] = useState<Order>(() => {
     const cookies = parseCookies()
-    const { '@LemonadeTechnologies:order': orderCookie } = cookies
+    const { '@StoreOne:order': orderCookie } = cookies
 
     if (orderCookie) {
       return JSON.parse(orderCookie)
@@ -181,7 +181,7 @@ const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const setEmptyOrder = useCallback(() => {
     setOrder(emptyOrder)
 
-    // setCookie(null, '@LemonadeTechnologies:order', JSON.stringify(emptyOrder), {
+    // setCookie(null, '@StoreOne:order', JSON.stringify(emptyOrder), {
     //   maxAge: 60 * 60 * 24 * 7, // 7 days
     //   path: '/',
     // })
@@ -189,7 +189,7 @@ const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     if (order) {
-      setCookie(null, '@LemonadeTechnologies:order', JSON.stringify(order), {
+      setCookie(null, '@StoreOne:order', JSON.stringify(order), {
         maxAge: 60 * 60 * 24 * 7, // 7 days
         path: '/',
       })

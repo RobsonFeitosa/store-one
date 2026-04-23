@@ -19,6 +19,7 @@ export default function Brands() {
   const [loaded, setLoaded] = useState(false)
 
   const [ref, instanceRef] = useKeenSlider<HTMLDivElement>({
+    renderMode: 'performance',
     slideChanged(s) {
       setCurrentSlide(s.track.details.rel)
     },
