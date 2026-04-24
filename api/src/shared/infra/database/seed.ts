@@ -337,7 +337,7 @@ async function seed() {
       slug: faker.helpers.slugify(item.name.toLowerCase()),
       published: 'true',
       visibility: 'public',
-      type: 'product',
+      type: item.type as any,
       categories: JSON.stringify([category.id]),
       emphasis: faker.datatype.boolean(),
     });
