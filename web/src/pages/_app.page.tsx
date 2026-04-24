@@ -6,6 +6,7 @@ import { globalStyles } from '../styles/global'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import AppProvider from '@/hooks'
 import 'keen-slider/keen-slider.min.css'
+import '../styles/globals.css'
 
 import { Inter } from 'next/font/google'
 

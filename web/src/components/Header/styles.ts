@@ -15,7 +15,7 @@ export const LinkWish = styled(Link, {
 export const HeaderContainer = styled('div', {
   padding: '$8 0',
   position: 'relative',
-  zIndex: 2,
+  zIndex: 999,
 })
 
 export const WrapperWhats = styled('div', {

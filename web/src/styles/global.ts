@@ -55,6 +55,14 @@ export const globalStyles = globalCss({
       width: '100%',
     },
   },
+
+  '[data-radix-popper-content-wrapper]': {
+    zIndex: '9999 !important',
+  },
+
+  '[data-radix-portal]': {
+    zIndex: '9999 !important',
+  },
 })
 
 export { darkTheme }

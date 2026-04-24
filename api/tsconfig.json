@@ -26,13 +26,13 @@
         "src/*"
       ],
       "@modules/*": [
-        "modules/*"
+        "src/modules/*"
       ],
       "@config/*": [
-        "config/*"
+        "src/config/*"
       ],
       "@shared/*": [
-        "shared/*"
+        "src/shared/*"
       ]
     },
   }

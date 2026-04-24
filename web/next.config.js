@@ -5,7 +5,6 @@ const nextConfig = {
   images: {
     domains: ['localhost', 'store-products-example.s3.amazonaws.com'],
   },
-
   pageExtensions: ['page.tsx', 'api.ts', 'api.tsx'],
 }
 

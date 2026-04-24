@@ -1,0 +1,146 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 28px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.2s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2a313c;
+  font-family: Inter, sans-serif;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #718096;
+  line-height: 1;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.closeBtn:hover {
+  color: #2a313c;
+  background: #f0f2f5;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #58667b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dateInput {
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-family: Inter, sans-serif;
+  color: #2a313c;
+  background: #ffffff;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.dateInput:focus {
+  outline: none;
+  border-color: #205c97;
+  box-shadow: 0 0 0 3px rgba(32, 92, 151, 0.15);
+}
+
+.dateInput:disabled {
+  background: #f9f9f9;
+  color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.inputError {
+  border-color: #e53e3e;
+}
+
+.error {
+  font-size: 11px;
+  color: #e53e3e;
+  margin-top: 2px;
+}
+
+.colorGrid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.colorSwatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+.colorSwatch:hover {
+  transform: scale(1.15);
+}
+
+.colorSwatchActive {
+  border-color: #2a313c;
+  transform: scale(1.15);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}

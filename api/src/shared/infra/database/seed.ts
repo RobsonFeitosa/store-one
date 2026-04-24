@@ -7,6 +7,8 @@ import { TimeDiscount } from '../../../modules/product/domain/entities/time-disc
 import { User } from '../../../modules/user/domain/entities/user.entity';
 import { UserSettings } from '../../../modules/user/domain/entities/user-settings.entity';
 import { Archive } from '../../../modules/archive/domain/entities/archive.entity';
+import { ProductAttribute } from '../../../modules/product/domain/entities/product-attribute.entity';
+import { ProductVariation } from '../../../modules/product/domain/entities/product-variation.entity';
 import bcrypt from 'bcryptjs';
 import fs from 'fs';
 import path from 'path';
@@ -29,8 +31,10 @@ async function seed() {
   const userRepository = dataSource.getRepository(User);
   const userSettingsRepository = dataSource.getRepository(UserSettings);
   const archiveRepository = dataSource.getRepository(Archive);
+  const productAttributeRepository = dataSource.getRepository(ProductAttribute);
+  const productVariationRepository = dataSource.getRepository(ProductVariation);
 
-  await dataSource.query('TRUNCATE TABLE "ar100_archives", "users_settings", "users", "pd104_products_data", "pd100_products", "pd101_product_categories", "ti100_time_discount" CASCADE');
+  await dataSource.query('TRUNCATE TABLE "ar100_archives", "users_settings", "users", "pd104_products_data", "pd100_products", "pd101_product_categories", "ti100_time_discount", "pd105_products_attributes", "pd106_products_variations" CASCADE');
 
   console.log('Tabelas limpas.');
 
@@ -396,12 +400,6 @@ async function seed() {
       imagesToSave.push(`${item.imagePattern}${j}.jpg`);
     }
 
-    if (item.variantPattern && item.variantRange) {
-      for (let k = 1; k <= item.variantRange; k++) {
-        imagesToSave.push(`${item.variantPattern}${k}.jpg`);
-      }
-    }
-
     for (let index = 0; index < imagesToSave.length; index++) {
       const fileName = imagesToSave[index];
       const sourcePath = path.join(IMAGES_SOURCE_DIR, fileName);
@@ -422,6 +420,52 @@ async function seed() {
         await archiveRepository.save(archive);
       } else {
         console.warn(`Imagem não encontrada: ${sourcePath}`);
+      }
+    }
+
+    if (item.variantPattern && item.variantRange) {
+      const attribute = new ProductAttribute({
+        product_id: savedProduct.id,
+        name: 'Modelo',
+        options: JSON.stringify(Array.from({ length: item.variantRange }).map((_, i) => `Modelo ${i + 1}`)),
+      });
+      const savedAttribute = await productAttributeRepository.save(attribute);
+
+      for (let k = 1; k <= item.variantRange; k++) {
+        const fileName = `${item.variantPattern}${k}.jpg`;
+        const sourcePath = path.join(IMAGES_SOURCE_DIR, fileName);
+        const destPath = path.join(UPLOADS_DEST_DIR, fileName);
+
+        const variation = new ProductVariation({
+          product_attribute_id: savedAttribute.id,
+          price: price,
+          name: `Modelo ${k}`,
+          quantity: faker.number.int({ min: 1, max: 20 }),
+          active: true,
+          sku: faker.string.alphanumeric(12).toUpperCase(),
+          weight: faker.number.int({ min: 1, max: 5 }),
+          dimensions: JSON.stringify({ height: 10, width: 10, length: 10 }),
+        });
+        const savedVariation = await productVariationRepository.save(variation);
+
+        if (fs.existsSync(sourcePath)) {
+          fs.copyFileSync(sourcePath, destPath);
+          const stats = fs.statSync(destPath);
+
+          const archive = new Archive({
+            origin_target: 'product_variation',
+            reference_id: savedProduct.id,
+            name: fileName,
+            is_primary: true,
+            size: String(stats.size),
+            type: 'image/jpeg',
+          });
+          const savedArchive = await archiveRepository.save(archive);
+          
+          await productVariationRepository.update(savedVariation.id, { image_id: savedArchive.id });
+        } else {
+          console.warn(`Imagem da variante não encontrada: ${sourcePath}`);
+        }
       }
     }
   }

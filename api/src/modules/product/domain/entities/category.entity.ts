@@ -17,7 +17,7 @@ export class Category {
     @Column()
     level: number;
 
-    @Column()
+    @Column({ nullable: true })
     slug: string;
 
     @Column({ nullable: true })

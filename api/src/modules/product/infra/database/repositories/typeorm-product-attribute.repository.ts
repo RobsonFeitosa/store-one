@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductAttribute } from "../../../domain/entities/product-attribute.entity";
 import { ProductAttributeRepository } from "../../../domain/repositories/product-attribute.repository";
@@ -27,6 +27,30 @@ export class TypeOrmProductAttributeRepository implements ProductAttributeReposi
         return this.ormRepo.find({
             where: { product_id },
             relations: ['variations']
+        });
+    }
+
+    async findAllAttributesColors(): Promise<ProductAttribute[]> {
+        return this.ormRepo.find({
+            where: {
+                name: In(['Cores', 'Cor', 'cor', 'cores']),
+            },
+            order: {
+                created_at: 'DESC',
+            },
+            relations: ['variations'],
+        });
+    }
+
+    async findAllAttributesSizes(): Promise<ProductAttribute[]> {
+        return this.ormRepo.find({
+            where: {
+                name: In(['Tamanhos', 'tamanho', 'Tamanho', 'tamanhos']),
+            },
+            order: {
+                created_at: 'DESC',
+            },
+            relations: ['variations'],
         });
     }
 

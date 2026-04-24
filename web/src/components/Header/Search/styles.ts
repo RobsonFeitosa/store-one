@@ -80,6 +80,7 @@ export const AllCategories = styled('div', {
   // borderLeft: '1px solid $gray100',
   paddingLeft: '10px',
   position: 'relative',
+  zIndex: 99,
 
   '@media (max-width: 680px)': {
     [`> ${Text}`]: {

@@ -57,8 +57,8 @@ export default function Search({ categoriesRes }: SearchProps) {
         name: data.search ?? 'null',
         ...(data.categoryId &&
           data.categoryId !== 'null' && {
-            categoryId: String(data.categoryId),
-          }),
+          categoryId: String(data.categoryId),
+        }),
       },
     })
     router.push(url)
@@ -102,11 +102,11 @@ export default function Search({ categoriesRes }: SearchProps) {
                 return (
                   <Select
                     defaultValue={value ?? 'null'}
-                    placeholder="Todos as categorias "
+                    placeholder="Todas as categorias"
                     isClean
                     value={value}
                     name={name}
-                    title="Todos as categorias"
+                    title="Todas as categorias"
                     options={categoriesRes.map((category) => ({
                       label: category.name,
                       value: category.id,

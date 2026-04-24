@@ -15,6 +15,8 @@ import { DeleteProductUseCase } from '../../../application/delete-product.use-ca
 import { IndexProductsUseCase } from '../../../application/index-products.use-case';
 import { ShowProductUseCase } from '../../../application/show-product.use-case';
 import { ShowEmphasisProductUseCase } from '../../../application/show-emphasis-product.use-case';
+import { IndexVariationColorsUseCase } from '../../../application/index-variation-colors.use-case';
+import { IndexVariationSizesUseCase } from '../../../application/index-variation-sizes.use-case';
 import { CreateProductDto } from '../dtos/create-product.dto';
 import { UpdateProductDto } from '../dtos/update-product.dto';
 
@@ -27,12 +29,26 @@ export class ProductController {
     private readonly indexProductsUseCase: IndexProductsUseCase,
     private readonly showProductUseCase: ShowProductUseCase,
     private readonly showEmphasisProductUseCase: ShowEmphasisProductUseCase,
+    private readonly indexVariationColorsUseCase: IndexVariationColorsUseCase,
+    private readonly indexVariationSizesUseCase: IndexVariationSizesUseCase,
   ) { }
 
   @Public()
   @Get('emphasis')
   async showEmphasis() {
     return this.showEmphasisProductUseCase.execute();
+  }
+
+  @Public()
+  @Get('variation-colors')
+  async indexVariationColors() {
+    return this.indexVariationColorsUseCase.execute();
+  }
+
+  @Public()
+  @Get('variation-sizes')
+  async indexVariationSizes() {
+    return this.indexVariationSizesUseCase.execute();
   }
 
   @Post()

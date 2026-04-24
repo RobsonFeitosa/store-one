@@ -1,0 +1,48 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #58667b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.select {
+  appearance: none;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  padding: 6px 32px 6px 12px;
+  font-size: 13px;
+  font-family: Inter, sans-serif;
+  color: #2a313c;
+  cursor: pointer;
+  min-width: 160px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  transition: border-color 0.2s;
+}
+
+.select:hover {
+  border-color: #205c97;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #205c97;
+  box-shadow: 0 0 0 3px rgba(32, 92, 151, 0.15);
+}

@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.fc .fc-col-header-cell-cushion,
+.fc a {
+    text-decoration: none !important;
+    color: #00000070 !important;
+    box-shadow: none !important;
+}

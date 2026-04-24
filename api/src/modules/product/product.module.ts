@@ -64,6 +64,8 @@ import { UpdateProductVariationUseCase } from './application/update-product-vari
 
 import { UpdateProductImagePrimaryUseCase } from './application/update-product-image-primary.use-case';
 import { ShowEmphasisProductUseCase } from './application/show-emphasis-product.use-case';
+import { IndexVariationColorsUseCase } from './application/index-variation-colors.use-case';
+import { IndexVariationSizesUseCase } from './application/index-variation-sizes.use-case';
 
 import { CategoryController } from './infra/http/controllers/category.controller';
 import { ProductController } from './infra/http/controllers/product.controller';
@@ -149,6 +151,8 @@ import { StorageModule } from 'src/shared/infra/http/providers/storage-provider/
 
         UpdateProductImagePrimaryUseCase,
         ShowEmphasisProductUseCase,
+        IndexVariationColorsUseCase,
+        IndexVariationSizesUseCase,
 
         {
             provide: 'PRODUCT_REPOSITORY_TOKEN',

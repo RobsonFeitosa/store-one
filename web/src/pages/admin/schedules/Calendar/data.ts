@@ -1,0 +1,112 @@
+export const data = [
+    {
+        id: "1",
+        startTimeDate: "2026-04-24T08:00:00Z",
+        endTimeDate: "2026-04-24T09:30:00Z",
+        title: "Troca de óleo lubrificante Synt No10",
+        customerName: "João Silva",
+        isPaid: true,
+        bgColor: "#bcdaff",
+        createdAt: "2026-04-24T07:00:00Z",
+        updatedAt: "2026-04-24T07:30:00Z"
+    },
+    {
+        id: "2",
+        startTimeDate: "2026-04-24T10:00:00Z",
+        endTimeDate: "2026-04-24T11:30:00Z",
+        title: "Correção na correia dentada",
+        customerName: "Maria Oliveira",
+        isPaid: false,
+        bgColor: "rgb(247, 123, 123)",
+        createdAt: "2026-04-24T07:10:00Z",
+        updatedAt: "2026-04-24T07:20:00Z"
+    },
+    {
+        id: "3",
+        startTimeDate: "2026-04-24T13:00:00Z",
+        endTimeDate: "2026-04-24T14:00:00Z",
+        title: "Corte de cabelo masculino",
+        customerName: "Pedro Santos",
+        isPaid: true,
+        bgColor: "rgb(175, 235, 163)",
+        createdAt: "2026-04-24T08:00:00Z",
+        updatedAt: "2026-04-24T08:30:00Z"
+    },
+    {
+        id: "4",
+        startTimeDate: "2026-04-24T15:00:00Z",
+        endTimeDate: "2026-04-24T16:30:00Z",
+        title: "Manutenção de computadores",
+        customerName: "Ana Costa",
+        isPaid: false,
+        bgColor: "#ffe88f",
+        createdAt: "2026-04-24T09:00:00Z",
+        updatedAt: "2026-04-24T09:30:00Z"
+    },
+    {
+        id: "5",
+        startTimeDate: "2026-04-25T09:00:00Z",
+        endTimeDate: "2026-04-25T10:30:00Z",
+        title: "Sistema de vigilância monitorada",
+        customerName: "Carlos Pereira",
+        isPaid: true,
+        bgColor: "#bcdaff",
+        createdAt: "2026-04-24T10:00:00Z",
+        updatedAt: "2026-04-24T10:30:00Z"
+    },
+    {
+        id: "6",
+        startTimeDate: "2026-04-25T11:00:00Z",
+        endTimeDate: "2026-04-25T12:00:00Z",
+        title: "Design sobrancelhas e maquiagem",
+        customerName: "Juliana Lima",
+        isPaid: true,
+        bgColor: "rgb(247, 123, 123)",
+        createdAt: "2026-04-24T11:00:00Z",
+        updatedAt: "2026-04-24T11:30:00Z"
+    },
+    {
+        id: "7",
+        startTimeDate: "2026-04-25T14:00:00Z",
+        endTimeDate: "2026-04-25T15:30:00Z",
+        title: "Equipe de limpeza e higiene",
+        customerName: "Ricardo Souza",
+        isPaid: false,
+        bgColor: "rgb(175, 235, 163)",
+        createdAt: "2026-04-24T12:00:00Z",
+        updatedAt: "2026-04-24T12:30:00Z"
+    },
+    {
+        id: "8",
+        startTimeDate: "2026-04-25T16:30:00Z",
+        endTimeDate: "2026-04-25T17:30:00Z",
+        title: "Clareamento dental a laser",
+        customerName: "Fernanda Rocha",
+        isPaid: true,
+        bgColor: "#ffe88f",
+        createdAt: "2026-04-24T13:00:00Z",
+        updatedAt: "2026-04-24T13:30:00Z"
+    },
+    {
+        id: "9",
+        startTimeDate: "2026-04-23T08:30:00Z",
+        endTimeDate: "2026-04-23T10:00:00Z",
+        title: "Limpeza florestal",
+        customerName: "Marcos Barbosa",
+        isPaid: false,
+        bgColor: "#bcdaff",
+        createdAt: "2026-04-24T14:00:00Z",
+        updatedAt: "2026-04-24T14:30:00Z"
+    },
+    {
+        id: "10",
+        startTimeDate: "2026-04-23T15:30:00Z",
+        endTimeDate: "2026-04-23T17:00:00Z",
+        title: "Aluguel de carros",
+        customerName: "Beatriz Mendes",
+        isPaid: true,
+        bgColor: "rgb(247, 123, 123)",
+        createdAt: "2026-04-24T15:00:00Z",
+        updatedAt: "2026-04-24T15:30:00Z"
+    }
+];
