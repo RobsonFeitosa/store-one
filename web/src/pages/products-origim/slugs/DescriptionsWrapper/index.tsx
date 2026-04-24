@@ -6,6 +6,7 @@ import {
   DescriptionHeaders,
   DescriptionsWrapperContainer,
   ReturnShipping,
+  SectionTitle,
 } from './styles'
 import { Text } from '@lemonade-technologies-hub-ui/react'
 import { useEffect, useState } from 'react'
@@ -80,30 +81,50 @@ export default function DescriptionsWrapper({
 
           {mode === 'shipping' && (
             <ReturnShipping>
+              <SectionTitle>
+                1. Trocas e Devoluções (O básico legal)
+              </SectionTitle>
               <Text>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum.
+                <strong>Arrependimento de Compra:</strong> Você tem até 7 dias
+                corridos após o recebimento do produto para desistir da compra
+                e solicitar a devolução integral do seu dinheiro, conforme o
+                Código de Defesa do Consumidor.
+              </Text>
+              <Text>
+                <strong>Defeitos de Fabricação:</strong> Caso o produto
+                apresente qualquer problema técnico, você tem até 90 dias
+                (para eletrônicos e bens duráveis) para entrar em contato e
+                solicitar o reparo ou a troca.
+              </Text>
+              <Text>
+                <strong>Condições do Produto:</strong> Para que a devolução
+                seja aceita, o produto deve estar na embalagem original, sem
+                sinais de mau uso e com todos os acessórios inclusos.
               </Text>
 
+              <SectionTitle>2. Política de Envio</SectionTitle>
               <Text>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum.
+                <strong>Prazo de Postagem:</strong> Após a aprovação do
+                pagamento, nós preparamos e despachamos o seu pedido em até 2
+                dias úteis.
+              </Text>
+              <Text>
+                <strong>Rastreamento:</strong> Assim que o produto for
+                postado, você receberá um código de rastreio automaticamente
+                no seu e-mail para acompanhar a entrega em tempo real.
+              </Text>
+              <Text>
+                <strong>Área de Entrega:</strong> Realizamos entregas em todo
+                o território nacional via Correios e transportadoras
+                parceiras.
+              </Text>
+
+              <SectionTitle>3. Como solicitar?</SectionTitle>
+              <Text>
+                Para qualquer um dos casos acima, basta enviar um e-mail para{' '}
+                <strong>contato@minhaempresa.com</strong> ou entrar em contato
+                pelo nosso WhatsApp de suporte com o número do seu pedido.
+                Nossa equipe responderá em até 24h úteis.
               </Text>
             </ReturnShipping>
           )}

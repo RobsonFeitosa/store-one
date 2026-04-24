@@ -60,7 +60,7 @@ async function seed() {
       slug: faker.helpers.slugify(name.toLowerCase()),
       type: 'product',
       level: 1,
-      description: faker.commerce.productDescription(),
+      description: faker.commerce.productDescription() + ' ' + faker.lorem.sentences(5),
     });
     categories.push(await categoryRepository.save(category));
   }
@@ -73,7 +73,12 @@ async function seed() {
       imageRange: 5,
       description: 'A placa de vídeo Gigabyte GeForce RTX 4060 Eagle OC oferece desempenho excepcional para gamers e criadores. Com a arquitetura NVIDIA Ada Lovelace, ela proporciona gráficos ultra-realistas com Ray Tracing e suporte a DLSS 3 para taxas de quadros fluidas.',
       category: 'Hardware',
-      type: 'product'
+      type: 'product',
+      quantity: 15,
+      sku: 'GV-N4060EAGLE-OC-8GD',
+      weight: 1.2,
+      dimensions: { height: 10, width: 20, length: 30 },
+      code_bar: '4719331313722'
     },
     {
       name: 'Cadeira Gamer KBM! GAMING Tempest CG600, Preta, Com Almofadas, Descanso Para Pernas Retrátil, Reclinável',
@@ -81,7 +86,12 @@ async function seed() {
       imageRange: 4,
       description: 'Conforto e estilo definem a Cadeira Gamer KBM! GAMING Tempest CG600. Equipada com almofadas cervicais e lombares, descanso para pernas retrátil e reclinação ajustável, é ideal para longas sessões de jogo ou trabalho.',
       category: 'Periféricos',
-      type: 'product'
+      type: 'product',
+      quantity: 8,
+      sku: 'KBM-CG600-BK',
+      weight: 22.5,
+      dimensions: { height: 85, width: 65, length: 70 },
+      code_bar: '7898671170001'
     },
     {
       name: 'Vichy Minéral 89 Hidratante Facial 30ml',
@@ -89,7 +99,12 @@ async function seed() {
       imageRange: 7,
       description: 'O Vichy Minéral 89 é um fortalecedor facial composto por 89% de Água Vulcânica de Vichy e Ácido Hialurônico. Hidrata profundamente, preenche a pele e reforça a barreira cutânea contra agressões externas.',
       category: 'Beleza',
-      type: 'product'
+      type: 'product',
+      quantity: 45,
+      sku: 'VICHY-M89-30',
+      weight: 0.15,
+      dimensions: { height: 12, width: 4, length: 4 },
+      code_bar: '3337875543248'
     },
     {
       name: 'Brinquedo Didático para Crianças, Interativo, Colorido, Estimula Criatividade e Coordenação Motora',
@@ -97,7 +112,12 @@ async function seed() {
       imageRange: 4,
       description: 'Um brinquedo interativo e vibrante projetado para estimular os sentidos e as habilidades motoras das crianças. Com diversas formas e cores, promove o aprendizado lúdico e a coordenação motora fina.',
       category: 'Brinquedos',
-      type: 'product'
+      type: 'product',
+      quantity: 25,
+      sku: 'BRINQ-DIDAT-01',
+      weight: 0.8,
+      dimensions: { height: 25, width: 25, length: 25 },
+      code_bar: '7898506720002'
     },
     {
       name: 'Carrinho Controle Remoto Drifter Polibrinq',
@@ -107,7 +127,12 @@ async function seed() {
       variantRange: 2,
       description: 'Prepare-se para manobras incríveis com o Carrinho Drifter da Polibrinq. Com controle remoto preciso e design aerodinâmico, ele é perfeito para competições e drifts emocionantes em diversas superfícies.',
       category: 'Brinquedos',
-      type: 'product'
+      type: 'product',
+      quantity: 12,
+      sku: 'POLI-DRIFT-RE',
+      weight: 1.5,
+      dimensions: { height: 15, width: 20, length: 35 },
+      code_bar: '7898506720125'
     },
     {
       name: 'Livro Os Frutos Da Terra',
@@ -332,7 +357,7 @@ async function seed() {
       price,
       old_price: Math.round(price * 1.15),
       description: item.description,
-      short_description: faker.commerce.productAdjective(),
+      short_description: `${item.description} ${faker.lorem.sentences(4)}`.split(' ').slice(0, 45).join(' ') + '.',
       cod_product: faker.string.alphanumeric(10).toUpperCase(),
       slug: faker.helpers.slugify(item.name.toLowerCase()),
       published: 'true',
@@ -340,21 +365,28 @@ async function seed() {
       type: item.type as any,
       categories: JSON.stringify([category.id]),
       emphasis: faker.datatype.boolean(),
+      mode_data: 'single',
     });
 
     const savedProduct = await productRepository.save(product);
 
     const productData = new ProductData({
       product_id: savedProduct.id,
-      quantity: faker.number.int({ min: 5, max: 100 }),
-      sku: faker.string.alphanumeric(12).toUpperCase(),
-      weight: parseFloat(faker.commerce.price({ min: 0.5, max: 15 })),
-      dimensions: JSON.stringify({
-        height: faker.number.int({ min: 20, max: 80 }),
-        width: faker.number.int({ min: 20, max: 80 }),
-        length: faker.number.int({ min: 20, max: 80 }),
-      }),
-      code_bar: faker.string.numeric(13),
+      quantity: (item as any).quantity || faker.number.int({ min: 5, max: 100 }),
+      sku: (item as any).sku || faker.string.alphanumeric(12).toUpperCase(),
+      weight: item.type === 'product' 
+        ? ((item as any).weight || parseFloat(faker.commerce.price({ min: 0.5, max: 15 }))) 
+        : null,
+      dimensions: item.type === 'product' 
+        ? JSON.stringify((item as any).dimensions || {
+            height: faker.number.int({ min: 10, max: 100 }),
+            width: faker.number.int({ min: 10, max: 100 }),
+            length: faker.number.int({ min: 10, max: 100 }),
+          }) 
+        : null,
+      code_bar: item.type === 'product' 
+        ? ((item as any).code_bar || faker.string.numeric(13)) 
+        : null,
     });
     await productDataRepository.save(productData);
 

@@ -8,11 +8,13 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
+import { Public } from 'src/shared/infra/http/decorators/public.decorator';
 import { CreateProductUseCase } from '../../../application/create-product.use-case';
 import { UpdateProductUseCase } from '../../../application/update-product.use-case';
 import { DeleteProductUseCase } from '../../../application/delete-product.use-case';
 import { IndexProductsUseCase } from '../../../application/index-products.use-case';
 import { ShowProductUseCase } from '../../../application/show-product.use-case';
+import { ShowEmphasisProductUseCase } from '../../../application/show-emphasis-product.use-case';
 import { CreateProductDto } from '../dtos/create-product.dto';
 import { UpdateProductDto } from '../dtos/update-product.dto';
 
@@ -24,7 +26,14 @@ export class ProductController {
     private readonly deleteProductUseCase: DeleteProductUseCase,
     private readonly indexProductsUseCase: IndexProductsUseCase,
     private readonly showProductUseCase: ShowProductUseCase,
+    private readonly showEmphasisProductUseCase: ShowEmphasisProductUseCase,
   ) { }
+
+  @Public()
+  @Get('emphasis')
+  async showEmphasis() {
+    return this.showEmphasisProductUseCase.execute();
+  }
 
   @Post()
   async create(@Body() data: CreateProductDto) {
@@ -44,6 +53,7 @@ export class ProductController {
     return this.deleteProductUseCase.execute(id);
   }
 
+  @Public()
   @Get()
   async index(
     @Query('page') page: string = '1',
@@ -103,11 +113,13 @@ export class ProductController {
     }
   }
 
+  @Public()
   @Get(':slug/:id')
   async show(@Param('slug') slug: string, @Param('id') id: string) {
     return this.showProductUseCase.execute(slug, id);
   }
 
+  @Public()
   @Get(':slug/code/:product_id')
   async showByCode(
     @Param('slug') slug: string,

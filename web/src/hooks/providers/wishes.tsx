@@ -1,70 +1,76 @@
 import React, {
-  ReactNode,
   createContext,
   useCallback,
-  useContext,
-  useEffect,
   useState,
+  useContext,
+  ReactNode,
+  useEffect,
 } from 'react'
 import { parseCookies, setCookie } from 'nookies'
 
-interface WishesContextData {
+interface IWishesContextData {
   wishes: string[]
-  toggleWish(id: string): void
+  toggleWish(productId: string): void
+  isWished(productId: string): boolean
 }
 
-const WishesContext = createContext<WishesContextData>({} as WishesContextData)
+const WishesContext = createContext<IWishesContextData>({} as IWishesContextData)
 
 const WishesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [wishes, setWishes] = useState<string[]>(() => {
+  const [wishes, setWishes] = useState<string[]>([])
+
+  useEffect(() => {
     const cookies = parseCookies()
-    const { '@StoreOne:wishes': wishesCookie } = cookies
+    const storedWishes = cookies['@StoreOne:wishes']
 
-    if (wishesCookie) {
-      return JSON.parse(wishesCookie)
+    if (storedWishes) {
+      try {
+        setWishes(JSON.parse(storedWishes))
+      } catch {
+        setWishes([])
+      }
     }
-
-    return []
-  })
+  }, [])
 
   const toggleWish = useCallback(
-    (id: string) => {
-      if (wishes.includes(id)) {
-        setWishes((state) => state.filter((s) => s !== id))
-      } else {
-        setWishes((state) => [...state, id])
-      }
+    (productId: string) => {
+      setWishes((state) => {
+        const alreadyWished = state.find((id) => id === productId)
+        let newState = []
+
+        if (alreadyWished) {
+          newState = state.filter((id) => id !== productId)
+        } else {
+          newState = [...state, productId]
+        }
+
+        setCookie(null, '@StoreOne:wishes', JSON.stringify(newState), {
+          maxAge: 60 * 60 * 24 * 30, // 30 days
+          path: '/',
+        })
+
+        return newState
+      })
+    },
+    [],
+  )
+
+  const isWished = useCallback(
+    (productId: string) => {
+      return !!wishes.find((id) => id === productId)
     },
     [wishes],
   )
 
-  useEffect(() => {
-    if (wishes) {
-      setCookie(null, '@StoreOne:wishes', JSON.stringify(wishes), {
-        maxAge: 60 * 60 * 24 * 7, // 7 days
-        path: '/',
-      })
-    }
-  }, [wishes])
-
   return (
-    <WishesContext.Provider
-      value={{
-        wishes,
-        toggleWish,
-      }}
-    >
+    <WishesContext.Provider value={{ wishes, toggleWish, isWished }}>
       {children}
     </WishesContext.Provider>
   )
 }
 
-function useWishes(): WishesContextData {
+function useWishes(): IWishesContextData {
   const context = useContext(WishesContext)
-
-  if (!context) {
-    throw new Error('useWishes must be used within a OrderProvider')
-  }
 
   return context
 }

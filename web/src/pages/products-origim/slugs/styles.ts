@@ -104,12 +104,29 @@ export const AttributeWrapper = styled('div', {
 export const WrapperHeader = styled('header', {
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
   gap: '$4',
 
   marginBottom: '$4',
 
   [`${Text}`]: {
     textWrap: 'nowrap',
+    fontSize: '$xs',
+    color: '$gray400',
+  },
+})
+
+export const DataWrapper = styled('div', {
+  display: 'flex',
+  gap: '$4',
+  marginBottom: '$6',
+
+  [`${Text}`]: {
+    fontSize: '$xs',
+    color: '$gray400',
+    background: '$gray100',
+    padding: '2px 8px',
+    borderRadius: '$xs',
   },
 })
 

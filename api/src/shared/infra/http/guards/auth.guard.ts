@@ -6,7 +6,15 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
+import { verify } from 'jsonwebtoken';
+import authConfig from 'src/config/auth';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
+
+interface TokenPayload {
+    iat: number;
+    exp: number;
+    sub: string;
+}
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -29,7 +37,19 @@ export class AuthGuard implements CanActivate {
             throw new UnauthorizedException('Token não encontrado');
         }
 
-        return true;
+        try {
+            const decoded = verify(token, authConfig.jwt.secret);
+
+            const { sub } = decoded as TokenPayload;
+
+            request.user = {
+                id: sub,
+            };
+
+            return true;
+        } catch {
+            throw new UnauthorizedException('Token inválido');
+        }
     }
 
     private extractTokenFromHeader(request: Request): string | undefined {

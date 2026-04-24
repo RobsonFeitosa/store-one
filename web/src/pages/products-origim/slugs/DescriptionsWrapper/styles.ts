@@ -21,6 +21,19 @@ export const ReturnShipping = styled('div', {
   },
 })
 
+export const SectionTitle = styled(Text, {
+  display: 'block',
+  marginTop: '$6',
+  marginBottom: '$2',
+  color: '$gray800 !important',
+  fontWeight: 'bold',
+  fontSize: '$lg',
+
+  '&:first-child': {
+    marginTop: 0,
+  },
+})
+
 export const DescriptionHeaders = styled('div', {
   display: 'flex',
   alignItems: 'center',

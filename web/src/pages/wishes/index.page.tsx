@@ -1,11 +1,9 @@
 import MainLayout from '@/components/components/Layout/Main'
 import { Heading, Text } from '@lemonade-technologies-hub-ui/react'
 import { Col, Container, Row } from 'react-bootstrap'
-import { useEffect, useState } from 'react'
-import { useWishes } from '@/hooks/providers/wishes'
 import { useAuth } from '@/hooks/providers/auth'
 import { useGetAllProducts } from '@/hooks/useGetAllProducts'
-import { IProductDTO } from '../dtos/product.dto'
+import { useWishes } from '@/hooks/providers/wishes'
 import ProductBox from '@/components/ProductBox'
 
 import {
@@ -17,36 +15,17 @@ import {
 
 export default function Wishes() {
   const { user } = useAuth()
-  const { wishes: wishesHook } = useWishes()
-  const [wishes, setWishes] = useState<IProductDTO[]>()
-
-  console.log({ wishesHook })
-
-  const { data: productsData, refetch: getAllProducts } = useGetAllProducts(
-    {
-      options: {
-        limit: 9999,
-        page: 1,
-      },
-      productIds: JSON.stringify(wishesHook),
+  const { wishes: wishesIds } = useWishes()
+  
+  const { data: productsData } = useGetAllProducts({
+    options: {
+      limit: 9999,
+      page: 1,
     },
-    'wishes',
-    wishesHook?.length > 0
-  )
+    productIds: JSON.stringify(wishesIds)
+  }, 'wishes-page', !!user && wishesIds.length > 0)
 
-  useEffect(() => {
-    if (user && wishesHook && wishesHook.length > 0) {
-      getAllProducts()
-    }
-  }, [wishesHook, getAllProducts, user])
-
-  const [products] = productsData ?? []
-
-  useEffect(() => {
-    if (products && products.length > 0) {
-      setWishes(products)
-    }
-  }, [products, setWishes])
+  const wishes = productsData?.[0] || []
 
   return (
     <MainLayout>
@@ -61,11 +40,11 @@ export default function Wishes() {
           </Row>
           <WishesContent>
             <Row>
-              {wishes && wishes?.length > 0 ? (
-                wishes?.map((wish) => (
-                  <Col xs="12" sm="12" md="6" lg="3" key={wish.id}>
+              {wishes.length > 0 ? (
+                wishes.map((product) => (
+                  <Col xs="12" sm="12" md="6" lg="3" key={product.id}>
                     <WisheWrapper>
-                      <ProductBox product={wish} mode="grid" />
+                      <ProductBox product={product} mode="grid" />
                     </WisheWrapper>
                   </Col>
                 ))

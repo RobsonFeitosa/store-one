@@ -10,8 +10,8 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { AuthProvider } from './providers/auth'
 import { OrderProvider } from './providers/order'
 import { ToastProvider } from './providers/toast'
-import { WishesProvider } from './providers/wishes'
 import { SettingsProvider } from './providers/settings'
+import { WishesProvider } from './providers/wishes'
 
 const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
@@ -22,9 +22,9 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         <ToastProvider>
           <SkeletonTheme baseColor="#f1f1f6" highlightColor="white">
             <OrderProvider>
-              <WishesProvider>
-                <SettingsProvider>{children}</SettingsProvider>
-              </WishesProvider>
+              <SettingsProvider>
+                <WishesProvider>{children}</WishesProvider>
+              </SettingsProvider>
             </OrderProvider>
           </SkeletonTheme>
         </ToastProvider>

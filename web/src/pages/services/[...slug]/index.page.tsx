@@ -9,7 +9,7 @@ export { default } from '../../products-origim/slugs'
 export const getStaticPaths: GetStaticPaths = async () => {
   const response = await api.get(URLs.PRODUCTS)
 
-  const paths = response.data[0].map((product: IProductDTO) => ({
+  const paths = response.data.result[0].map((product: IProductDTO) => ({
     params: {
       slug: [product.slug, product.id],
     },
@@ -39,7 +39,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         id,
         user,
         isProduct: false,
-        initialProduct: response.data,
+        initialProduct: response.data.result,
       },
       revalidate: 60 * 60 * 24, // 1 day
     }

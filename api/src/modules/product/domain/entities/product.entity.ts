@@ -14,7 +14,7 @@ import {
 import { Expose } from 'class-transformer';
 import { ProductData } from './product-data.entity';
 import { ProductCategory } from './product-category.entity';
-import Team from 'src/modules/users/infra/typeorm/entities/Team';
+import Team from '../../../../modules/users/infra/typeorm/entities/Team';
 
 @Entity('pd100_products')
 export class Product {
@@ -38,10 +38,7 @@ export class Product {
   @OneToMany('OrderProduct', 'product')
   orders_products: any[];
 
-  @OneToOne('ProductWish', 'product', {
-    nullable: true,
-  })
-  wish: any;
+
 
   @Column({ nullable: true, name: 'time_discount_id' })
   time_discount_id: string;
@@ -171,7 +168,7 @@ export class Product {
       categories_items: (this as any).categories_items,
       attributes: this.attributes,
       orders_products: this.orders_products,
-      wish: this.wish,
+
       time_discount: this.time_discount,
       images: this.images?.map((img) => (img?.toJSON ? img.toJSON() : img)),
       created_at: this.created_at,

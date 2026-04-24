@@ -24,25 +24,25 @@ export class ProductData {
 
 
     @Column({ type: 'int', nullable: true })
-    quantity: number;
+    quantity: number | null;
 
-    @Column({ nullable: true })
-    sku: string;
+    @Column({ type: 'varchar', nullable: true })
+    sku: string | null;
 
     @Column({ type: 'decimal', nullable: true })
-    weight: number;
+    weight: number | null;
 
-    @Column({ nullable: true })
+    @Column({ type: 'text', nullable: true })
     @Exclude()
-    dimensions: string;
+    dimensions: string | null;
 
     @Expose({ name: 'dimensions' })
     get dimensionsParse() {
         return this.dimensions && JSON.parse(this.dimensions);
     }
 
-    @Column({ name: 'code_bar', nullable: true })
-    code_bar: string;
+    @Column({ type: 'varchar', name: 'code_bar', nullable: true })
+    code_bar: string | null;
 
     @CreateDateColumn({ name: 'created_at' })
     created_at: Date;
@@ -61,7 +61,7 @@ export class ProductData {
             quantity: this.quantity,
             sku: this.sku,
             weight: this.weight,
-            dimensions: this.dimensions,
+            dimensions: this.dimensionsParse,
             code_bar: this.code_bar,
             created_at: this.created_at,
             updated_at: this.updated_at,

@@ -14,13 +14,13 @@ export default function WishProduct({
   label,
   size,
 }: WishProductProps) {
-  const { wishes, toggleWish } = useWishes()
+  const { toggleWish, isWished } = useWishes()
 
   function handleWish() {
     toggleWish(productId)
   }
 
-  const isWishe = wishes.includes(productId)
+  const isWishe = isWished(productId)
 
   return (
     <WishProductContent isWish={isWishe} size={size}>

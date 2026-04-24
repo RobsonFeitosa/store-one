@@ -10,7 +10,6 @@ import type {
 
 const relations = [
   'images',
-  'wish',
   'product_data',
   'attributes',
   'time_discount',
@@ -201,6 +200,12 @@ export class TypeOrmProductRepository implements ProductRepository {
     }
 
     return query.getManyAndCount();
+  }
+  async findEmphasis(): Promise<Product | null> {
+    return this.ormRepo.findOne({
+      where: { emphasis: true },
+      relations: ['time_discount'],
+    });
   }
 
   async delete(id: string): Promise<void> {

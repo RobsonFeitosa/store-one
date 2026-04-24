@@ -1,7 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import type { ProductRepository } from "../domain/repositories/product.repository";
 import type { CategoryRepository } from "../domain/repositories/category.repository";
-import type { ProductWishRepository } from "../domain/repositories/product-wish.repository";
 import type { TimeDiscountRepository } from "../domain/repositories/time-discount.repository";
 import { Product } from "../domain/entities/product.entity";
 import { Category } from "../domain/entities/category.entity";
@@ -38,8 +37,6 @@ export class IndexProductsUseCase {
         private readonly productRepository: ProductRepository,
         @Inject('CATEGORY_REPOSITORY_TOKEN')
         private readonly categoryRepository: CategoryRepository,
-        @Inject('PRODUCT_WISH_REPOSITORY_TOKEN')
-        private readonly wishRepository: ProductWishRepository,
         @Inject('TIME_DISCOUNT_REPOSITORY_TOKEN')
         private readonly timeDiscountRepository: TimeDiscountRepository,
     ) { }
@@ -48,14 +45,6 @@ export class IndexProductsUseCase {
         const [products, count] = await this.productRepository.findAll(options);
 
         for (const product of products) {
-            let wish: any = null;
-            if (options.user_id) {
-                wish = await this.wishRepository.findByProductAndUser(
-                    product.id,
-                    options.user_id,
-                );
-            }
-
             product.categories_items = [];
 
             if (product.categories) {
@@ -75,7 +64,7 @@ export class IndexProductsUseCase {
                 }
             }
 
-            product.wish = wish ?? null;
+            product.wish = null;
 
             if (product.time_discount && product.time_discount_id) {
                 const start = dayjs(product.time_discount.startDate);

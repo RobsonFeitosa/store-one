@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Public } from 'src/shared/infra/http/decorators/public.decorator';
 import { CreateCategoryUseCase } from '../../../application/create-category.use-case';
 import { UpdateCategoryUseCase } from '../../../application/update-category.use-case';
 import { DeleteCategoryUseCase } from '../../../application/delete-category.use-case';
@@ -35,6 +36,7 @@ export class CategoryController {
     return this.deleteCategoryUseCase.execute(id);
   }
 
+  @Public()
   @Get()
   async index(
     @Query('page') page: string = '1',

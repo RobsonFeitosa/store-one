@@ -30,6 +30,7 @@ export interface ProductRepository {
   findByName(name: string): Promise<Product | null>;
   findByCode(code: string): Promise<Product | null>;
   findAll(options: FindAllOptions): Promise<[Product[], number]>;
+  findEmphasis(): Promise<Product | null>;
   delete(id: string): Promise<void>;
   save(product: Product): Promise<Product>;
 }

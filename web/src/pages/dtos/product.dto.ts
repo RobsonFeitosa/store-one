@@ -4,7 +4,7 @@ import { ICategoryDTO } from './category.dto'
 import { IImagesProductDTO } from './imagesProduct.dto'
 import { ITimeDiscountDTO } from './timeDiscount.dto'
 import { IVariationDTO } from './variation.dto'
-import { IWishDTO } from './wishProduct.dto'
+
 
 interface ProductAttrOptions {
   label: string
@@ -59,7 +59,7 @@ export interface IProductDTO {
   emphasis: boolean
   images?: IArchiveDTO[]
   image_primary: IImagesProductDTO
-  wish: IWishDTO | null
+
   time_discount: ITimeDiscountDTO | null
   created_at: Date
   updated_at: Date

@@ -37,6 +37,7 @@ import {
   BtnVariation,
   BtnsCart,
   CategoriesWrapper,
+  DataWrapper,
   Description,
   DescriptionWrapper,
   DiscountOff,
@@ -112,14 +113,14 @@ export default function Slugs({
         setLoading(false)
       }, 300)
 
-      if (product.mode_data === 'single') {
+      if (productData.mode_data === 'single') {
         const price = discountPrice(
-          product.price,
-          product.time_discount?.discount ?? 0,
+          productData.price,
+          productData.time_discount?.discount ?? 0,
         )
 
         setPriceTarget(price)
-        setSKU(product.product_data?.sku ?? '')
+        setSKU(productData.product_data?.sku ?? '')
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -424,6 +425,23 @@ export default function Slugs({
                             </>
                           )}
                         </PriceWrapper>
+
+                        {(product.product_data?.weight ||
+                          product.product_data?.dimensions) && (
+                          <DataWrapper>
+                            {product.product_data?.weight && (
+                              <Text>Peso: {product.product_data.weight}kg</Text>
+                            )}
+                            {product.product_data?.dimensions && (
+                              <Text>
+                                Dimensões:{' '}
+                                {product.product_data.dimensions.width}x
+                                {product.product_data.dimensions.height}x
+                                {product.product_data.dimensions.length}cm
+                              </Text>
+                            )}
+                          </DataWrapper>
+                        )}
 
                         <Description>
                           {product.short_description && (

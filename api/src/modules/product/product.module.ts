@@ -6,7 +6,6 @@ import { Product } from './domain/entities/product.entity';
 import { Category } from './domain/entities/category.entity';
 import { ProductData } from './domain/entities/product-data.entity';
 import { Coupon } from './domain/entities/coupon.entity';
-import { ProductWish } from './domain/entities/product-wish.entity';
 import { TimeDiscount } from './domain/entities/time-discount.entity';
 import { ProductProvider } from './domain/entities/product-provider.entity';
 import { ProductAttribute } from './domain/entities/product-attribute.entity';
@@ -16,7 +15,6 @@ import { TypeOrmProductRepository } from './infra/database/repositories/typeorm-
 import { TypeOrmCategoryRepository } from './infra/database/repositories/typeorm-category.repository';
 import { TypeOrmProductDataRepository } from './infra/database/repositories/typeorm-product-data.repository';
 import { TypeOrmCouponRepository } from './infra/database/repositories/typeorm-coupon.repository';
-import { TypeOrmProductWishRepository } from './infra/database/repositories/typeorm-product-wish.repository';
 import { TypeOrmTimeDiscountRepository } from './infra/database/repositories/typeorm-time-discount.repository';
 import { TypeOrmProductProviderRepository } from './infra/database/repositories/typeorm-product-provider.repository';
 import { TypeOrmProductAttributeRepository } from './infra/database/repositories/typeorm-product-attribute.repository';
@@ -39,9 +37,6 @@ import { CreateCouponUseCase } from './application/create-coupon.use-case';
 import { IndexCouponsUseCase } from './application/index-coupons.use-case';
 import { ShowCouponUseCase } from './application/show-coupon.use-case';
 import { UpdateStatusCouponUseCase } from './application/update-status-coupon.use-case';
-
-import { ToggleProductWishUseCase } from './application/toggle-product-wish.use-case';
-import { IndexProductWishUseCase } from './application/index-product-wish.use-case';
 
 import { CreateTimeDiscountUseCase } from './application/create-time-discount.use-case';
 import { DeleteTimeDiscountUseCase } from './application/delete-time-discount.use-case';
@@ -68,12 +63,12 @@ import { ShowProductVariationUseCase } from './application/show-product-variatio
 import { UpdateProductVariationUseCase } from './application/update-product-variation.use-case';
 
 import { UpdateProductImagePrimaryUseCase } from './application/update-product-image-primary.use-case';
+import { ShowEmphasisProductUseCase } from './application/show-emphasis-product.use-case';
 
 import { CategoryController } from './infra/http/controllers/category.controller';
 import { ProductController } from './infra/http/controllers/product.controller';
 import { ProductDataController } from './infra/http/controllers/product-data.controller';
 import { CouponController } from './infra/http/controllers/coupon.controller';
-import { WishController } from './infra/http/controllers/wish.controller';
 import { TimeDiscountController } from './infra/http/controllers/time-discount.controller';
 import { ProviderController } from './infra/http/controllers/provider.controller';
 import { AttributeController } from './infra/http/controllers/attribute.controller';
@@ -90,7 +85,6 @@ import { StorageModule } from 'src/shared/infra/http/providers/storage-provider/
             Category,
             ProductData,
             Coupon,
-            ProductWish,
             TimeDiscount,
             ProductProvider,
             ProductAttribute,
@@ -105,7 +99,6 @@ import { StorageModule } from 'src/shared/infra/http/providers/storage-provider/
         ProductController,
         ProductDataController,
         CouponController,
-        WishController,
         TimeDiscountController,
         ProviderController,
         AttributeController,
@@ -129,9 +122,6 @@ import { StorageModule } from 'src/shared/infra/http/providers/storage-provider/
         IndexCouponsUseCase,
         ShowCouponUseCase,
         UpdateStatusCouponUseCase,
-
-        ToggleProductWishUseCase,
-        IndexProductWishUseCase,
 
         CreateTimeDiscountUseCase,
         DeleteTimeDiscountUseCase,
@@ -158,6 +148,7 @@ import { StorageModule } from 'src/shared/infra/http/providers/storage-provider/
         UpdateProductVariationUseCase,
 
         UpdateProductImagePrimaryUseCase,
+        ShowEmphasisProductUseCase,
 
         {
             provide: 'PRODUCT_REPOSITORY_TOKEN',
@@ -178,11 +169,6 @@ import { StorageModule } from 'src/shared/infra/http/providers/storage-provider/
             provide: 'COUPON_REPOSITORY_TOKEN',
             useFactory: (ormRepo: Repository<Coupon>) => new TypeOrmCouponRepository(ormRepo),
             inject: [getRepositoryToken(Coupon)],
-        },
-        {
-            provide: 'PRODUCT_WISH_REPOSITORY_TOKEN',
-            useFactory: (ormRepo: Repository<ProductWish>) => new TypeOrmProductWishRepository(ormRepo),
-            inject: [getRepositoryToken(ProductWish)],
         },
         {
             provide: 'TIME_DISCOUNT_REPOSITORY_TOKEN',
@@ -210,7 +196,6 @@ import { StorageModule } from 'src/shared/infra/http/providers/storage-provider/
         'CATEGORY_REPOSITORY_TOKEN',
         'PRODUCT_DATA_REPOSITORY_TOKEN',
         'COUPON_REPOSITORY_TOKEN',
-        'PRODUCT_WISH_REPOSITORY_TOKEN',
         'TIME_DISCOUNT_REPOSITORY_TOKEN',
         'PRODUCT_PROVIDER_REPOSITORY_TOKEN',
         'PRODUCT_ATTRIBUTE_REPOSITORY_TOKEN',
