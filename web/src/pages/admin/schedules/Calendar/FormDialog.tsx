@@ -199,38 +199,39 @@ export default function FormDialog({
                             name="isPaid"
                             render={({ field }) => (
                                 <Popover>
-                                    <PopoverTrigger asChild>
-                                        <div 
+                                    <PopoverTrigger >
+                                        <div
                                             className={`${styles.dateInput} cursor-pointer flex items-center gap-2`}
-                                            style={{ color: field.value ? '#22c55e' : '#ef4444', height: '40px' }}
                                         >
                                             {field.value ? (
                                                 <>
                                                     <span style={{ fontSize: '1.2em', fontWeight: 'bold' }}>✓</span>
-                                                    <span>Pago (pelo sistema)</span>
+                                                    <span>Pago </span>
                                                 </>
                                             ) : (
                                                 <span style={{ fontStyle: 'italic' }}>Pagamento Pendente</span>
                                             )}
                                         </div>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-56 p-2 bg-white border border-gray-200 rounded-lg shadow-lg">
-                                        <div className="flex flex-col gap-1">
+                                    <PopoverContent className="w-64 p-3">
+                                        <div className="flex flex-col gap-2">
                                             <ShadButton
                                                 type="button"
                                                 variant="ghost"
-                                                className="justify-start text-green-600 hover:bg-green-50"
+                                                className="justify-start text-green-600 hover:bg-green-50 hover:text-green-700 h-10 px-3"
                                                 onClick={() => field.onChange(true)}
                                             >
-                                                ✓ Marcar como Pago
+                                                <span className="mr-2 text-lg font-bold">✓</span>
+                                                Marcar como Pago
                                             </ShadButton>
                                             <ShadButton
                                                 type="button"
                                                 variant="ghost"
-                                                className="justify-start text-red-600 hover:bg-red-50"
+                                                className="justify-start text-red-600 hover:bg-red-50 hover:text-red-700 h-10 px-3"
                                                 onClick={() => field.onChange(false)}
                                             >
-                                                ✕ Marcar como Pendente
+                                                <span className="mr-2 text-lg font-bold">✕</span>
+                                                Marcar como Pendente
                                             </ShadButton>
                                         </div>
                                     </PopoverContent>
