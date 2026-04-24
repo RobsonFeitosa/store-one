@@ -6,6 +6,13 @@ import { Button, TextInput } from '@lemonade-technologies-hub-ui/react'
 import styles from './FormDialog.module.css'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Button as ShadButton } from '@/components/ui/button'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 const schema = z
     .object({
@@ -17,6 +24,9 @@ const schema = z
             .string({ required_error: 'Nome do cliente obrigatório' })
             .min(1, 'Nome do cliente obrigatório')
             .max(40, 'Máximo de 40 caracteres'),
+        professional: z
+            .string({ required_error: 'Profissional obrigatório' })
+            .min(1, 'Profissional obrigatório'),
         startTimeDate: z.string().min(1, 'Data de início obrigatória'),
         endTimeDate: z.string().min(1, 'Data de fim obrigatória'),
         isPaid: z.boolean().optional(),
@@ -31,6 +41,14 @@ const schema = z
 
 type FormData = z.infer<typeof schema>
 
+const professionalOptions = [
+    { value: 'Carlos Silva', label: 'Carlos Silva' },
+    { value: 'Ana Souza', label: 'Ana Souza' },
+    { value: 'Ricardo Santos', label: 'Ricardo Santos' },
+    { value: 'Beatriz Lima', label: 'Beatriz Lima' },
+    { value: 'Fernando Costa', label: 'Fernando Costa' },
+]
+
 const colorOptions = [
     { value: '#bcdaff', label: 'Azul' },
     { value: 'rgb(247, 123, 123)', label: 'Vermelho' },
@@ -44,6 +62,7 @@ interface CalendarItem {
     startTimeDate?: string | null
     endTimeDate?: string | null
     customerName?: string | null
+    professional?: string | null
     isPaid?: boolean
     bgColor?: string
     createdAt?: string | null
@@ -104,6 +123,7 @@ export default function FormDialog({
             reset({
                 title: selectedItem.title ?? '',
                 customerName: selectedItem.customerName ?? '',
+                professional: selectedItem.professional ?? '',
                 startTimeDate: toDatetimeLocal(selectedItem.startTimeDate),
                 endTimeDate: toDatetimeLocal(selectedItem.endTimeDate),
                 isPaid: selectedItem.isPaid ?? false,
@@ -121,6 +141,7 @@ export default function FormDialog({
             startTimeDate: fromDatetimeLocal(data.startTimeDate),
             endTimeDate: fromDatetimeLocal(data.endTimeDate),
             customerName: data.customerName,
+            professional: data.professional,
             isPaid: data.isPaid,
             bgColor: data.bgColor,
             updatedAt: new Date().toISOString(),
@@ -162,6 +183,31 @@ export default function FormDialog({
                             {...register('customerName')}
                             error={errors.customerName?.message}
                         />
+                    </div>
+                    
+                    <div className={styles.field}>
+                        <label className={styles.label}>Profissional</label>
+                        <Controller
+                            control={control}
+                            name="professional"
+                            render={({ field }) => (
+                                <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
+                                    <SelectTrigger className="w-full h-10">
+                                        <SelectValue placeholder="Selecione o profissional" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {professionalOptions.map((opt) => (
+                                            <SelectItem key={opt.value} value={opt.value}>
+                                                {opt.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            )}
+                        />
+                        {errors.professional && (
+                            <span className={styles.error}>{errors.professional.message}</span>
+                        )}
                     </div>
 
                     <div className={styles.row}>
