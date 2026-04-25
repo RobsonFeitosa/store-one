@@ -12,7 +12,7 @@ import { DialogCloseCustom } from '@/components/DialogCloseCustom'
 import DatePicker, { registerLocale } from 'react-datepicker'
 
 import 'react-datepicker/dist/react-datepicker.css'
-import ptBr from 'date-fns/locale/pt-BR'
+import { ptBR } from 'date-fns/locale';
 
 import {
   Button,
@@ -26,7 +26,7 @@ import { Col, Row } from 'react-bootstrap'
 import { Option } from '@/dtos'
 import { useCreateTimeDiscount } from '../../hooks/useCreateTimeDiscount'
 import { useUpdateTimeDiscount } from '../../hooks/useUpdateTimeDiscount'
-registerLocale('ptBR', ptBr)
+registerLocale('ptBR', ptBR)
 
 const optionsExcept = [
   {
@@ -202,9 +202,9 @@ export default function FormTimeDiscount({
                     value={
                       startDate
                         ? `${formatDate({
-                            date: startDate,
-                            hoursView: true,
-                          })}h`
+                          date: startDate,
+                          hoursView: true,
+                        })}h`
                         : undefined
                     }
                     disabled={!!startDate}
