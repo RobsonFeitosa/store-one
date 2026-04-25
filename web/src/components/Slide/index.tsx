@@ -63,7 +63,7 @@ export default function Slide() {
               </div>
               <BtnBuyNow onClick={handleBuyNow}>Comprar agora</BtnBuyNow>
             </WrapperContent>
-            <Image src={slide1} width={1920} height={550} alt="slide1" />
+            <Image src={slide1} width={1920} height={550} alt="slide1" priority />
           </SlicerContent>
         </div>
         <div
@@ -79,7 +79,7 @@ export default function Slide() {
               </div>
               <BtnBuyNow onClick={handleBuyNow}>Comprar agora</BtnBuyNow>
             </WrapperContent>
-            <Image src={slide2} width={1920} height={550} alt="slide2" />
+            <Image src={slide2} width={1920} height={550} alt="slide2" priority />
           </SlicerContent>
         </div>
       </div>
