@@ -4,7 +4,7 @@ import { useAuth } from '@/hooks/providers/auth'
 import { useGetAllAddress } from '@/hooks/useGetAllAddress'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Check } from 'phosphor-react'
+import { Check, Plus, ArrowLeft } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
 import { AddresByZipCodeProps } from '@/hooks/useGetAddresByZipcode'
 import { useCreateAddress } from '@/hooks/useCreateAddress'
@@ -33,6 +33,7 @@ interface AddressProps {
 export default function Address({ onAddress }: AddressProps) {
   const { user } = useAuth()
 
+  const [isCreating, setIsCreating] = useState(false)
   const [zipcode, setZipcode] = useState('')
 
   const { data: addressData, refetch: getAddress } = useGetAllAddress()
@@ -73,6 +74,7 @@ export default function Address({ onAddress }: AddressProps) {
       zipcode,
       primary: true,
     })
+    setIsCreating(false)
   }
 
   function setZipcodeByAddress(zipcode: AddresByZipCodeProps) {
@@ -109,87 +111,126 @@ export default function Address({ onAddress }: AddressProps) {
 
   const addressPrimary = addresses?.find((address) => address.primary)
 
+  if (isCreating || (addresses && addresses.length === 0)) {
+    return (
+      <AddressContainer>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+          {addresses && addresses.length > 0 && (
+            <Button 
+              onClick={() => setIsCreating(false)} 
+              variant="tertiary" 
+              style={{ padding: '4px', minWidth: 'auto', background: 'transparent', color: '$gray900' }}
+            >
+              <ArrowLeft size={20} />
+            </Button>
+          )}
+          <Text as="strong">Cadastre seu endereço</Text>
+        </div>
+
+        <Zipcode onZipcodeByAddress={setZipcodeByAddress} />
+
+        <hr />
+
+        <Form as="form" onSubmit={handleSubmit(handleRegister)}>
+          <TextInput
+            placeholder="Titulo"
+            error={errors.title?.message}
+            {...register('title')}
+          />
+          <TextInput
+            placeholder="Bairro"
+            error={errors.neighborhood?.message}
+            {...register('neighborhood')}
+          />
+          <TextInput
+            placeholder="Rua"
+            error={errors.street?.message}
+            {...register('street')}
+          />
+          <TextInput
+            placeholder="Numero"
+            error={errors.street_number?.message}
+            {...register('street_number')}
+          />
+          <TextInput
+            placeholder="Cidade"
+            error={errors.city?.message}
+            {...register('city')}
+          />
+          <TextInput
+            placeholder="Estado"
+            error={errors.state?.message}
+            {...register('state')}
+          />
+          <TextInput
+            placeholder="País"
+            error={errors.country?.message}
+            {...register('country')}
+          />
+
+          <Button size="lg" type="submit" disabled={isSubmitting}>
+            Salvar endereço
+          </Button>
+        </Form>
+      </AddressContainer>
+    )
+  }
+
   return (
     <AddressContainer>
-      {addresses &&
-        (addresses.length > 0 ? (
-          <div>
-            <Text>Selecione um endereço para entrega</Text>
-
-            {addressPrimary && (
-              <>
-                <AddressContent key={addressPrimary.id}>
-                  <BtnPrimary disabled selected>
-                    <div>
-                      <Text as="strong">{addressPrimary.title}</Text>
-                      <Text>
-                        {`${addressPrimary.neighborhood}, ${addressPrimary.street}, ${addressPrimary.street_number}`}
-                      </Text>
-                    </div>
-
-                    <Check size={22} />
-                  </BtnPrimary>
-                </AddressContent>
-                {addresses.length > 1 && <hr />}
-              </>
-            )}
-
-            <AddressesList
-              addresses={addresses}
-              onSuccessPrimary={setSuccessPrimary}
-            />
+      {addresses && addresses.length > 0 ? (
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <Text>Endereço de entrega</Text>
+            <Button 
+              onClick={() => setIsCreating(true)} 
+              variant="tertiary" 
+              style={{ padding: '0', fontSize: '14px', color: '#f97316', background: 'transparent' }}
+            >
+              <Plus size={16} style={{ marginRight: '4px' }} />
+              Novo
+            </Button>
           </div>
-        ) : (
-          <>
-            <Text>Cadastre seu endereço</Text>
 
-            <Zipcode onZipcodeByAddress={setZipcodeByAddress} />
+          {addressPrimary && (
+            <>
+              <AddressContent key={addressPrimary.id}>
+                <BtnPrimary disabled selected>
+                  <div>
+                    <Text as="strong" style={{ color: '#f97316' }}>{addressPrimary.title}</Text>
+                    <Text size="sm" color="$gray600">
+                      {`${addressPrimary.neighborhood}, ${addressPrimary.street}, ${addressPrimary.street_number}`}
+                    </Text>
+                    <Text size="sm" color="$gray600">
+                      {`${addressPrimary.city} - ${addressPrimary.state}`}
+                    </Text>
+                  </div>
 
-            <hr />
+                  <Check size={22} color="#f97316" />
+                </BtnPrimary>
+              </AddressContent>
+              {addresses.length > 1 && <hr />}
+            </>
+          )}
 
-            <Form as="form" onSubmit={handleSubmit(handleRegister)}>
-              <TextInput
-                placeholder="Titulo"
-                error={errors.title?.message}
-                {...register('title')}
-              />
-              <TextInput
-                placeholder="Bairro"
-                error={errors.neighborhood?.message}
-                {...register('neighborhood')}
-              />
-              <TextInput
-                placeholder="Rua"
-                error={errors.street?.message}
-                {...register('street')}
-              />
-              <TextInput
-                placeholder="Numero"
-                error={errors.street_number?.message}
-                {...register('street_number')}
-              />
-              <TextInput
-                placeholder="Cidade"
-                error={errors.city?.message}
-                {...register('city')}
-              />
-              <TextInput
-                placeholder="Estado"
-                error={errors.state?.message}
-                {...register('state')}
-              />
-              <TextInput
-                placeholder="País"
-                error={errors.country?.message}
-                {...register('country')}
-              />
-
-              <Button size="lg" type="submit" disabled={isSubmitting}>
-                Salvar
-              </Button>
-            </Form>
-          </>
-        ))}
+          <AddressesList
+            addresses={addresses}
+            onSuccessPrimary={setSuccessPrimary}
+          />
+        </div>
+      ) : (
+        <div style={{ textAlign: 'center', padding: '24px 0' }}>
+          <Text style={{ marginBottom: '16px', display: 'block' }}>
+            {addresses ? 'Nenhum endereço cadastrado.' : 'Carregando endereços...'}
+          </Text>
+          {addresses && (
+            <Button onClick={() => setIsCreating(true)}>
+              <Plus size={20} style={{ marginRight: '8px' }} />
+              Cadastrar Endereço
+            </Button>
+          )}
+        </div>
+      )}
     </AddressContainer>
   )
 }

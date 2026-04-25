@@ -22,16 +22,25 @@ export function PaymentMethod({ method, onTypeMethod }: PaymentMethodProps) {
   return (
     <PaymentMethodContainer>
       <SwitchPayment>
-        <BtnPaymentSelect onClick={() => handleSwitchPayment('ticket')}>
-          <Radio selected={method !== 'ticket'} />
+        <BtnPaymentSelect 
+          active={method === 'ticket'} 
+          onClick={() => handleSwitchPayment('ticket')}
+        >
+          <Radio selected={method === 'ticket'} />
           <Text as="span">Boleto</Text>
         </BtnPaymentSelect>
-        <BtnPaymentSelect onClick={() => handleSwitchPayment('pix')}>
-          <Radio selected={method !== 'pix'} />
+        <BtnPaymentSelect 
+          active={method === 'pix'} 
+          onClick={() => handleSwitchPayment('pix')}
+        >
+          <Radio selected={method === 'pix'} />
           <Text as="span">Pix</Text>
         </BtnPaymentSelect>
-        <BtnPaymentSelect onClick={() => handleSwitchPayment('card')}>
-          <Radio selected={method !== 'card'} />
+        <BtnPaymentSelect 
+          active={method === 'card'} 
+          onClick={() => handleSwitchPayment('card')}
+        >
+          <Radio selected={method === 'card'} />
           <Text as="span">Cartão</Text>
         </BtnPaymentSelect>
       </SwitchPayment>

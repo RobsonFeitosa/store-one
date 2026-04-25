@@ -2,6 +2,7 @@ import MainLayout from '@/components/components/Layout/Main'
 import { Container } from 'react-bootstrap'
 import { useGetProduct } from '@/hooks/useGetProduct'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import {
   Heading,
   Text,
@@ -79,6 +80,7 @@ export default function Slugs({
   initialProduct,
   id,
 }: ProductProps) {
+  const router = useRouter()
   const { addOrder } = useOrder()
   const [onQty, setOnQty] = useState(1)
   const [openModal, setOpenModal] = useState(false)
@@ -165,20 +167,24 @@ export default function Slugs({
     }
   }
 
-  function handleRemoveToCart() {
-    product &&
+  function handleBuyNow() {
+    if (product) {
       addOrder(
         {
           id: product.id,
           name: product.name,
           pictureUrl: product.images ? product.images[0].picture_url : '',
-          quantity: product.product_data?.quantity ?? 1,
-          typeProduct: isProduct ? 'product' : 'service',
+          quantity: onQty,
           slug: product.slug,
-          price: product.price,
+          price: priceTarget,
+          typeProduct: isProduct ? 'product' : 'service',
+          variations: variations.map((v) => v.variationTarget),
         },
         onQty,
+        priceTarget,
       )
+      router.push('/checkout')
+    }
   }
 
   const [isDateSelected, setIsDateSelected] = useState(false)
@@ -556,7 +562,7 @@ export default function Slugs({
                                 <BtnAddToCart onClick={handleAddToCart}>
                                   Adicionar ao carrinho
                                 </BtnAddToCart>
-                                <BtnAddToCart onClick={handleRemoveToCart}>
+                                <BtnAddToCart onClick={handleBuyNow}>
                                   Comprar agora
                                 </BtnAddToCart>
                               </>

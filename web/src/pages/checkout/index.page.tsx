@@ -20,7 +20,7 @@ import { useCreateOrder } from '@/hooks/useCreateOrder'
 import { IAddressDTO } from '../dtos/address.dto'
 import SimulatePayment from './SimulatePayment'
 
-import { CheckoutContainer, TotalOrder, WrapperCheckoutItem } from './style'
+import { CheckoutContainer, PageWrapper, TotalOrder, WrapperCheckoutItem } from './style'
 
 export interface CouponDiscount {
   coupon: string
@@ -123,9 +123,14 @@ export default function Checkout() {
       </DialogRoot>
 
       <MainLayout>
-        <Container>
+        <PageWrapper>
+          <Container>
           <CheckoutContainer>
-            <Row>
+            <Heading as="h1" style={{ marginBottom: '2.5rem', fontSize: '2rem' }}>
+              Finalizar sua compra
+            </Heading>
+
+            <Row className="g-4">
               <Col lg="5">
                 <WrapperCheckoutItem>
                   <Heading as="h3">Revisar pedido</Heading>
@@ -139,11 +144,11 @@ export default function Checkout() {
                   {/* <hr /> */}
                   {/* <div>TODO: AQUI VAI A FORMA DE ENVIO (deduzir do total)</div> */}
 
-                  <hr />
-
-                  <Text as="strong" size={'md'}>
-                    Total a pagar: {formatValue(total)}{' '}
-                  </Text>
+                  <div className="checkout-section-footer">
+                    <Text as="strong" size={'md'}>
+                      Total a pagar: {formatValue(total)}{' '}
+                    </Text>
+                  </div>
                 </WrapperCheckoutItem>
               </Col>
 
@@ -165,23 +170,24 @@ export default function Checkout() {
                   <Heading as="h3">Forma de pagamento</Heading>
                   <PaymentMethod method={method} onTypeMethod={onTypeMethod} />
 
-                  <hr />
+                  <div className="checkout-section-footer">
+                    <TotalOrder as="strong">
+                      Total do pedido: {formatValue(total)}
+                    </TotalOrder>
 
-                  <TotalOrder as="strong" size={'lg'}>
-                    Total do pedido: {formatValue(total)}
-                  </TotalOrder>
-
-                  {hasAddress && (
-                    <Button onClick={handleFinishPayment}>
-                      Finalizar pedido
-                    </Button>
-                  )}
+                    {hasAddress && (
+                      <Button onClick={handleFinishPayment} style={{ width: '100%', padding: '1.25rem' }}>
+                        Finalizar pedido
+                      </Button>
+                    )}
+                  </div>
                 </WrapperCheckoutItem>
               </Col>
             </Row>
           </CheckoutContainer>
         </Container>
-      </MainLayout>
+      </PageWrapper>
+    </MainLayout>
     </>
   )
 }
