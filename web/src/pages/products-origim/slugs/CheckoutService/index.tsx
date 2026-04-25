@@ -155,14 +155,16 @@ export default function CheckoutService({
       </CheckoutContent>
 
       <DateScheduleText>
-        Agendamento:{' '}
-        <Text as="strong">
-          {formatDate({
-            date: selectedDateTime?.toString() ?? '',
-            hoursView: true,
-          })}
-          h
-        </Text>
+        <div className='!text-2xl'> 
+          Agendamento:{' '}
+          <strong>
+            {formatDate({
+              date: selectedDateTime?.toString() ?? '',
+              hoursView: true,
+            })}
+            h
+          </strong>
+        </div>
       </DateScheduleText>
 
       <DiscountCoupon onApplyDiscount={applyDiscount} />

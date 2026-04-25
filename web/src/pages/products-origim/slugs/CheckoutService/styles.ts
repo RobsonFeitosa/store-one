@@ -54,8 +54,7 @@ export const BtnGoBack = styled('button', {
 })
 
 export const DateScheduleText = styled(Text, {
-  textAlign: 'center',
-  fontSize: '$lg',
+  textAlign: 'center', 
   color: '$gray700',
   margin: '$4 0',
 })

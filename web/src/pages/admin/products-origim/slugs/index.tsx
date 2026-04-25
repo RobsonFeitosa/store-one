@@ -121,7 +121,7 @@ const productForm = z
           width: z.any().nullable().optional(),
           length: z.any().nullable().optional(),
           height: z.any().nullable().optional(),
-        }).nullable().optional(),
+        }),
       })
       .optional(),
     attributes: attributesForm,

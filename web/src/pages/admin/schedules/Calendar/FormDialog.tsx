@@ -56,18 +56,8 @@ const colorOptions = [
     { value: '#ffe88f', label: 'Amarelo' },
 ]
 
-interface CalendarItem {
-    id?: string
-    title?: string | null
-    startTimeDate?: string | null
-    endTimeDate?: string | null
-    customerName?: string | null
-    professional?: string | null
-    isPaid?: boolean
-    bgColor?: string
-    createdAt?: string | null
-    updatedAt?: string | null
-}
+import { CalendarItem } from './types'
+
 
 interface FormDialogProps {
     open: boolean

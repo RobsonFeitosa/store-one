@@ -9,19 +9,7 @@ import { useGetAllSchedullings } from '@/pages/admin/hooks_generic/useGetAllSche
 import FormDialog from './FormDialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
-interface CalendarItem {
-    id?: string
-    title?: string | null
-    startTimeDate?: string | null
-    endTimeDate?: string | null
-    customerName?: string | null
-    professional?: string | null
-    isPaid?: boolean
-    bgColor?: string
-    createdAt?: string | null
-    updatedAt?: string | null
-    [key: string]: unknown
-}
+import { CalendarItem } from './types'
 
 const Calendar = () => {
     const { data: schedullingsResponse, refetch: getSchedullings } = useGetAllSchedullings()
@@ -36,7 +24,19 @@ const Calendar = () => {
 
     React.useEffect(() => {
         if (schedullingsResponse?.[0]) {
-            setCalendarData(schedullingsResponse[0] as CalendarItem[])
+            const mappedData: CalendarItem[] = (schedullingsResponse[0] as any[]).map(item => ({
+                id: item.id,
+                title: item.title || item.name,
+                startTimeDate: item.startTimeDate || item.date,
+                endTimeDate: item.endTimeDate || item.date,
+                customerName: item.customerName || 'Cliente',
+                professional: typeof item.professional === 'object' ? item.professional?.name : item.professional,
+                isPaid: item.isPaid,
+                bgColor: item.bgColor,
+                createdAt: item.createdAt || item.created_at,
+                updatedAt: item.updatedAt || item.updated_at,
+            }))
+            setCalendarData(mappedData)
         }
     }, [schedullingsResponse])
 
