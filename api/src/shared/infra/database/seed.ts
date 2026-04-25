@@ -12,6 +12,7 @@ import { ProductVariation } from '../../../modules/product/domain/entities/produ
 import Team from '../../../modules/users/infra/typeorm/entities/Team';
 import { Professional } from '../../../modules/users/infra/typeorm/entities/Professional';
 import { TimeIntervals } from '../../../modules/users/infra/typeorm/entities/TimeIntervals';
+import { Address } from '../../../modules/address/domain/entities/address.entity';
 import bcrypt from 'bcryptjs';
 import fs from 'fs';
 import path from 'path';
@@ -39,8 +40,9 @@ async function seed() {
   const teamRepository = dataSource.getRepository(Team);
   const professionalRepository = dataSource.getRepository(Professional);
   const timeIntervalsRepository = dataSource.getRepository(TimeIntervals);
+  const addressRepository = dataSource.getRepository(Address);
 
-  await dataSource.query('TRUNCATE TABLE "ar100_archives", "users_settings", "users", "pd104_products_data", "pd100_products", "pd101_product_categories", "ti100_time_discount", "pd105_products_attributes", "pd106_products_variations", "te100_team", "pr100_professional", "pr100_time_intervals" CASCADE');
+  await dataSource.query('TRUNCATE TABLE "ar100_archives", "users_settings", "users", "pd104_products_data", "pd100_products", "pd101_product_categories", "ti100_time_discount", "pd105_products_attributes", "pd106_products_variations", "te100_team", "pr100_professional", "pr100_time_intervals", "address" CASCADE');
 
   console.log('Tabelas limpas.');
 
@@ -58,6 +60,51 @@ async function seed() {
     settings_id: adminSettings.id,
   }));
   console.log('Usuário admin criado: robson.gw@hotmail.com');
+
+  // Create Addresses for Admin
+  const addressesData = [
+    {
+      title: 'Casa',
+      zipcode: '01310-100',
+      city: 'São Paulo',
+      state: 'SP',
+      country: 'Brasil',
+      neighborhood: 'Bela Vista',
+      street: 'Avenida Paulista',
+      street_number: '1000',
+      primary: true,
+      user_id: admin.id,
+    },
+    {
+      title: 'Trabalho',
+      zipcode: '20040-002',
+      city: 'Rio de Janeiro',
+      state: 'RJ',
+      country: 'Brasil',
+      neighborhood: 'Centro',
+      street: 'Avenida Rio Branco',
+      street_number: '156',
+      primary: false,
+      user_id: admin.id,
+    },
+    {
+      title: 'Casa de Praia',
+      zipcode: '88010-000',
+      city: 'Florianópolis',
+      state: 'SC',
+      country: 'Brasil',
+      neighborhood: 'Centro',
+      street: 'Rua Felipe Schmidt',
+      street_number: '500',
+      primary: false,
+      user_id: admin.id,
+    },
+  ];
+
+  for (const addr of addressesData) {
+    await addressRepository.save(new Address(addr));
+  }
+  console.log('3 endereços criados para o admin.');
 
   // Create Teams and Professionals
   const team = await teamRepository.save(Object.assign(new Team(), {

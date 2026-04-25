@@ -6,6 +6,7 @@ import { ArchiveModule } from './modules/archive/archive.module';
 import { ProductModule } from './modules/product/product.module';
 import { OrderModule } from './modules/order/order.module';
 import { ScheduleModule } from './modules/schedule/schedule.module';
+import { AddressModule } from './modules/address/address.module';
 import { StorageModule } from './shared/infra/http/providers/storage-provider/storage.module';
 import { MessageBrokerModule } from './shared/infra/http/providers/message-broker-provider/message-broker.module';
 import { APP_GUARD } from '@nestjs/core';
@@ -22,6 +23,7 @@ import { AuthGuard } from './shared/infra/http/guards/auth.guard';
     ProductModule,
     OrderModule,
     ScheduleModule,
+    AddressModule,
     StorageModule.register(),
     MessageBrokerModule
   ],

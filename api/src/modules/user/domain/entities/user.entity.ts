@@ -4,11 +4,13 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     OneToOne,
+    OneToMany,
     JoinColumn,
     CreateDateColumn,
     UpdateDateColumn
 } from "typeorm";
 import { UserSettings } from "./user-settings.entity";
+import { Address } from "src/modules/address/domain/entities/address.entity";
 
 @Entity('users')
 export class User {
@@ -30,6 +32,9 @@ export class User {
     @OneToOne(() => UserSettings, { cascade: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'settings_id' })
     settings: UserSettings;
+
+    @OneToMany(() => Address, (address) => address.user)
+    addresses: Address[];
 
     @CreateDateColumn({ name: 'created_at' })
     created_at: Date;
