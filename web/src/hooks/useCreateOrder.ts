@@ -83,6 +83,8 @@ const createOrder = async ({
         })
       }
 
+      // TODO: Pular sistema de pagamento por enquanto
+      /*
       const responseTransaction = await mutateTransactionsAsync({
         api_key: process.env.NEXT_PUBLIC_PAGARME_API_KEY ?? 'key-not-exist',
         amount: Number(amount),
@@ -118,6 +120,7 @@ const createOrder = async ({
         //   onTid(responsePix.data.tid)
         // }
       }
+      */
     }
   } catch (error) {
     console.error(error)
@@ -136,16 +139,43 @@ export const useCreateOrder = () => {
   }
 
   return useMutation({
-    mutationFn: (payload: useMutationProps) =>
-      createOrder({
-        payload,
-        setOrderId,
-        mutateOrderStatusAsync,
-        mutateTransactionsAsync,
-        mutatePixTransactionsAsync,
-        mutateScheduleAsync,
-        setQRCode,
-        onTid,
-      }),
+    mutationFn: async (payload: useMutationProps) => {
+      try {
+        const { order, scheduling } = payload
+        
+        // TODO: Módulo de pedidos não implementado na API, ignorando criação do pedido
+        /*
+        const { amount } = order
+        const responseOrder = await api.post(
+          urlBuilder({
+            address: URLs.ORDERS,
+          }),
+          order,
+        )
+
+        if (responseOrder.status === 200) {
+          setOrderId(responseOrder.data.id)
+
+          if (order.address_id) {
+            await mutateOrderStatusAsync({
+              name: 'awaiting_pickup',
+              order_id: responseOrder.data.id,
+            })
+          }
+        */
+
+        if (order.type_product === 'service' && scheduling) {
+          await mutateScheduleAsync({
+            ...scheduling,
+          })
+        }
+
+        /*
+        }
+        */
+      } catch (error) {
+        console.error(error)
+      }
+    },
   })
 }

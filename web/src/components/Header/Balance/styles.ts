@@ -17,8 +17,22 @@ export const BalanceContainer = styled('div', {
 
   marginTop: '7px',
 
+  '@media (max-width: 480px)': {
+    width: 'calc(100vw - 32px)',
+    right: 'auto',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
+    borderRadius: '$md',
+    zIndex: 999,
+  },
+
   '> div': {
     padding: '14px 20px',
+
+    '@media (max-width: 480px)': {
+      padding: '16px 12px',
+    },
   },
 
   [`${Text}`]: {
@@ -28,6 +42,7 @@ export const BalanceContainer = styled('div', {
   hr: {
     border: 0,
     borderTop: '1px solid rgba(0,0,0,.4)',
+    margin: '10px 0',
   },
 })
 
@@ -56,8 +71,13 @@ export const HeaderBalance = styled('div', {
   [`> ${Text}`]: {
     display: 'block',
     fontSize: '13px',
+    fontWeight: '$bold',
     textTransform: 'uppercase',
     lineHeight: 'normal',
+
+    '@media (max-width: 480px)': {
+      fontSize: '12px',
+    },
   },
 })
 
@@ -78,7 +98,16 @@ export const ProductSingle = styled('div', {
   '> div': {
     display: 'flex',
     alignItems: 'center',
-    gap: '$6',
+    gap: '$4',
+
+    '@media (max-width: 480px)': {
+      gap: '$3',
+    },
+
+    img: {
+      borderRadius: '$sm',
+      objectFit: 'cover',
+    },
   },
 
   padding: '$4 0',
@@ -90,7 +119,6 @@ export const ProductSingle = styled('div', {
   '&:last-child': {
     border: 0,
     paddingBottom: 0,
-    // padding: 0,
   },
 })
 
@@ -108,13 +136,26 @@ export const DescriptionWrapper = styled('div', {
   [`${Heading}`]: {
     fontSize: '$sm',
     marginBottom: '3px',
-    width: '90%',
+    width: '100%',
+    lineHeight: '$shorter',
+
+    '@media (max-width: 480px)': {
+      fontSize: '13px',
+    },
   },
 
   '> div': {
     display: 'flex',
     alignItems: 'center',
-    gap: '$4',
+    gap: '$2',
+
+    [`${Text}`]: {
+      fontSize: '$sm',
+
+      '@media (max-width: 480px)': {
+        fontSize: '$xs',
+      },
+    },
   },
 })
 
@@ -125,6 +166,11 @@ export const FinishOrder = styled('div', {
 
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
+
+  '@media (max-width: 480px)': {
+    gap: '$2',
+  },
 })
 
 export const BtnFinish = styled(Button, {

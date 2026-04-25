@@ -3,11 +3,15 @@ import { Container } from 'react-bootstrap'
 import { useGetProduct } from '@/hooks/useGetProduct'
 import { useEffect, useState } from 'react'
 import {
-  Dialog,
-  DialogRoot,
   Heading,
   Text,
 } from '@lemonade-technologies-hub-ui/react'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/Dialog"
 import formatValue from '@/utils/formatValue'
 import QuantityProduct from '@/components/QuantityProduct'
 import WishProduct from '@/components/ProductBox/WishProduct'
@@ -177,8 +181,11 @@ export default function Slugs({
       )
   }
 
+  const [isDateSelected, setIsDateSelected] = useState(false)
+
   function handleClose() {
     setOpenModal(false)
+    setIsDateSelected(false)
   }
 
   const [selectedDateTime, setSelectedDateTime] = useState<Date | null>(null)
@@ -315,29 +322,35 @@ export default function Slugs({
 
   return (
     <>
-      <DialogRoot open={openModalAccount}>
-        <Dialog offClosed title="Acessar conta">
+      <Dialog open={openModalAccount} onOpenChange={setOpenModalAccount}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Acessar conta</DialogTitle>
+          </DialogHeader>
           <AccessAccountModal
             onOpenForgotModal={() => setOpenForgotSend(true)}
             onClose={() => setOpenModalAccount(false)}
           />
-        </Dialog>
-      </DialogRoot>
+        </DialogContent>
+      </Dialog>
 
-      <DialogRoot open={openForgotSend}>
-        <Dialog offClosed title="Esqueci minha senha">
+      <Dialog open={openForgotSend} onOpenChange={setOpenForgotSend}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Esqueci minha senha</DialogTitle>
+          </DialogHeader>
           <ForgotRequest onClose={() => setOpenForgotSend(false)} />
-        </Dialog>
-      </DialogRoot>
+        </DialogContent>
+      </Dialog>
 
-      <DialogRoot open={openModalSimulate}>
-        <Dialog offClosed title="">
+      <Dialog open={openModalSimulate} onOpenChange={setOpenModalSimulate}>
+        <DialogContent>
           <SimulatePayment onClose={() => setOpenModalSimulate(false)} />
-        </Dialog>
-      </DialogRoot>
+        </DialogContent>
+      </Dialog>
 
-      <DialogRoot open={openModalCheckout}>
-        <Dialog offClosed title="Checkout">
+      <Dialog open={openModalCheckout} onOpenChange={setOpenModalCheckout}>
+        <DialogContent className="max-w-[810px] p-0 overflow-hidden">
           <CheckoutService
             selectedDateTime={selectedDateTime}
             onClose={() => setOpenModalCheckout(false)}
@@ -346,19 +359,23 @@ export default function Slugs({
             professionalSelected={professionalSelected}
             onFinishCheckout={onFinishCheckout}
           />
-        </Dialog>
-      </DialogRoot>
+        </DialogContent>
+      </Dialog>
 
-      <DialogRoot open={openModal}>
-        <Dialog offClosed title="">
+      <Dialog open={openModal} onOpenChange={(open) => {
+        setOpenModal(open)
+        if (!open) setIsDateSelected(false)
+      }}>
+        <DialogContent className={`${isDateSelected ? 'max-w-[810px]' : 'max-w-[590px]'} overflow-hidden p-4`}>
           <Schedule
             onClose={handleClose}
             onSelectedDateTime={onSelectedDateTime}
             onCheckoutModal={onCheckoutModal}
             onProfessionalOption={onProfessional}
+            onDateSelected={setIsDateSelected}
           />
-        </Dialog>
-      </DialogRoot>
+        </DialogContent>
+      </Dialog>
 
       <MainLayout onHeader title={product?.name} isLoading={loading}>
         <ProductContainer>
@@ -428,20 +445,20 @@ export default function Slugs({
 
                         {(product.product_data?.weight ||
                           product.product_data?.dimensions) && (
-                          <DataWrapper>
-                            {product.product_data?.weight && (
-                              <Text>Peso: {product.product_data.weight}kg</Text>
-                            )}
-                            {product.product_data?.dimensions && (
-                              <Text>
-                                Dimensões:{' '}
-                                {product.product_data.dimensions.width}x
-                                {product.product_data.dimensions.height}x
-                                {product.product_data.dimensions.length}cm
-                              </Text>
-                            )}
-                          </DataWrapper>
-                        )}
+                            <DataWrapper>
+                              {product.product_data?.weight && (
+                                <Text>Peso: {product.product_data.weight}kg</Text>
+                              )}
+                              {product.product_data?.dimensions && (
+                                <Text>
+                                  Dimensões:{' '}
+                                  {product.product_data.dimensions.width}x
+                                  {product.product_data.dimensions.height}x
+                                  {product.product_data.dimensions.length}cm
+                                </Text>
+                              )}
+                            </DataWrapper>
+                          )}
 
                         <Description>
                           {product.short_description && (

@@ -27,17 +27,32 @@ export const Container = styled('div', {
 
 export const CategoriesWrapper = styled('div', {
   width: '60px',
+
+  '@media (max-width: 700px)': {
+    width: '45px',
+  },
 })
 
 export const RowFloat = styled('div', {
   display: 'grid',
   gridTemplateColumns: '14% 6% auto 20.9%',
+  alignItems: 'center',
 
   padding: '$2',
 
   '@media (max-width: 1400px)': {
     gridTemplateColumns: 'auto 6% auto auto',
     gap: '$4',
+  },
+
+  '@media (max-width: 700px)': {
+    gridTemplateColumns: 'auto 1fr',
+    gap: '$2',
+    padding: '$2 10px',
+
+    '> :first-child, > :last-child': {
+      display: 'none',
+    },
   },
   '@media (max-width: 980px)': {
     '> div:nth-child(3)': {

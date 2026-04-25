@@ -8,6 +8,8 @@ export interface IScheduleDTO {
   professional: IProfessionalDTO
   name: string
   observations: string
+  created_at?: string
+  updated_at?: string
 }
 
 export type ICreateScheduleDTO = Omit<IScheduleDTO, 'id'>

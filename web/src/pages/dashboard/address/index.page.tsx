@@ -113,7 +113,7 @@ export default function Address() {
         <AddressContainer>
           <Container>
             <AddressHeader>
-              <Heading as="h4">Endereço ({total})</Heading>
+              <Heading as="h4">Endereço ({total || 0})</Heading>
 
               <BtnAddNewAddress onClick={handleNewAddress}>
                 <Plus size={16} />

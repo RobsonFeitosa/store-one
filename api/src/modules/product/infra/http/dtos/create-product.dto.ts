@@ -56,4 +56,16 @@ export class CreateProductDto {
     @IsOptional()
     @IsString()
     visibility?: string;
+
+    @IsOptional()
+    price?: number | string;
+
+    @IsOptional()
+    old_price?: number | string;
+
+    @IsOptional()
+    product_data?: any;
+
+    @IsOptional()
+    images?: any;
 }

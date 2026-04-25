@@ -44,7 +44,7 @@ import {
 } from './styles'
 
 const itemsPerPage = 9
-const maxSlider = 12500
+const maxSlider = 20000 * 100
 
 const filterForm = z.object({
   price: z.number(),
@@ -121,7 +121,7 @@ export default function ProductsOrigim({
     })
   }
 
-  const [products, total] = [[], 0]
+  const [products, total] = productsData ?? [[], 0]
 
   const [mode, setMode] = useState<GridMode>('grid')
 

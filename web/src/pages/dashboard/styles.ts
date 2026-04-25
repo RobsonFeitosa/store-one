@@ -47,6 +47,7 @@ export const CompleteRegister = styled('div', {
   marginTop: 30,
   borderRadius: '$sm',
   display: 'flex',
+  justifyContent: 'space-between',
 
   [`${Heading}`]: {
     fontSize: '$md',

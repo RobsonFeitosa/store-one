@@ -33,11 +33,13 @@ export const TopCategoriesHeader = styled('div', {
   '@media (max-width: 600px)': {
     [`${Heading}`]: {
       marginBottom: '$4',
+      textAlign: 'center',
     },
 
     marginBottom: '$4',
     '> div': {
       display: 'block',
+      textAlign: 'center',
     },
   },
 })
@@ -101,21 +103,34 @@ export const TopCategoriesContainer = styled('div', {
 })
 
 export const CategoriesLabels = styled('div', {
-  display: 'block',
-  gap: '$4',
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '$2',
+
+  '@media (max-width: 600px)': {
+    display: 'block',
+    textAlign: 'center',
+    gap: 0,
+  },
 
   '> div': {
     display: 'inline-block',
-    verticalAlign: 'middle',
-    marginRight: '4px',
-    marginBottom: '2px',
+    margin: '$1',
   },
 })
 
 export const BtnCategory = styled(Button, {
   borderRadius: '$sm',
-  padding: '3px 6px',
+  padding: '6px 12px',
 
   fontSize: '$sm',
   display: 'inline-block',
+
+  '@media (max-width: 600px)': {
+    padding: '4px 10px',
+    fontSize: '11px',
+    borderRadius: '4px',
+    width: 'auto',
+    minWidth: '0',
+  },
 })

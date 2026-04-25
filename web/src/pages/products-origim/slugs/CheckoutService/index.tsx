@@ -8,6 +8,8 @@ import {
   TextTotal,
   WrapperPayment,
   WrapperProfessionalCheck,
+  SuccessContainer,
+  SuccessTitle,
 } from './styles'
 import { Heading, Text } from '@lemonade-technologies-hub-ui/react'
 import { IProductDTO } from '@/pages/dtos/product.dto'
@@ -19,7 +21,8 @@ import { useState } from 'react'
 import { CouponDiscount } from '@/pages/checkout/index.page'
 import DiscountCoupon from '@/pages/checkout/DiscountCoupon'
 import { Option } from '@/dtos'
-import { ArrowBendUpLeft } from 'phosphor-react'
+import { ArrowBendUpLeft, CheckCircle } from 'phosphor-react'
+import { useAuth } from '@/hooks/providers/auth'
 
 interface CheckoutServiceProps {
   professionalSelected: Option | null
@@ -42,6 +45,8 @@ export default function CheckoutService({
   const [total, setTotal] = useState(product?.price)
   const [method, setMethod] = useState<OnPayment>('pix')
   const [couponDiscount, setCouponDiscount] = useState<CouponDiscount | null>()
+  const [isFinished, setIsFinished] = useState(false)
+  const { user } = useAuth()
 
   function applyDiscount(coupon: string, porcent: number) {
     const price = product?.price ?? 0
@@ -79,14 +84,15 @@ export default function CheckoutService({
         },
         scheduling: {
           date: schedullingDate ?? '',
-          name: 'Encontro',
+          name: user?.name ?? 'Cliente',
           professional_id: professionalSelected?.value ?? '',
-          observations: 'O encontro deverar ocorrer na empresa combinada',
+          product_id: product.id,
+          observations: `Agendamento do serviço ${product.name} com o profissional ${professionalSelected?.label}.`,
         },
       }
 
-      await createOrderAsync(payload).finally(() => {
-        onFinishCheckout()
+      await createOrderAsync(payload).then(() => {
+        setIsFinished(true)
       })
     }
   }
@@ -100,33 +106,63 @@ export default function CheckoutService({
     onScheduleGoBack()
   }
 
+  if (isFinished) {
+    return (
+      <CheckoutServiceContainer>
+        <DialogCloseCustom onClose={onClose} />
+        <SuccessContainer>
+          <CheckCircle size={80} weight="fill" />
+          <SuccessTitle>Parabéns!</SuccessTitle>
+          <Text size="lg">
+            Seu agendamento foi realizado com sucesso.
+          </Text>
+          <Text color="gray500">
+            Seu pagamento foi aprovado, seu agendamento foi marcado e você receberá uma confirmação por e-mail.
+          </Text>
+          <BtnFinish onClick={onClose} style={{ marginTop: '2rem' }}>
+            Concluído
+          </BtnFinish>
+        </SuccessContainer>
+      </CheckoutServiceContainer>
+    )
+  }
+
   return (
     <CheckoutServiceContainer>
       <DialogCloseCustom onClose={onClose} />
+      <Heading as="h2">Checkout</Heading>
 
       <CheckoutContent>
         <WrapperProfessionalCheck>
-          <Text>Profissional: {professionalSelected?.label}</Text>
+          <Text>
+            <Text as="span" color="gray500">Profissional:</Text> {professionalSelected?.label}
+          </Text>
 
           <BtnGoBack onClick={goBack}>
             Voltar
             <ArrowBendUpLeft size={16} />
           </BtnGoBack>
         </WrapperProfessionalCheck>
-        <Text>Serviço: {product?.name}</Text>
-        <Text>Valor: {formatValue(product?.price ?? 0)}</Text>
         <Text>
-          Local de encontro: <Text as="strong">Endereço da empresa</Text>
+          <Text as="span" color="gray500">Serviço:</Text> {product?.name}
+        </Text>
+        <Text>
+          <Text as="span" color="gray500">Valor:</Text> {formatValue(product?.price ?? 0)}
+        </Text>
+        <Text>
+          <Text as="span" color="gray500">Local de encontro:</Text> <Text as="strong">Endereço da empresa</Text>
         </Text>
       </CheckoutContent>
 
-      <DateScheduleText size={'lg'}>
+      <DateScheduleText>
         Agendamento:{' '}
-        {formatDate({
-          date: selectedDateTime?.toString() ?? '',
-          hoursView: true,
-        })}
-        h
+        <Text as="strong">
+          {formatDate({
+            date: selectedDateTime?.toString() ?? '',
+            hoursView: true,
+          })}
+          h
+        </Text>
       </DateScheduleText>
 
       <DiscountCoupon onApplyDiscount={applyDiscount} />
@@ -136,7 +172,7 @@ export default function CheckoutService({
         <PaymentMethod method={method} onTypeMethod={onTypeMethod} />
       </WrapperPayment>
 
-      <TextTotal size="lg" as="strong">
+      <TextTotal as="strong">
         Total do pedido: {formatValue(total ?? 0)}
       </TextTotal>
 

@@ -1,7 +1,9 @@
 import { IProfessionalDTO } from '@/dtos/professional.dto'
+import { useAuth } from '@/hooks/providers/auth'
 import { api } from '@/utils/handleClient'
 import { URLs, urlBuilder } from '@/utils/urlBuilder'
 import { useQuery } from '@tanstack/react-query'
+
 const getProfessionalsAvailables = async () => {
   try {
     const response = await api.get(
@@ -10,16 +12,20 @@ const getProfessionalsAvailables = async () => {
       }),
     )
 
-    return response.data.result as IProfessionalDTO[]
+    const [professionals] = response.data.result
+
+    return professionals as IProfessionalDTO[]
   } catch (error) {
     console.error(error)
   }
 }
 
 export const useGetProfessionalsAvailables = () => {
+  const { user } = useAuth()
+
   return useQuery({
     queryKey: ['getProfessionalsAvailables'],
     queryFn: () => getProfessionalsAvailables(),
-    enabled: false,
+    enabled: !!user,
   })
 }

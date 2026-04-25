@@ -131,7 +131,7 @@ export default function ProductBox({
       <ProductDescriptions size={size}>
         <div>
           {!isSmall && !isUltraSmall && (
-            <StarsWrapper>
+            <StarsWrapper className='flex justify-center'>
               <BtnStarComment onClick={handleStarComment}>
                 <FaStar size={16} />
                 <FaStar size={16} />

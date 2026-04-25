@@ -1,5 +1,5 @@
 import DashboardLayout from '@/components/components/Layout/Dashboard'
-import { Heading } from '@lemonade-technologies-hub-ui/react'
+import { Heading, Text } from '@lemonade-technologies-hub-ui/react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { useGetOrders } from './useGetOrders'
 import { useEffect, useState } from 'react'
@@ -37,17 +37,22 @@ export default function Orders() {
       <OrdersContainer>
         <Container>
           <OrderHeader>
-            <Heading as="h4">Pedidos ({total})</Heading>
+            <Heading as="h4">Pedidos ({total || 0})</Heading>
           </OrderHeader>
 
           <OrdersContent>
-            <Row>
-              {orders?.map((order) => (
-                <Col key={order.id} xs="6" sm="6" md="6" lg="6">
-                  <OrderSingle order={order} />
-                </Col>
-              ))}
-            </Row>
+            {orders && orders.length > 0 ? (
+              <Row>
+                {orders?.map((order) => (
+                  <Col key={order.id} xs="6" sm="6" md="6" lg="6">
+                    <OrderSingle order={order} />
+                  </Col>
+                ))}
+              </Row>
+            ) : (
+              <Text>Nenhum pedido registrado</Text>
+            )}
+
             <Row>
               <Pagination
                 currentPage={currentPage}

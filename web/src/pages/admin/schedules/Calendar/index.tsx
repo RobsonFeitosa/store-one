@@ -5,7 +5,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import ptBrLocale from '@fullcalendar/core/locales/pt-br'
 
-import { data as sampleData } from './data'
+import { useGetAllSchedullings } from '@/pages/admin/hooks_generic/useGetAllSchedullings'
 import FormDialog from './FormDialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
@@ -24,9 +24,21 @@ interface CalendarItem {
 }
 
 const Calendar = () => {
-    const [calendarData, setCalendarData] = React.useState<CalendarItem[]>(sampleData)
+    const { data: schedullingsResponse, refetch: getSchedullings } = useGetAllSchedullings()
+
+    const [calendarData, setCalendarData] = React.useState<CalendarItem[]>([])
     const [open, setOpen] = React.useState(false)
     const [selectedItem, setSelectedItem] = React.useState<CalendarItem>({})
+
+    React.useEffect(() => {
+        getSchedullings()
+    }, [getSchedullings])
+
+    React.useEffect(() => {
+        if (schedullingsResponse?.[0]) {
+            setCalendarData(schedullingsResponse[0] as CalendarItem[])
+        }
+    }, [schedullingsResponse])
 
     React.useEffect(() => {
         if (!open) {

@@ -91,8 +91,8 @@ export default function Dashboard() {
             <CouponWin />
 
             <Row>
-              <Col xs="4" sm="4" md="4" lg="4">
-                {lastOrderData && (
+              {lastOrderData && (
+                <Col xs="12" sm="12" md="4" lg="4">
                   <LastOrder>
                     <Heading as="h4">Último pedido</Heading>
                     <OrderWrapper>
@@ -102,10 +102,10 @@ export default function Dashboard() {
                       </Text>
                     </OrderWrapper>
                   </LastOrder>
-                )}
-              </Col>
+                </Col>
+              )}
 
-              <Col xs="8" sm="8" md="8" lg="8">
+              <Col xs="12" sm="12" md={lastOrderData ? 8 : 12} lg={lastOrderData ? 8 : 12}>
                 <CompleteRegister>
                   <CompleteRegisterWrapper>
                     <Heading as="h4">Complete seu cadastro</Heading>

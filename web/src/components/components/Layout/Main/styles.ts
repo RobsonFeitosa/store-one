@@ -16,6 +16,12 @@ export const BreadcrumbHeading = styled(Heading, {
 
   '@media (max-width: 768px)': {
     maxWidth: '100%',
+    textAlign: 'center',
+
+    [`${Text}`]: {
+      fontSize: '15px !important',
+      lineHeight: '1.2 !important',
+    },
   },
 })
 
@@ -31,6 +37,8 @@ export const BreadcrumbText = styled(Text, {
 
   '@media (max-width: 768px)': {
     maxWidth: '100%',
+    fontSize: '$xs !important',
+    lineHeight: 'normal',
   },
 })
 
@@ -41,6 +49,15 @@ export const Breadcrumb = styled('div', {
 
   li: {
     listStyle: 'none',
+  },
+
+  '@media (max-width: 768px)': {
+    gap: '$2',
+    justifyContent: 'center',
+
+    [`${Text}`]: {
+      fontSize: '$xs',
+    },
   },
 })
 
@@ -61,9 +78,9 @@ export const HeaderContentWrapper = styled('div', {
   },
 
   '@media (max-width: 768px)': {
-    padding: '$4',
+    padding: '$3 $4',
     flexDirection: 'column',
-    gap: '$4',
+    gap: '$2',
     height: 'auto',
   },
 })

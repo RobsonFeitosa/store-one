@@ -10,7 +10,11 @@ export const BtnArrow = styled('button', {
   border: 0,
   outline: 'none',
 
-  background: '$white',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+
+  background: 'rgba(255, 255, 255, 0.82)',
   color: '$gray200',
 
   boxShadow: 'rgba(0, 0, 0, 0.086) 1px 1px 2px',

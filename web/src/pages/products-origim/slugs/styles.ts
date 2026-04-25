@@ -114,6 +114,12 @@ export const WrapperHeader = styled('header', {
     fontSize: '$xs',
     color: '$gray400',
   },
+
+  '@media (max-width: 680px)': {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: '$2',
+  },
 })
 
 export const DataWrapper = styled('div', {

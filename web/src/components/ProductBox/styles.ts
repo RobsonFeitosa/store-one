@@ -45,12 +45,22 @@ export const ProductActions = styled('div', {
 export const StarsWrapper = styled('div', {
   marginTop: '$2',
   marginBottom: '$4',
+
+  '@media (max-width: 480px)': {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '$2',
+  },
 })
 
 export const BtnStarComment = styled('button', {
   all: 'unset',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '$2',
 
   position: 'relative',
+  cursor: 'pointer',
 
   svg: {
     color: '#FFBF34',
@@ -162,6 +172,13 @@ export const TextCrop = styled('div', {
         [`> ${Text}`]: {
           margin: 0,
         },
+
+        '@media (max-width: 480px)': {
+          justifyContent: 'center',
+          [`> ${Heading}`]: {
+            textAlign: 'center',
+          },
+        },
       },
       y: {},
     },
@@ -176,8 +193,18 @@ export const TextCrop = styled('div', {
       list: {
         [`> ${Heading}`]: {
           textAlign: 'left',
+
+          '@media (max-width: 480px)': {
+            textAlign: 'center',
+          },
         },
       },
+    },
+  },
+
+  '@media (max-width: 480px)': {
+    [`> ${Heading}`]: {
+      textAlign: 'center !important',
     },
   },
 })
@@ -241,6 +268,17 @@ export const ProductDescriptions = styled('div', {
         '> div': {
           maxWidth: '80%',
         },
+
+        '@media (max-width: 480px)': {
+          padding: '$2',
+          textAlign: 'center',
+          '> div': {
+            maxWidth: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          },
+        },
       },
       xs: {
         width: 'auto',
@@ -253,6 +291,10 @@ export const ProductDescriptions = styled('div', {
 
         [`> ${Text}`]: {
           marginBottom: '0',
+        },
+
+        '@media (max-width: 480px)': {
+          paddingLeft: '$4',
         },
       },
     },
@@ -284,9 +326,23 @@ export const PriceWrapper = styled('div', {
         [`> ${Text}`]: {
           fontSize: '$xs',
         },
+
+        '@media (max-width: 480px)': {
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '$1',
+        },
       },
       y: {},
     },
+  },
+
+  '@media (max-width: 480px)': {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '$1',
   },
 })
 

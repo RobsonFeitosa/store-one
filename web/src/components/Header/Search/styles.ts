@@ -99,6 +99,7 @@ export const TextInputCustom = styled(TextInput, {})
 
 export const ButtonSearch = styled(Button, {
   display: 'flex',
+  alignItems: 'center',
   justifyContent: 'center',
   gap: '6px',
   background: '$gray300',
@@ -109,6 +110,16 @@ export const ButtonSearch = styled(Button, {
   minWidth: '106px',
   padding: 0,
   width: 'auto',
+
+  '@media (max-width: 680px)': {
+    minWidth: '42px',
+    width: '42px',
+    gap: 0,
+
+    span: {
+      display: 'none',
+    },
+  },
 })
 
 export const Form = styled('div', {
@@ -120,6 +131,11 @@ export const Form = styled('div', {
   padding: '9px 9px',
   borderRadius: '$md',
   background: '$white',
+
+  '@media (max-width: 680px)': {
+    padding: '4px 8px',
+    gap: '$2',
+  },
 
   hr: {
     margin: '$1',

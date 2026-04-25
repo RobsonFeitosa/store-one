@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 import { MagnifyingGlass } from 'phosphor-react'
 import { Select } from '@lemonade-technologies-hub-ui/react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ICategoryDTO } from '@/dtos/category.dto'
 import { urlBuilder } from '@/utils/urlBuilder'
@@ -34,6 +34,17 @@ export default function Search({ categoriesRes }: SearchProps) {
   const categoryId = router.query.categoryId
     ? String(router.query.categoryId)
     : undefined
+
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 680)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
+  const categoryPlaceholder = isMobile ? 'Categorias' : 'Todas as categorias'
 
   const {
     handleSubmit,
@@ -88,7 +99,7 @@ export default function Search({ categoriesRes }: SearchProps) {
       <Form as="form" onSubmit={handleSubmit(handleRegister)}>
         <TextInputCustom
           size="sm"
-          placeholder="Pesquisar produto"
+          placeholder={isMobile ? 'Pesquisar' : 'Pesquisar produto'}
           error={errors.search?.message}
           {...register('search')}
         />
@@ -102,11 +113,11 @@ export default function Search({ categoriesRes }: SearchProps) {
                 return (
                   <Select
                     defaultValue={value ?? 'null'}
-                    placeholder="Todas as categorias"
+                    placeholder={categoryPlaceholder}
                     isClean
                     value={value}
                     name={name}
-                    title="Todas as categorias"
+                    title={categoryPlaceholder}
                     options={categoriesRes.map((category) => ({
                       label: category.name,
                       value: category.id,
@@ -164,7 +175,7 @@ export default function Search({ categoriesRes }: SearchProps) {
 
           <ButtonSearch size="sm" type="submit" disabled={isSubmitting}>
             <MagnifyingGlass size={18} />
-            Pesquisar
+            <span>Pesquisar</span>
           </ButtonSearch>
         </WrapperActions>
       </Form>

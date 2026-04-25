@@ -14,7 +14,7 @@ import {
 import { Expose } from 'class-transformer';
 import { ProductData } from './product-data.entity';
 import { ProductCategory } from './product-category.entity';
-import Team from '../../../../modules/users/infra/typeorm/entities/Team';
+import type Team from '../../../../modules/users/infra/typeorm/entities/Team';
 
 @Entity('pd100_products')
 export class Product {
@@ -135,7 +135,7 @@ export class Product {
     return this.old_price;
   }
 
-  @ManyToMany(() => Team, (team) => team.products)
+  @ManyToMany('Team', 'products')
   team: Team[]
 
   get image_primary() {

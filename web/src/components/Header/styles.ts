@@ -14,8 +14,6 @@ export const LinkWish = styled(Link, {
 
 export const HeaderContainer = styled('div', {
   padding: '$8 0',
-  position: 'relative',
-  zIndex: 999,
 })
 
 export const WrapperWhats = styled('div', {
@@ -65,6 +63,12 @@ export const HeadGray = styled('div', {
   justifyContent: 'flex-end',
   alignItems: 'center',
   gap: '$10',
+
+  '@media (max-width: 680px)': {
+    justifyContent: 'center',
+    textAlign: 'center',
+    gap: '$4',
+  },
 
   a: {
     display: 'flex',
@@ -144,6 +148,8 @@ export const Brand = styled('div', {
 export const RowTwo = styled('div', {
   marginTop: '$6',
   width: '100%',
+  position: 'relative',
+  zIndex: 99,
 
   '> div': {
     display: 'flex',
@@ -167,6 +173,7 @@ export const RowTwo = styled('div', {
 
   '@media (max-width: 680px)': {
     display: 'block',
+    zIndex: 'auto',
 
     '> div:nth-child(3), > div:nth-child(1)': {
       display: 'none',

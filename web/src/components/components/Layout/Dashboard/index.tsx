@@ -10,16 +10,19 @@ import {
   DashboardContainer,
   DashboardContent,
   DashboardWrapper,
+  HamburgerButton,
   HeaderWrapper,
   LinkMenu,
+  MenuMobileContainer,
 } from './styles'
 import { ReactNode } from 'react'
 import MainLayout from '../Main'
 import { useRouter } from 'next/router'
-
 import BannerMyAccount from '@/assets/banner-my-account.png'
 import Image from 'next/image'
 import { useAuth } from '@/hooks/providers/auth'
+import { List, X } from 'phosphor-react'
+import { useState } from 'react'
 
 const menus = [
   {
@@ -61,12 +64,17 @@ interface DashboardProps {
 export default function DashboardLayout({ children }: DashboardProps) {
   const { signOut } = useAuth()
   const router = useRouter()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const path = router.asPath
 
   function handleSignOut() {
     signOut()
     router.push('/')
+  }
+
+  function toggleMenu() {
+    setIsMenuOpen(!isMenuOpen)
   }
 
   return (
@@ -88,12 +96,37 @@ export default function DashboardLayout({ children }: DashboardProps) {
           <Row>
             <Col xs="12" sm="12" md="12" lg="3">
               <HeaderWrapper>
+                <HamburgerButton onClick={toggleMenu}>
+                  {isMenuOpen ? <X size={32} /> : <List size={32} />}
+                </HamburgerButton>
                 <Heading as="h2">Minha conta</Heading>
               </HeaderWrapper>
+
+              {isMenuOpen && (
+                <MenuMobileContainer>
+                  {menus.map((menu) => (
+                    <div key={menu.label}>
+                      {menu.label === 'Sair' ? (
+                        <BtnSignOut onClick={handleSignOut}>
+                          {menu.label}
+                        </BtnSignOut>
+                      ) : (
+                        <LinkMenu
+                          href={menu.path ?? ''}
+                          actived={path === menu.path}
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          {menu.label}
+                        </LinkMenu>
+                      )}
+                    </div>
+                  ))}
+                </MenuMobileContainer>
+              )}
             </Col>
           </Row>
           <Row>
-            <Col xs="2" sm="2" md="2" lg="2">
+            <Col xs="12" sm="12" md="12" lg="2">
               <AsideBar>
                 <AsideBarContent>
                   {menus.map((menu) => (
@@ -115,7 +148,7 @@ export default function DashboardLayout({ children }: DashboardProps) {
                 </AsideBarContent>
               </AsideBar>
             </Col>
-            <Col xs="10" sm="10" md="10" lg="10">
+            <Col xs="12" sm="12" md="12" lg="10">
               <DashboardContent>
                 <DashboardWrapper>{children}</DashboardWrapper>
               </DashboardContent>

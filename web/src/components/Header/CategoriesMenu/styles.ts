@@ -232,6 +232,7 @@ export const BtnMenu = styled(Button, {
 
   '@media (max-width: 980px)': {
     width: 'auto',
+    height: '45px !important',
 
     [`${Text}`]: {
       display: 'none',

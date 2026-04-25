@@ -14,14 +14,43 @@ export class UpdateProductDto {
     description?: string;
 
     @IsOptional()
-    @IsBoolean()
-    is_active?: boolean;
+    short_description?: string;
 
     @IsOptional()
-    @IsBoolean()
-    manage_stock?: boolean;
+    price?: number | string;
+
+    @IsOptional()
+    old_price?: number | string;
 
     @IsOptional()
     @IsString()
-    product_type?: string;
+    type?: string;
+
+    @IsOptional()
+    categories?: any;
+
+    @IsOptional()
+    @IsString()
+    mode_data?: string;
+
+    @IsOptional()
+    @IsString()
+    time?: string;
+
+    @IsOptional()
+    product_data?: any;
+
+    @IsOptional()
+    attributes?: any;
+
+    @IsOptional()
+    @IsString()
+    published?: string;
+
+    @IsOptional()
+    @IsString()
+    visibility?: string;
+
+    @IsOptional()
+    images?: any;
 }

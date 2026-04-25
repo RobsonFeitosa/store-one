@@ -9,7 +9,7 @@ import {
   JoinTable,
 } from 'typeorm'
 import type { Professional } from './Professional'
-import { Product } from 'src/modules/product/domain/entities/product.entity'
+import type { Product } from 'src/modules/product/domain/entities/product.entity'
 
 @Entity('te100_team')
 class Team {
@@ -28,7 +28,7 @@ class Team {
   @OneToMany('Professional', (professional: any) => professional.team)
   professional: Professional[]
 
-  @ManyToMany(() => Product, (product) => product.team, {
+  @ManyToMany('Product', 'team', {
     cascade: true,
     eager: true,
   })

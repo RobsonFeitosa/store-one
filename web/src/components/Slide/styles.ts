@@ -35,7 +35,15 @@ export const WrapperContent = styled('div', {
   },
 
   '@media (max-width: 680px)': {
-    top: '$16',
+    top: '15%',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    width: '90%',
+    textAlign: 'center',
+
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
 
     [`${Heading}`]: {
       fontSize: '$lg',
@@ -50,6 +58,12 @@ export const WrapperContent = styled('div', {
 export const SlicerContent = styled('div', {
   position: 'relative',
   zIndex: 2,
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  overflow: 'hidden',
 })
 
 export const SlideContainer = styled('div', {
@@ -75,13 +89,18 @@ export const SlideContainer = styled('div', {
       width: '100%',
 
       img: {
-        width: 'auto',
+        width: '100%',
         height: '100%',
+        objectFit: 'cover',
+        objectPosition: 'center',
       },
 
       '@media (max-width: 680px)': {
         img: {
-          height: '300px',
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          objectPosition: 'center',
         },
       },
 
@@ -102,6 +121,10 @@ export const SlideContainer = styled('div', {
       transform: 'translateX(0)',
       transitionDelay: '0.2s',
       opacity: 1,
+
+      '@media (max-width: 680px)': {
+        transform: 'translateX(-50%)',
+      },
     },
   },
 
@@ -117,6 +140,10 @@ export const BtnBuyNow = styled('button', {
   border: 0,
   padding: '$2 $6',
   borderRadius: '25px',
+
+  '@media (max-width: 680px)': {
+    marginTop: '$4',
+  },
 })
 
 export const ArrowsBox = styled('div', {})

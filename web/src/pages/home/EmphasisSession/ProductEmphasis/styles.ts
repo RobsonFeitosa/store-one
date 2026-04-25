@@ -53,13 +53,21 @@ export const ProductEmphasisContainer = styled('div', {
 export const StarsWrapper = styled('div', {
   marginTop: '$2',
   marginBottom: '$6',
+  display: 'flex',
+  justifyContent: 'center',
+  width: '100%',
 })
 
 export const BtnStarComment = styled('button', {
   all: 'unset',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '$2',
 
   position: 'relative',
   zIndex: 10,
+  cursor: 'pointer',
 
   svg: {
     color: '#FFBF34',

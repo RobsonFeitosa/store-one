@@ -82,86 +82,80 @@ export default function Register() {
   }, [updateData, updateUser])
 
   return (
-    <div>
-      <MainLayout>
-        <Container>
-          <DashboardLayout>
-            <RegisterContainer>
-              <Row>
-                <Col xs lg="12">
-                  <Heading as="h3">Meu cadastro</Heading>
-                </Col>
-              </Row>
-              <RegisterContent>
-                <Row>
-                  <Col xs="12" sm="8" md="8" lg="8">
-                    <Form as="form" onSubmit={handleSubmit(handleRegister)}>
-                      <TextInput
-                        startIcon={FiUser}
-                        placeholder="Nome"
-                        {...register('name')}
-                      />
-                      <TextInput
-                        startIcon={FiMail}
-                        placeholder="E-mail"
-                        {...register('email')}
-                      />
-                      <TextInput
-                        startIcon={FiLock}
-                        type="password"
-                        placeholder="Senha atual"
-                        {...register('old_password')}
-                      />
-                      <TextInput
-                        startIcon={FiLock}
-                        type="password"
-                        placeholder="Nova senha"
-                        {...register('password')}
-                      />
-                      <TextInput
-                        startIcon={FiLock}
-                        type="password"
-                        placeholder="Confirmar senha"
-                        {...register('password_confirmation')}
-                      />
+    <DashboardLayout>
+      <RegisterContainer>
+        <Row>
+          <Col xs lg="12">
+            <Heading as="h3">Meu cadastro</Heading>
+          </Col>
+        </Row>
+        <RegisterContent>
+          <Row>
+            <Col xs="12" sm="8" md="8" lg="8">
+              <Form as="form" onSubmit={handleSubmit(handleRegister)}>
+                <TextInput
+                  startIcon={FiUser}
+                  placeholder="Nome"
+                  {...register('name')}
+                />
+                <TextInput
+                  startIcon={FiMail}
+                  placeholder="E-mail"
+                  {...register('email')}
+                />
+                <TextInput
+                  startIcon={FiLock}
+                  type="password"
+                  placeholder="Senha atual"
+                  {...register('old_password')}
+                />
+                <TextInput
+                  startIcon={FiLock}
+                  type="password"
+                  placeholder="Nova senha"
+                  {...register('password')}
+                />
+                <TextInput
+                  startIcon={FiLock}
+                  type="password"
+                  placeholder="Confirmar senha"
+                  {...register('password_confirmation')}
+                />
 
-                      <Button size="lg" type="submit" disabled={isSubmitting}>
-                        Salvar mudanças
-                      </Button>
-                    </Form>
-                  </Col>
-                  <Col xs="12" sm="4" md="4" lg="4">
-                    <AvatarInput>
-                      {user?.settings.avatar_url ? (
-                        <Image
-                          src={user.settings.avatar_url}
-                          height={100}
-                          width={100}
-                          alt=""
-                        />
-                      ) : (
-                        <BsPersonBoundingBox />
-                      )}
+                <Button size="lg" type="submit" disabled={isSubmitting}>
+                  Salvar mudanças
+                </Button>
+              </Form>
+            </Col>
+            <Col xs="12" sm="4" md="4" lg="4">
+              <AvatarInput>
+                {user?.settings.avatar_url ? (
+                  <Image
+                    src={user.settings.avatar_url}
+                    height={100}
+                    width={100}
+                    alt=""
+                  />
+                ) : (
+                  <BsPersonBoundingBox />
+                )}
 
-                      <label>
-                        <FiCamera />
+                <label>
+                  <FiCamera />
 
-                        <input
-                          type="file"
-                          name="filename"
-                          id="avatar"
-                          onChange={handleAvatarChange}
-                        />
-                      </label>
-                    </AvatarInput>
-                  </Col>
-                </Row>
-              </RegisterContent>
-            </RegisterContainer>
-          </DashboardLayout>
-        </Container>
-      </MainLayout>
-    </div>
+                  <input
+                    type="file"
+                    name="filename"
+                    id="avatar"
+                    onChange={handleAvatarChange}
+                  />
+                </label>
+              </AvatarInput>
+            </Col>
+          </Row>
+        </RegisterContent>
+      </RegisterContainer>
+    </DashboardLayout>
   )
 }
 

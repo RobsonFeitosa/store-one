@@ -9,6 +9,9 @@ import { UserSettings } from '../../../modules/user/domain/entities/user-setting
 import { Archive } from '../../../modules/archive/domain/entities/archive.entity';
 import { ProductAttribute } from '../../../modules/product/domain/entities/product-attribute.entity';
 import { ProductVariation } from '../../../modules/product/domain/entities/product-variation.entity';
+import Team from '../../../modules/users/infra/typeorm/entities/Team';
+import { Professional } from '../../../modules/users/infra/typeorm/entities/Professional';
+import { TimeIntervals } from '../../../modules/users/infra/typeorm/entities/TimeIntervals';
 import bcrypt from 'bcryptjs';
 import fs from 'fs';
 import path from 'path';
@@ -33,8 +36,11 @@ async function seed() {
   const archiveRepository = dataSource.getRepository(Archive);
   const productAttributeRepository = dataSource.getRepository(ProductAttribute);
   const productVariationRepository = dataSource.getRepository(ProductVariation);
+  const teamRepository = dataSource.getRepository(Team);
+  const professionalRepository = dataSource.getRepository(Professional);
+  const timeIntervalsRepository = dataSource.getRepository(TimeIntervals);
 
-  await dataSource.query('TRUNCATE TABLE "ar100_archives", "users_settings", "users", "pd104_products_data", "pd100_products", "pd101_product_categories", "ti100_time_discount", "pd105_products_attributes", "pd106_products_variations" CASCADE');
+  await dataSource.query('TRUNCATE TABLE "ar100_archives", "users_settings", "users", "pd104_products_data", "pd100_products", "pd101_product_categories", "ti100_time_discount", "pd105_products_attributes", "pd106_products_variations", "te100_team", "pr100_professional", "pr100_time_intervals" CASCADE');
 
   console.log('Tabelas limpas.');
 
@@ -45,7 +51,7 @@ async function seed() {
     actived: true,
   }));
 
-  await userRepository.save(new User({
+  const admin = await userRepository.save(new User({
     name: 'Admin Robson',
     email: 'robson.gw@hotmail.com',
     password: hashedPassword,
@@ -53,16 +59,53 @@ async function seed() {
   }));
   console.log('Usuário admin criado: robson.gw@hotmail.com');
 
+  // Create Teams and Professionals
+  const team = await teamRepository.save(Object.assign(new Team(), {
+    name: 'Equipe de Atendimento Geral',
+    user_id: admin.id,
+    operation: 'all',
+  }));
+
+  const professionalNames = [
+    'Carlos Silva', 'Ana Souza', 'Ricardo Santos', 'Beatriz Lima', 'Fernando Costa'
+  ];
+
+  for (const name of professionalNames) {
+    const professional = await professionalRepository.save(Object.assign(new Professional(), {
+      name,
+      function: faker.person.jobTitle(),
+      actived: true,
+      team_id: team.id,
+    }));
+
+    // Create time intervals for each professional (Monday to Friday, 08:00 to 18:00)
+    for (let day = 1; day <= 5; day++) {
+      await timeIntervalsRepository.save(Object.assign(new TimeIntervals(), {
+        professional_id: professional.id,
+        week_day: day,
+        time_start_in_minutes_one: 480, // 08:00
+        time_end_in_minutes_one: 720,   // 12:00
+        time_start_in_minutes_two: 780, // 13:00
+        time_end_in_minutes_two: 1080,  // 18:00
+      }));
+    }
+  }
+  console.log(`${professionalNames.length} profissionais criados.`);
+
   const categories: Category[] = [];
   const categoryNames = [
     'Eletrônicos', 'Hardware', 'Periféricos', 'Casa', 'Beleza', 'Brinquedos', 'Livros', 'Ferramentas',
     'Serviços Automotivos', 'Estética', 'Tecnologia', 'Serviços Domésticos', 'Saúde', 'Aluguel'
   ];
   for (const name of categoryNames) {
+    const isServiceCategory = [
+      'Serviços Automotivos', 'Estética', 'Tecnologia', 'Serviços Domésticos', 'Saúde', 'Aluguel'
+    ].includes(name);
+
     const category = new Category({
       name,
       slug: faker.helpers.slugify(name.toLowerCase()),
-      type: 'product',
+      type: isServiceCategory ? 'service' : 'product',
       level: 1,
       description: faker.commerce.productDescription() + ' ' + faker.lorem.sentences(5),
     });
@@ -378,18 +421,18 @@ async function seed() {
       product_id: savedProduct.id,
       quantity: (item as any).quantity || faker.number.int({ min: 5, max: 100 }),
       sku: (item as any).sku || faker.string.alphanumeric(12).toUpperCase(),
-      weight: item.type === 'product' 
-        ? ((item as any).weight || parseFloat(faker.commerce.price({ min: 0.5, max: 15 }))) 
+      weight: item.type === 'product'
+        ? ((item as any).weight || parseFloat(faker.commerce.price({ min: 0.5, max: 15 })))
         : null,
-      dimensions: item.type === 'product' 
+      dimensions: item.type === 'product'
         ? JSON.stringify((item as any).dimensions || {
-            height: faker.number.int({ min: 10, max: 100 }),
-            width: faker.number.int({ min: 10, max: 100 }),
-            length: faker.number.int({ min: 10, max: 100 }),
-          }) 
+          height: faker.number.int({ min: 10, max: 100 }),
+          width: faker.number.int({ min: 10, max: 100 }),
+          length: faker.number.int({ min: 10, max: 100 }),
+        })
         : null,
-      code_bar: item.type === 'product' 
-        ? ((item as any).code_bar || faker.string.numeric(13)) 
+      code_bar: item.type === 'product'
+        ? ((item as any).code_bar || faker.string.numeric(13))
         : null,
     });
     await productDataRepository.save(productData);
@@ -424,10 +467,18 @@ async function seed() {
     }
 
     if (item.variantPattern && item.variantRange) {
+      const isColorType = ['Brinquedos', 'Tecnologia'].includes(item.category);
+      const variantType = isColorType ? 'Cor' : 'Tamanho';
+      const colorOptions = ['Verde', 'Amarelo', 'Azul', 'Vermelho', 'Preto', 'Branco'];
+      const sizeOptions = ['Pequeno', 'Grande', 'Médio', 'Extra Grande', 'Único'];
+      const currentOptions = isColorType ? colorOptions : sizeOptions;
+      
+      const attributeOptions = currentOptions.slice(0, item.variantRange);
+
       const attribute = new ProductAttribute({
         product_id: savedProduct.id,
-        name: 'Modelo',
-        options: JSON.stringify(Array.from({ length: item.variantRange }).map((_, i) => `Modelo ${i + 1}`)),
+        name: variantType,
+        options: JSON.stringify(attributeOptions),
       });
       const savedAttribute = await productAttributeRepository.save(attribute);
 
@@ -435,11 +486,12 @@ async function seed() {
         const fileName = `${item.variantPattern}${k}.jpg`;
         const sourcePath = path.join(IMAGES_SOURCE_DIR, fileName);
         const destPath = path.join(UPLOADS_DEST_DIR, fileName);
+        const optionName = attributeOptions[k - 1] || `${variantType} ${k}`;
 
         const variation = new ProductVariation({
           product_attribute_id: savedAttribute.id,
           price: price,
-          name: `Modelo ${k}`,
+          name: optionName,
           quantity: faker.number.int({ min: 1, max: 20 }),
           active: true,
           sku: faker.string.alphanumeric(12).toUpperCase(),
@@ -461,7 +513,7 @@ async function seed() {
             type: 'image/jpeg',
           });
           const savedArchive = await archiveRepository.save(archive);
-          
+
           await productVariationRepository.update(savedVariation.id, { image_id: savedArchive.id });
         } else {
           console.warn(`Imagem da variante não encontrada: ${sourcePath}`);

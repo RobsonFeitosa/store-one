@@ -64,7 +64,7 @@ export const ArrowsBox = styled('div', {
   '@media (max-width: 680px)': {
     display: 'flex',
     position: 'absolute',
-    top: '210px',
+    bottom: '-50px',
     transform: 'translateX(-50%)',
     left: '50%',
     zIndex: 10,
@@ -74,6 +74,10 @@ export const ArrowsBox = styled('div', {
       position: 'relative',
       left: 'auto',
       right: 'auto',
+      width: '40px',
+      height: '40px',
+      marginTop: 0,
+      top: 'auto',
     },
   },
 })

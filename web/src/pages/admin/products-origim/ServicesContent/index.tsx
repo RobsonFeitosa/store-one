@@ -60,7 +60,7 @@ export default function ServicesContent({ products }: ServicesContentProps) {
           </div>
 
           <div>
-            <CropLink href={`/services/${product.slug}/${product.id}`}>
+            <CropLink href={`/admin/services/${product.slug}/${product.id}`}>
               <Text>{product.name}</Text>
             </CropLink>
           </div>
@@ -87,7 +87,7 @@ export default function ServicesContent({ products }: ServicesContentProps) {
           </div>
 
           <div>
-            {product.team.length > 0 ? (
+            {product.team && product.team.length > 0 ? (
               <TeamsWrapper>
                 {product.team.map((t: any) => (
                   <Text key={t.id}>{t.name}</Text>

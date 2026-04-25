@@ -126,10 +126,10 @@ export const useUpdateProduct = (productId: string) => {
 
   const { mutateAsync: deleteArchiveAsync } = useDeleteArchive()
 
-  const label = router.locale?.includes('products') ? 'products' : 'services'
-
   async function onRouter(data: IProductDTO) {
-    await router.push(`/${label}/${data.slug}/${data.id}`)
+    const isService = data.type === 'service'
+    const basePath = isService ? '/admin/services' : '/admin/products-origim'
+    await router.push(`${basePath}/${data.slug}/${data.id}`)
   }
 
   function savedCreateImageArchive(data: CreateArchiveProps) {

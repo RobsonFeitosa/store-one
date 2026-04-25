@@ -1,8 +1,32 @@
 import { styled, Heading } from '@lemonade-technologies-hub-ui/react'
 import Link from 'next/link'
 
+export const HamburgerButton = styled('button', {
+  all: 'unset',
+  cursor: 'pointer',
+  color: '#353535',
+  display: 'none',
+  alignItems: 'center',
+  justifyContent: 'center',
+
+  '@media (max-width: 990px)': {
+    display: 'flex',
+  },
+})
+
 export const HeaderWrapper = styled('div', {
   marginBottom: 30,
+  display: 'flex',
+  alignItems: 'center',
+  gap: '$4',
+
+  [`${Heading}`]: {
+    marginBottom: 0,
+  },
+
+  '@media (max-width: 990px)': {
+    marginBottom: '$4',
+  },
 })
 
 export const DashboardContainer = styled('div', {
@@ -48,6 +72,10 @@ export const AsideBar = styled('div', {
     height: 200,
     background: '#FF9900',
   },
+
+  '@media (max-width: 990px)': {
+    display: 'none',
+  },
 })
 
 export const BannerWrapper = styled('div', {
@@ -62,6 +90,11 @@ export const BannerWrapper = styled('div', {
 export const DashboardWrapper = styled('div', {
   paddingTop: 40,
   paddingLeft: 15,
+
+  '@media (max-width: 990px)': {
+    paddingTop: 20,
+    paddingLeft: 0,
+  },
 })
 
 export const DashboardContent = styled('div', {
@@ -73,6 +106,12 @@ export const DashboardContent = styled('div', {
     background: '#FF9900',
     position: 'relative',
     left: '-25px',
+  },
+
+  '@media (max-width: 990px)': {
+    '&::before': {
+      display: 'none',
+    },
   },
 })
 
@@ -335,5 +374,33 @@ export const NavAccountMobile = styled('div', {
         fontSize: '20px',
       },
     },
+  },
+})
+export const MenuMobileContainer = styled('div', {
+  background: '$white',
+  padding: '$4',
+  border: '1px solid $gray100',
+  borderRadius: '$md',
+  boxShadow: '0px 10px 15px -3px rgba(0,0,0,0.1)',
+  marginBottom: '$6',
+
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$4',
+
+  'a, button': {
+    textDecoration: 'none',
+    color: '$gray700',
+    fontSize: '$md',
+    fontWeight: '$medium',
+    transition: 'color 0.2s',
+
+    '&:hover': {
+      color: '#FF9900',
+    },
+  },
+
+  '@media (min-width: 991px)': {
+    display: 'none',
   },
 })

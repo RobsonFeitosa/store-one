@@ -1,7 +1,10 @@
 import { Text, styled } from '@lemonade-technologies-hub-ui/react'
 
 export const ScheduleContainer = styled('div', {
+  width: '100%',
+  minWidth: '500px',
   '@media(max-width: 520px)': {
+    minWidth: '100%',
     width: 320,
   },
 })

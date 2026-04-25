@@ -1,7 +1,14 @@
 import { Calendar } from '@/components/Calendar'
 import { useEffect, useMemo, useState } from 'react'
 import dayjs from 'dayjs'
-import { SelectAdvanced, Text } from '@lemonade-technologies-hub-ui/react'
+import { Text } from '@lemonade-technologies-hub-ui/react'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { DialogCloseCustom } from '@/components/DialogCloseCustom'
 import { useGetProfessionalsAvailables } from '../../hooks/useGetProfessionalsAvailables'
 import { useGetAvailablesDatesProfessional } from '../../hooks/useGetAvailablesDatesProfessional'
@@ -25,6 +32,7 @@ interface CalendarStepProps {
   onSelectedDateTime: (time: Date | null) => void
   onCheckoutModal: (open: boolean) => void
   onProfessionalOption: (option: Option) => void
+  onDateSelected?: (selected: boolean) => void
 }
 
 export default function Schedule({
@@ -32,11 +40,16 @@ export default function Schedule({
   onSelectedDateTime,
   onCheckoutModal,
   onProfessionalOption,
+  onDateSelected,
 }: CalendarStepProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [professionalId, setProfessionalId] = useState<string | null>(null)
 
   const isDateSelected = !!selectedDate
+
+  useEffect(() => {
+    onDateSelected?.(isDateSelected)
+  }, [isDateSelected, onDateSelected])
 
   const weekDay = selectedDate ? dayjs(selectedDate).format('dddd') : null
   const describedDate = selectedDate
@@ -51,6 +64,8 @@ export default function Schedule({
     useGetAvailablesDatesProfessional(professionalId, {
       date: selectedDateWithoutTime,
     })
+
+  console.log(availability)
 
   useEffect(() => {
     professionalId && selectedDate && getAvaiablesDatesProfessional()
@@ -72,12 +87,8 @@ export default function Schedule({
     onProfessionalOption(e)
   }
 
-  const { data: professionalAvailables, refetch: getProfessionalsAvailables } =
+  const { data: professionalAvailables } =
     useGetProfessionalsAvailables()
-
-  useEffect(() => {
-    getProfessionalsAvailables()
-  }, [getProfessionalsAvailables])
 
   const optionsAvailablesProfessional = useMemo(() => {
     return professionalAvailables?.map((professional) => ({
@@ -104,20 +115,30 @@ export default function Schedule({
     }
   }, [professionalId])
   return (
-    <ScheduleContainer>
-      <DialogCloseCustom onClose={onClose} />
+    <div>
 
       <SwitchProfessionalWrapper>
         <Text>
           Selecione um profissional para verificar sua disponibilidade, escolha
           um horário e faça seu pedido.
         </Text>
-        <SelectAdvanced
-          options={optionsAvailablesProfessional}
-          name="professional"
-          placeholder="Selecione um profissional"
-          onChange={handleChangeProfessional}
-        />
+        <Select onValueChange={(value) => {
+          const professional = professionalAvailables?.find(p => p.id === value)
+          if (professional) {
+            handleChangeProfessional({ value: professional.id, label: professional.name })
+          }
+        }}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Selecione um profissional" />
+          </SelectTrigger>
+          <SelectContent>
+            {optionsAvailablesProfessional?.map((opt) => (
+              <SelectItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </SwitchProfessionalWrapper>
 
       {professionalId && (
@@ -133,7 +154,7 @@ export default function Schedule({
                 <Calendar
                   professionalId={professionalId}
                   onDateSelected={setSelectedDate}
-                  // selectedDate={new Date('2023-11-27T17:09:38.897Z')}
+                // selectedDate={new Date('2023-11-27T17:09:38.897Z')}
                 />
               </CalendarWrapper>
 
@@ -167,6 +188,6 @@ export default function Schedule({
           )}
         </>
       )}
-    </ScheduleContainer>
+    </div>
   )
 }
