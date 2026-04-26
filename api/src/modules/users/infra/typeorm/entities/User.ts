@@ -33,8 +33,6 @@ export class User {
   @JoinColumn({ name: 'settings_id' })
   settings: UserSettings
 
-  // @OneToMany(() => UserComments, (comment) => comment.user)
-  // comment: UserComments[]
-
-
+  @OneToMany('Address', (address: any) => address.user)
+  addresses: any[]
 }

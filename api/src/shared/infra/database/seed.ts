@@ -28,6 +28,8 @@ async function seed() {
   await dataSource.initialize();
   console.log('Banco de dados inicializado para o seed.');
 
+  await dataSource.query('ALTER TABLE "address" DROP CONSTRAINT IF EXISTS "UQ_35cd6c3fafec0bb5d072e24ea20"');
+
   const categoryRepository = dataSource.getRepository(Category);
   const productRepository = dataSource.getRepository(Product);
   const productDataRepository = dataSource.getRepository(ProductData);
@@ -42,7 +44,6 @@ async function seed() {
   const timeIntervalsRepository = dataSource.getRepository(TimeIntervals);
   const addressRepository = dataSource.getRepository(Address);
 
-  await dataSource.query('ALTER TABLE "address" DROP CONSTRAINT IF EXISTS "UQ_35cd6c3fafec0bb5d072e24ea20"');
   await dataSource.query('TRUNCATE TABLE "ar100_archives", "users_settings", "users", "pd104_products_data", "pd100_products", "pd101_product_categories", "ti100_time_discount", "pd105_products_attributes", "pd106_products_variations", "te100_team", "pr100_professional", "pr100_time_intervals", "address" CASCADE');
 
   console.log('Tabelas limpas.');

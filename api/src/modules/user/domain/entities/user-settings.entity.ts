@@ -1,5 +1,5 @@
 import { Expose } from "class-transformer";
-import uploadConfig from "src/shared/infra/http/constants/upload";
+import uploadConfig from "../../../../shared/infra/http/constants/upload";
 import {
     Entity,
     Column,

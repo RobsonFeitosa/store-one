@@ -8,7 +8,7 @@ import {
   JoinColumn,
   type Relation,
 } from 'typeorm'
-import { User } from '../../../user/domain/entities/user.entity'
+import type { User } from '../../../user/domain/entities/user.entity'
 
 @Entity('address')
 export class Address {
@@ -18,7 +18,10 @@ export class Address {
   @Column()
   title: string
 
-  @ManyToOne(() => User, (user) => user.addresses)
+  @Column({ unique: false })
+  user_id: string
+
+  @ManyToOne('User', 'addresses')
   @JoinColumn({ name: 'user_id' })
   user: Relation<User>
 

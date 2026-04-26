@@ -4,7 +4,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToOne,
+  ManyToOne,
   JoinColumn,
 } from 'typeorm'
 
@@ -18,10 +18,10 @@ class Address {
   @Column()
   title: string
 
-  @Column()
+  @Column({ nullable: true })
   user_id?: string
 
-  @OneToOne('User', (user: any) => (user as any).address)
+  @ManyToOne('User', (user: any) => (user as any).addresses)
   @JoinColumn({ name: 'user_id' })
   user?: User
 
