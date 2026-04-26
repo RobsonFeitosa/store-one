@@ -10,7 +10,7 @@ import {
     type Relation
 } from "typeorm";
 import { UserSettings } from "./user-settings.entity";
-import type { Address } from "../../../address/domain/entities/address.entity";
+import { Address } from "../../../address/domain/entities/address.entity";
 
 @Entity('users')
 export class User {
@@ -33,7 +33,7 @@ export class User {
     @JoinColumn({ name: 'settings_id' })
     settings: UserSettings;
 
-    @OneToMany('Address', 'user')
+    @OneToMany(() => Address, (address) => address.user)
     addresses: Relation<Address[]>;
 
     @CreateDateColumn({ name: 'created_at' })
