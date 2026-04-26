@@ -5,8 +5,8 @@ export const dataSource = new DataSource({
     host: 'localhost',
     port: 5432,
     username: 'postgres',
-    password: '0e148efe486c6da1e29048b892c8b4c3',
-    database: 'nexus',
+    password: 'fcac41078f2abd6c272b8601a8511f0c',
+    database: 'bp-nexus',
     entities: [
         __dirname + '/../../../**/*.entity{.ts,.js}',
         __dirname + '/../../../modules/users/infra/typeorm/entities/*.{ts,js}',
