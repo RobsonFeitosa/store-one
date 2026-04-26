@@ -25,55 +25,59 @@ export default function Document() {
 
         <script dangerouslySetInnerHTML={{
           __html: `
-            function googleTranslateElementInit() {
-              new google.translate.TranslateElement({
-                pageLanguage: 'pt',
-                includedLanguages: 'en',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
-              }, 'google_translate_element');
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'pt',
+        includedLanguages: 'en',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+
+    (function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const isEn = urlParams.get('loc') === 'en' || sessionStorage.getItem('force_en') === 'true';
+
+      if (isEn) {
+        sessionStorage.setItem('force_en', 'true');
+
+        // Carrega o script oficial do Google
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+        document.body.appendChild(script);
+        
+        // Função agressiva para forçar a tradução
+        function forceTranslate() {
+          const select = document.querySelector('.goog-te-combo');
+          if (select) {
+            if (select.value !== 'en') {
+              select.value = 'en';
+              select.dispatchEvent(new Event('change'));
             }
+          } else {
+            // Se não achou o seletor ainda, tenta de novo em 200ms
+            setTimeout(forceTranslate, 200);
+          }
+        }
 
-            (function() {
-              const urlParams = new URLSearchParams(window.location.search);
-              const isEn = urlParams.get('loc') === 'en' || sessionStorage.getItem('force_en') === 'true';
+        // Tenta traduzir no load e em intervalos curtos no início
+        window.addEventListener('load', forceTranslate);
+        setTimeout(forceTranslate, 1000); 
+        setTimeout(forceTranslate, 3000);
 
-              if (isEn) {
-                sessionStorage.setItem('force_en', 'true');
-
-                // Carrega o script oficial do Google
-                var script = document.createElement('script');
-                script.type = 'text/javascript';
-                script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-                document.body.appendChild(script);
-                
-                // Função para forçar o seletor de idioma para 'en'
-                function applyTranslation() {
-                  setTimeout(function() {
-                    var select = document.querySelector('.goog-te-combo');
-                    if (select) {
-                      select.value = 'en';
-                      select.dispatchEvent(new Event('change'));
-                    }
-                  }, 800);
-                }
-
-                // Dispara no carregamento inicial
-                window.addEventListener('load', applyTranslation);
-
-                // TRUQUE SÊNIOR: Observa mudanças de rota no Next.js (SPA)
-                let lastUrl = location.href;
-                const observer = new MutationObserver(() => {
-                  const url = location.href;
-                  if (url !== lastUrl) {
-                    lastUrl = url;
-                    applyTranslation();
-                  }
-                });
-                observer.observe(document, { subtree: true, childList: true });
-              }
-            })();
-          `
+        // Monitora mudanças de rota (Next.js SPA)
+        let lastUrl = location.href;
+        const observer = new MutationObserver(() => {
+          if (location.href !== lastUrl) {
+            lastUrl = location.href;
+            forceTranslate();
+          }
+        });
+        observer.observe(document, { subtree: true, childList: true });
+      }
+    })();
+  `
         }} />
 
         <NextScript />
