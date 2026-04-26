@@ -21,7 +21,7 @@ const faker = new Faker({
   locale: [pt_BR, en],
 });
 
-const IMAGES_SOURCE_DIR = 'C:\\www\\ecommerce\\banco-imgens-produtos';
+const IMAGES_SOURCE_DIR = path.resolve(__dirname, '..', '..', '..', '..', '..', 'banco-imgens-produtos');
 const UPLOADS_DEST_DIR = path.resolve(__dirname, '..', '..', '..', '..', 'tmp', 'uploads');
 
 async function seed() {
@@ -520,7 +520,7 @@ async function seed() {
       const colorOptions = ['Verde', 'Amarelo', 'Azul', 'Vermelho', 'Preto', 'Branco'];
       const sizeOptions = ['Pequeno', 'Grande', 'Médio', 'Extra Grande', 'Único'];
       const currentOptions = isColorType ? colorOptions : sizeOptions;
-      
+
       const attributeOptions = currentOptions.slice(0, item.variantRange);
 
       const attribute = new ProductAttribute({
