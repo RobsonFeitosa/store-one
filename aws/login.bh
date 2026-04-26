@@ -1,0 +1,1 @@
+ssh -o ServerAliveInterval=60 -i "key-bp.pem" ubuntu@ec2-100-53-149-73.compute-1.amazonaws.com

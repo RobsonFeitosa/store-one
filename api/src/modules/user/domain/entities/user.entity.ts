@@ -1,4 +1,3 @@
-import { Expose } from "class-transformer";
 import {
     Column,
     Entity,
@@ -7,10 +6,11 @@ import {
     OneToMany,
     JoinColumn,
     CreateDateColumn,
-    UpdateDateColumn
+    UpdateDateColumn,
+    type Relation
 } from "typeorm";
 import { UserSettings } from "./user-settings.entity";
-import { Address } from "src/modules/address/domain/entities/address.entity";
+import type { Address } from "../../../address/domain/entities/address.entity";
 
 @Entity('users')
 export class User {
@@ -33,8 +33,8 @@ export class User {
     @JoinColumn({ name: 'settings_id' })
     settings: UserSettings;
 
-    @OneToMany(() => Address, (address) => address.user)
-    addresses: Address[];
+    @OneToMany('Address', 'user')
+    addresses: Relation<Address[]>;
 
     @CreateDateColumn({ name: 'created_at' })
     created_at: Date;

@@ -6,8 +6,9 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  type Relation,
 } from 'typeorm'
-import { User } from 'src/modules/user/domain/entities/user.entity'
+import type { User } from '../../user/domain/entities/user.entity'
 
 @Entity('address')
 export class Address {
@@ -20,9 +21,9 @@ export class Address {
   @Column()
   user_id: string
 
-  @ManyToOne(() => User, (user) => user.addresses)
+  @ManyToOne('User', 'addresses')
   @JoinColumn({ name: 'user_id' })
-  user: User
+  user: Relation<User>
 
   @Column()
   zipcode: string
