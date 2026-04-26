@@ -4,7 +4,10 @@ import {
     PrimaryGeneratedColumn,
     CreateDateColumn,
     UpdateDateColumn,
+    ManyToOne,
+    JoinColumn,
 } from 'typeorm';
+import { Tenant } from '../../../tenant/domain/entities/tenant.entity';
 
 @Entity('cp100_coupon')
 export class Coupon {
@@ -22,6 +25,13 @@ export class Coupon {
 
     @Column({ type: 'timestamp' })
     validation: Date;
+
+    @Column({ name: 'tenant_id', nullable: true })
+    tenant_id: string;
+
+    @ManyToOne(() => Tenant)
+    @JoinColumn({ name: 'tenant_id' })
+    tenant: Tenant;
 
     @CreateDateColumn({ name: 'created_at' })
     created_at: Date;
@@ -43,6 +53,7 @@ export class Coupon {
             status: this.status,
             discount: this.discount,
             validation: this.validation,
+            tenant_id: this.tenant_id,
             created_at: this.created_at,
             updated_at: this.updated_at,
         };

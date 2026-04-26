@@ -16,6 +16,8 @@ import {
   Gear,
   Package,
   Tag,
+  Storefront,
+  Users,
 } from 'phosphor-react'
 import { Text } from '@lemonade-technologies-hub-ui/react'
 import { useSettings } from '@/hooks/providers/settings'
@@ -48,6 +50,17 @@ const SubmenuService = (
     </li>
     <li style={{ display: 'none' }}>
       <Link href="/admin/services/categories">Categorias</Link>
+    </li>
+  </ul>
+)
+
+const SubmenuUsers = (
+  <ul>
+    <li>
+      <Link href="/admin/users/clients">Clientes</Link>
+    </li>
+    <li>
+      <Link href="/admin/users/shopkeepers">Lojistas</Link>
     </li>
   </ul>
 )
@@ -171,6 +184,37 @@ export default function MainAccordion({
             <CreditCard size={24} />
             <Text as="span">Transações</Text>
           </AccordionTrigger>
+        </AccordionItem>
+
+        <AccordionItem value="item-9">
+          <AccordionTrigger
+            item="item-9"
+            isMinimize={isMinimize}
+            isEmpty
+            href="/admin/tenants"
+          >
+            <Storefront size={24} />
+            <Text as="span">Lojas</Text>
+          </AccordionTrigger>
+        </AccordionItem>
+
+        <AccordionItem value="item-10">
+          <AccordionTrigger
+            item="item-10"
+            isMinimize={isMinimize}
+            href="/admin/users"
+          >
+            <Users size={24} />
+            <Text as="span">Usuários</Text>
+          </AccordionTrigger>
+          <AccordionContent>{SubmenuUsers}</AccordionContent>
+
+          {isMinimize && (
+            <MenuWrapper>
+              <ArrowDown />
+              <FloatSubmenu>{SubmenuUsers}</FloatSubmenu>
+            </MenuWrapper>
+          )}
         </AccordionItem>
       </AccordionRoot>
     </MainAccordionContainer>

@@ -36,7 +36,7 @@ export class CreateUserUseCase {
             payload.password,
         )
 
-        const { name, password, email, user_id, ...settings } = payload
+        const { name, password, email, user_id, role, ...settings } = payload
 
         const userSettings = await this.userSettingsRepository.create({
             ...settings,
@@ -48,6 +48,7 @@ export class CreateUserUseCase {
             id: user_id,
             email,
             name,
+            role,
             password: hashedPassword,
             settings_id: userSettings.id,
         }))

@@ -29,4 +29,10 @@ export class CreateUserDto {
     @IsBoolean()
     @IsOptional()
     actived?: boolean;
+
+    @ApiPropertyOptional({ example: 'customer', description: 'The role of the user', enum: ['customer', 'shopkeeper'] })
+    @IsString()
+    @IsIn(['customer', 'shopkeeper'])
+    @IsOptional()
+    role?: 'customer' | 'shopkeeper' = 'customer';
 }

@@ -21,4 +21,9 @@ export class FilterUsersDto {
     @IsOptional()
     @IsString()
     search?: string;
+
+    @ApiPropertyOptional({ example: 'customer', description: 'Filter by role: customer or shopkeeper' })
+    @IsOptional()
+    @IsString()
+    role?: 'customer' | 'shopkeeper';
 }

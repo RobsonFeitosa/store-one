@@ -39,6 +39,8 @@ const USERS_PASSWORD_RESET = '/password/reset'
 const USERS_FORGOT_PASSWORD = '/password/forgot'
 const USERS_AVATAR = '/avatar'
 const USERS_AVAILABLES = '/users-availables'
+const USERS_CUSTOMERS = '/users/customers'
+const USERS_SHOPKEEPERS = '/users/shopkeepers'
 
 const ADDRESS = '/address'
 const ADDRESS_PRIMARY = '/primary'
@@ -57,6 +59,7 @@ const PROFESSIONALS_AVAILABLES = '/availables'
 const PROFESSIONALS_SEND_INVITE = '/send-invite'
 
 const TEAMS = '/teams'
+const TENANTS = '/tenants'
 
 const WISHES = '/wishes'
 
@@ -105,6 +108,9 @@ export const URLs = {
   PROFESSIONALS_BLOCKED_DATES,
   PROFESSIONALS_AVAILABLES,
   USERS_AVAILABLES,
+  USERS_CUSTOMERS,
+  USERS_SHOPKEEPERS,
   PROFESSIONALS_SEND_INVITE,
   TEAMS,
+  TENANTS,
 }

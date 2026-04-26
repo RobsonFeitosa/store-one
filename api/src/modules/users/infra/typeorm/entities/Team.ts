@@ -7,7 +7,10 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm'
+import { Tenant } from '../../../../tenant/domain/entities/tenant.entity'
 import type { Professional } from './Professional'
 import type { Product } from 'src/modules/product/domain/entities/product.entity'
 
@@ -27,6 +30,13 @@ class Team {
 
   @OneToMany('Professional', (professional: any) => professional.team)
   professional: Professional[]
+
+  @Column({ name: 'tenant_id', nullable: true })
+  tenant_id: string
+
+  @ManyToOne(() => Tenant)
+  @JoinColumn({ name: 'tenant_id' })
+  tenant: Tenant
 
   @ManyToMany('Product', 'team', {
     cascade: true,

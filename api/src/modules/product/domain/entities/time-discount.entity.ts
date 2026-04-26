@@ -5,7 +5,10 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     OneToMany,
+    ManyToOne,
+    JoinColumn,
 } from 'typeorm';
+import { Tenant } from '../../../tenant/domain/entities/tenant.entity';
 
 @Entity('ti100_time_discount')
 export class TimeDiscount {
@@ -27,6 +30,13 @@ export class TimeDiscount {
     @OneToMany('Product', 'time_discount')
     products: any[];
 
+    @Column({ name: 'tenant_id', nullable: true })
+    tenant_id: string;
+
+    @ManyToOne(() => Tenant)
+    @JoinColumn({ name: 'tenant_id' })
+    tenant: Tenant;
+
     @CreateDateColumn({ name: 'created_at' })
     created_at: Date;
 
@@ -47,6 +57,7 @@ export class TimeDiscount {
             endDate: this.endDate,
             discount: this.discount,
             status: this.status,
+            tenant_id: this.tenant_id,
             created_at: this.created_at,
             updated_at: this.updated_at,
         };

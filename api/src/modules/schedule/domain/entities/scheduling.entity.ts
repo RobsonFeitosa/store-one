@@ -10,6 +10,7 @@ import {
 } from 'typeorm'
 import { Professional } from 'src/modules/users/infra/typeorm/entities/Professional'
 import { Order } from 'src/modules/order/domain/entities/order.entity'
+import { Tenant } from '../../../tenant/domain/entities/tenant.entity'
 
 @Entity('sc100_schedulings')
 export class Scheduling {
@@ -45,6 +46,13 @@ export class Scheduling {
 
   @Column()
   observations: string
+
+  @Column({ name: 'tenant_id', nullable: true })
+  tenant_id: string
+
+  @ManyToOne(() => Tenant)
+  @JoinColumn({ name: 'tenant_id' })
+  tenant: Tenant
 
   @CreateDateColumn()
   created_at: Date

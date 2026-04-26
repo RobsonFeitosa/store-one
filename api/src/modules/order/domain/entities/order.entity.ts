@@ -11,6 +11,7 @@ import {
 import { User } from 'src/modules/user/domain/entities/user.entity';
 import { OrderStatus } from './order-status.entity';
 import { OrderProduct } from './order-product.entity';
+import { Tenant } from '../../../tenant/domain/entities/tenant.entity';
 
 @Entity('or100_orders')
 export class Order {
@@ -54,6 +55,13 @@ export class Order {
     @OneToMany('OrderProduct', 'order', { cascade: true })
     orderProducts: any[];
 
+    @Column({ name: 'tenant_id', nullable: true })
+    tenant_id: string;
+
+    @ManyToOne(() => Tenant)
+    @JoinColumn({ name: 'tenant_id' })
+    tenant: Tenant;
+
 
     @CreateDateColumn({ name: 'created_at' })
     created_at: Date;
@@ -82,6 +90,7 @@ export class Order {
             tracking_code: this.tracking_code,
             status: this.status,
             orderProducts: this.orderProducts,
+            tenant_id: this.tenant_id,
             created_at: this.created_at,
             updated_at: this.updated_at,
         };

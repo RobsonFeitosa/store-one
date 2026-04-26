@@ -12,6 +12,7 @@ import {
 import type Team from './Team'
 import type { User } from './User'
 import type { TimeIntervals } from './TimeIntervals'
+import { Tenant } from '../../../../tenant/domain/entities/tenant.entity'
 
 @Entity('pr100_professional')
 export class Professional {
@@ -38,6 +39,13 @@ export class Professional {
     eager: true,
   })
   timeIntervals?: TimeIntervals[]
+
+  @Column({ name: 'tenant_id', nullable: true })
+  tenant_id: string
+
+  @ManyToOne(() => Tenant)
+  @JoinColumn({ name: 'tenant_id' })
+  tenant: Tenant
 
   @Column()
   function: string

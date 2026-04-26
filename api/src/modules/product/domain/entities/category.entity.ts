@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Tenant } from '../../../tenant/domain/entities/tenant.entity';
 
 @Entity('pd101_product_categories')
 export class Category {
@@ -26,6 +27,13 @@ export class Category {
     @Column({ nullable: true })
     image: string;
 
+    @Column({ name: 'tenant_id', nullable: true })
+    tenant_id: string;
+
+    @ManyToOne(() => Tenant)
+    @JoinColumn({ name: 'tenant_id' })
+    tenant: Tenant;
+
     @CreateDateColumn({ name: 'created_at' })
     created_at: Date;
 
@@ -52,6 +60,7 @@ export class Category {
             slug: this.slug,
             description: this.description,
             image: this.image,
+            tenant_id: this.tenant_id,
             created_at: this.created_at,
             updated_at: this.updated_at,
         };

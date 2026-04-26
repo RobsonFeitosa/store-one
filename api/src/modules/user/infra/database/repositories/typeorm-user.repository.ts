@@ -35,20 +35,22 @@ export class TypeOrmUserRepository implements UserRepository {
     }
 
     async findAll(filterOptions: FilterOptions): Promise<[User[], number]> {
-        const { page = 1, limit = 10, search } = filterOptions;
+        const { page = 1, limit = 10, search, role } = filterOptions;
 
         const skip = (page - 1) * limit;
+
+        const baseWhere: any = role ? { role } : {};
 
         const [users, total] = await this.ormRepo.findAndCount({
             take: limit,
             skip,
             order: { name: 'ASC' },
             relations: ['settings'],
-            where: search ? [
-                {
-                    name: ILike(`%${search}%`),
-                },
-            ] : undefined,
+            where: search
+                ? [
+                    { ...baseWhere, name: ILike(`%${search}%`) },
+                ]
+                : baseWhere || undefined,
         });
 
         return [users, total]

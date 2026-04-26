@@ -5,10 +5,12 @@ import {
   OneToOne,
   JoinColumn,
   OneToMany,
+  ManyToOne,
 } from 'typeorm'
 
 import { Exclude } from 'class-transformer'
 import type { UserSettings } from './UserSettings'
+import { Tenant } from '../../../../tenant/domain/entities/tenant.entity'
 
 @Entity('users')
 export class User {
@@ -25,6 +27,9 @@ export class User {
   @Exclude()
   password: string
 
+  @Column({ default: 'customer' })
+  role: string
+
   @Column()
   @Exclude()
   settings_id: string
@@ -35,4 +40,11 @@ export class User {
 
   @OneToMany('Address', (address: any) => address.user)
   addresses: any[]
+
+  @Column({ name: 'tenant_id', nullable: true })
+  tenant_id: string
+
+  @ManyToOne(() => Tenant)
+  @JoinColumn({ name: 'tenant_id' })
+  tenant: Tenant
 }

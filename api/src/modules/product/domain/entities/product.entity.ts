@@ -10,7 +10,9 @@ import {
   OneToOne,
   OneToMany,
   ManyToMany,
+  ManyToOne,
 } from 'typeorm';
+import { Tenant } from '../../../tenant/domain/entities/tenant.entity';
 import { Expose } from 'class-transformer';
 import { ProductData } from './product-data.entity';
 import { ProductCategory } from './product-category.entity';
@@ -100,6 +102,13 @@ export class Product {
   @Column({ nullable: true })
   time: string;
 
+  @Column({ name: 'tenant_id', nullable: true })
+  tenant_id: string;
+
+  @ManyToOne(() => Tenant)
+  @JoinColumn({ name: 'tenant_id' })
+  tenant: Tenant;
+
   @DeleteDateColumn({ name: 'deleted_at', nullable: true })
   deleted_at: Date;
 
@@ -165,6 +174,7 @@ export class Product {
       team: this.team,
       time_discount_id: this.time_discount_id,
       time: this.time,
+      tenant_id: this.tenant_id,
       categories_items: (this as any).categories_items,
       attributes: this.attributes,
       orders_products: this.orders_products,

@@ -15,6 +15,7 @@ export interface IUser {
   id: string
   name: string
   email?: string
+  tenant_id?: string
   settings: {
     level: number
     avatar: string
@@ -61,6 +62,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        tenant_id: (user as any).tenant_id,
         settings: {
           level: user.settings.level,
           avatar: user.settings.avatar,

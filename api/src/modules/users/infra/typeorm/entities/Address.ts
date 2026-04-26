@@ -9,6 +9,7 @@ import {
 } from 'typeorm'
 
 import type { User } from './User'
+import { Tenant } from '../../../../tenant/domain/entities/tenant.entity'
 
 @Entity('address')
 class Address {
@@ -48,6 +49,13 @@ class Address {
 
   @Column()
   street_number: string
+
+  @Column({ name: 'tenant_id', nullable: true })
+  tenant_id: string
+
+  @ManyToOne(() => Tenant)
+  @JoinColumn({ name: 'tenant_id' })
+  tenant: Tenant
 
   @CreateDateColumn()
   created_at: Date

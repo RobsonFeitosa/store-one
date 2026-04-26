@@ -34,4 +34,18 @@ export class UserController {
     async findAll(@Query() query: FilterUsersDto) {
         return this.indexUserUseCase.execute(query);
     }
+
+    @Get('customers')
+    @UseGuards(AuthGuard)
+    @ApiOperation({ summary: 'List customers' })
+    async findCustomers(@Query() query: FilterUsersDto) {
+        return this.indexUserUseCase.execute({ ...query, role: 'customer' });
+    }
+
+    @Get('shopkeepers')
+    @UseGuards(AuthGuard)
+    @ApiOperation({ summary: 'List shopkeepers' })
+    async findShopkeepers(@Query() query: FilterUsersDto) {
+        return this.indexUserUseCase.execute({ ...query, role: 'shopkeeper' });
+    }
 }

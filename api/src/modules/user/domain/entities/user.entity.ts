@@ -7,9 +7,11 @@ import {
     JoinColumn,
     CreateDateColumn,
     UpdateDateColumn,
+    ManyToOne,
     type Relation
 } from "typeorm";
 import { UserSettings } from "./user-settings.entity";
+import { Tenant } from "../../../tenant/domain/entities/tenant.entity";
 import type { Address } from "../../../address/domain/entities/address.entity";
 
 @Entity('users')
@@ -26,12 +28,22 @@ export class User {
     @Column()
     password: string;
 
+    @Column({ default: 'customer' })
+    role: 'customer' | 'shopkeeper';
+
     @Column({ name: 'settings_id', nullable: true })
     settings_id: string;
 
     @OneToOne(() => UserSettings, { cascade: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'settings_id' })
     settings: UserSettings;
+
+    @Column({ name: 'tenant_id', nullable: true })
+    tenant_id: string;
+
+    @ManyToOne(() => Tenant)
+    @JoinColumn({ name: 'tenant_id' })
+    tenant: Relation<Tenant>;
 
     @OneToMany('Address', 'user')
     addresses: Relation<Address[]>;
@@ -49,7 +61,9 @@ export class User {
     public getId() { return this.id; }
     public getName() { return this.name; }
     public getEmail() { return this.email; }
+    public getRole() { return this.role; }
     public getSettingsId() { return this.settings_id; }
+    public getTenantId() { return this.tenant_id; }
 
     public getAvatar() { return this.settings?.avatar; }
 
@@ -69,9 +83,11 @@ export class User {
             id: this.id,
             name: this.name,
             email: this.email,
+            role: this.role,
             password: this.password,
             avatar_url: this.getAvatarUrl(),
             settings_id: this.settings_id,
+            tenant_id: this.tenant_id,
             settings: this.settings,
             created_at: this.created_at,
             updated_at: this.updated_at,
