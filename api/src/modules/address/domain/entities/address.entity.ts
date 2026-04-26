@@ -8,7 +8,7 @@ import {
   JoinColumn,
   type Relation,
 } from 'typeorm'
-import type { User } from '../../user/domain/entities/user.entity'
+import type { User } from '../../../user/domain/entities/user.entity'
 
 @Entity('address')
 export class Address {
